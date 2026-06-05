@@ -1,177 +1,137 @@
 # electronics-qa-generator
 
-A pipeline for generating **multimodal electronics circuit Q/A items** with
-**simulator-grounded ground-truth answers**, targeting an
+A pipeline that generates **multimodal electronics circuit Q/A items** with
+**SPICE/Xyce-grounded ground-truth answers**, targeting an
 [MMMU](https://mmmu-benchmark.github.io/)-style benchmark for the Electronics
 subfield.
 
-The design is inspired by two papers:
+Inspired by **CLEVR** (questions backed by executable programs) and **AutoCkt**
+(simulator-in-the-loop as source of truth).
 
-- **CLEVR** — every question carries a machine-readable program, so answers are
-  *programmatically guaranteed* rather than guessed.
-- **AutoCkt** — SPICE is the source of truth; circuits and measurements come from
-  a real simulator in the loop, not from an LLM.
+> **Core principle:** Simulation establishes facts → code derives answers →
+> the LLM only paraphrases or reviews truth that has already been computed.
+> The LLM is never the source of numerical truth.
 
-> **Core principle:** Simulation establishes facts → code derives answers → the
-> LLM only expresses or reviews truth that has already been computed. The LLM is
-> never the source of numerical truth.
+See [`docs/plan.md`](docs/plan.md), [`docs/architecture.md`](docs/architecture.md),
+and [`AGENTS.md`](AGENTS.md) for the full design and pipeline commands.
 
-See [`docs/plan.md`](docs/plan.md) and [`docs/architecture.md`](docs/architecture.md)
-for the full design, and [`docs/circuit_qa_program_language.md`](docs/circuit_qa_program_language.md)
-for the CLEVR-style DSL.
+## Quick start
 
-## Status
+The fastest way to generate Q/A pairs is to ask a coding agent:
 
-Early scaffolding. The package layout and pipeline stages are stubbed out and
-will be implemented step by step. Nothing generates real data yet.
+> *"Generate roughly 10,000 Q/A pairs from the available circuit templates."*
 
-## Pipeline
+The agent will read `AGENTS.md`, run the pipeline, and produce JSONL output
+with schematics. No manual setup beyond `uv sync`.
+
+To run directly:
+
+```bash
+uv sync --extra sim --extra data --extra render
+
+# Small batch (200 items, ~1 second):
+uv run python scripts/batch_generate.py --total 200 --workers 4 -o output/batch
+
+# Large batch (100k items, ~2 minutes):
+uv run python scripts/batch_generate.py --total 100000 --workers 8 -o output/batch
+```
+
+## What it produces
+
+| Artifact | Location |
+|---|---|
+| QA items (JSONL) | `output/batch/qa_items.jsonl` |
+| Schematics (PNG) | `output/batch/images/<topology>/<seed>.png` |
+
+Each QA item includes a `schematic_path`, `question`, `answer`, `answer_value`,
+`unit`, `tolerance`, `question_type`, and a `program` (CLEVR-style instruction
+sequence).
+
+## Available topologies (14)
 
 ```
-templates → sampling → netlist → simulation (Xyce) → parsing → extraction
-  → questions (+ optional llm) → validation → rendering → output
+voltage_divider     rc_lowpass          rc_highpass         rlc_bandpass
+half_wave_rectifier rc_step_response    rl_step_response    ac_phasor_rc
+bjt_ce_amplifier    bjt_emitter_follower mosfet_cs_amplifier resistor_network
+op_amp_inverting    rlc_series_resonance
 ```
 
-| Stage | Package | Responsibility |
-|-------|---------|----------------|
-| Template library | `templates/` | Circuit families, topologies, parameter ranges, rejection rules |
-| Sampler | `sampling/` | Constrained randomization of values, stimuli, loads, variants |
-| Netlist generator | `netlist/` | Emit deterministic Xyce/SPICE netlists |
-| Simulation orchestrator | `simulation/` | Run Xyce (.op/.dc/.ac/.tran), batching, retries, caching |
-| Result parser | `parsing/` | Raw outputs → structured arrays/tables |
-| Fact extractor | `extraction/` | Canonical ground-truth fact table |
-| Question engine | `questions/` | Question types + deterministic answers + CLEVR-style programs |
-| Optional LLM layer | `llm/` | Paraphrase / explanations / distractor wording / tags |
-| Verifier & filters | `validation/` | Answer consistency, ambiguity, quality, leakage/split checks |
-| Renderer | `rendering/` | Schematics, waveform/Bode plots, tables |
-| Dataset assembler | `output/` | JSONL/Parquet export + train/val/test splits |
+## Question types
+
+| Type | Example |
+|---|---|
+| `direct` | Determine the −3 dB cutoff frequency |
+| `derived` | Compute the quality factor Q = f₀ / BW |
+| `classification` | Classify this filter as low-pass, high-pass, or band-pass |
+| `comparison` | Is V(out) greater than half of V(in)? |
+
+All answers are computed deterministically from Xyce simulation facts
+(`.op`, `.ac`, `.tran`) via a CLEVR-style program engine. Questions
+use hand-written humanized templates — no LLM involved in truth creation.
 
 ## Requirements
 
 - **Python 3.14** (pinned via `.python-version`)
-- [`uv`](https://docs.astral.sh/uv/) for environment and build management
-- **Xyce** (external SPICE simulator) — required once the simulation stage is
-  implemented; install separately.
+- [`uv`](https://docs.astral.sh/uv/) for environment management
+- **Xyce** SPICE simulator on PATH
 
-## Getting started
+## CLI pipeline
+
+```
+emit → simulate → questions → validate → assemble
+```
+
+| Command | What it does |
+|---|---|
+| `uv run eqa emit <topology> --seed N --render` | Sample template, emit netlist + schematic |
+| `uv run eqa simulate <topology> --seed N` | Run Xyce, extract facts |
+| `uv run eqa questions <topology> --seed N` | Generate Q/A items from facts |
+| `uv run eqa validate <topology> --seed N` | Static checks on QA items |
+| `uv run eqa assemble -o dataset` | Assemble MMMU-compatible dataset |
+
+For batch generation across many seeds, use `scripts/batch_generate.py`.
+
+## Visual checks (opt-in)
+
+`eqa validate --visual` runs a local Ollama VLM to verify schematics:
 
 ```bash
-# Create the environment and install the project (dev tools included)
-uv sync
-
-# Run the CLI
-uv run eqa --help
-uv run eqa generate -n 10 -o dataset
-
-# Run tests / lint
-uv run pytest
-uv run ruff check .
-```
-
-Optional dependency groups (pull in as you implement stages):
-
-```bash
-uv sync --extra sim     # numpy, scipy
-uv sync --extra data    # pyarrow, pandas
-uv sync --extra render  # matplotlib
-```
-
-## Reference data
-
-The repo includes a copy of the MMMU Electronics subset for reference and to
-mirror the target schema:
-
-- `mmmu_electronics/` — original parquet splits (dev/validation/test)
-- `mmmu_electronics_unpacked/` — JSONL/CSV + extracted images
-- `unpack_mmmu_electronics.py` — script that produced the unpacked form
-
-## Layout
-
-```
-src/electronics_qa_generator/   # the package (one subpackage per pipeline stage)
-  models.py                     # shared dataclasses (CircuitRecord, QAItem, Sample)
-  pipeline.py                   # end-to-end orchestration skeleton
-  cli.py                        # `eqa` console script
-docs/                           # design docs and paper explainers
-tests/                          # smoke tests
-```
-
-## License
-
-TBD.
-
-## LLM humanization (optional)
-
-The `eqa questions` command accepts an opt-in `--humanize` flag that rewrites
-questions in natural, exam-style language and generates optional explanations
-via a DeepSeek LLM (`deepseek-v4-pro`). Answers, values, units, and programs
-are **never** altered by the LLM — humanization runs strictly after the
-deterministic answer is fixed.
-
-### Setup
-
-Create a `.env` file in the project root:
-
-```env
-DEEPSEEK_API_KEY=sk-your-key-here
-# Optional overrides:
-# DEEPSEEK_BASE_URL=https://api.deepseek.com
-# DEEPSEEK_MODEL=deepseek-v4-pro
-```
-
-> The `.env` file is `.gitignore`d. No Python package is needed — keys are
-> read with the stdlib only.
-
-### Usage
-
-```bash
-# Normal run (no LLM calls)
-eq questions voltage_divider --seed 42
-
-# With humanization
-eq questions voltage_divider --seed 42 --humanize
-```
-
-When no key is configured (or the API is unreachable), `--humanize` falls back
-silently to the original templated questions. Tests use a fake provider and
-never touch the network.
-
-## Visual checks (optional)
-
-The `eqa validate` command accepts an opt-in `--visual` flag that runs
-vision-model quality checks on rendered schematic images (topology
-verification, label readability). These checks use a locally-running
-Ollama instance with the `deepseek-vl2-tiny` model — **no cloud API key
-required**.
-
-### Setup
-
-```bash
-# 1. Install Ollama
-brew install ollama       # macOS
-# or download from https://ollama.com
-
-# 2. Start the service (runs on localhost:11434)
+brew install ollama
 ollama serve
-
-# 3. Pull the vision model (~4 GB, one-time)
 ollama pull deepseek-vl2-tiny
 ```
 
-Configuration (in `.env`, defaults shown):
-
+`.env` defaults:
 ```env
 VISION_BASE_URL=http://localhost:11434/v1
 VISION_MODEL=deepseek-vl2-tiny
 ```
 
-### Usage
+## Reference data
 
-```bash
-# Run validation with vision checks
-eq validate voltage_divider --seed 42 --visual
+- `mmmu_electronics/` — original MMMU Electronics parquet splits
+- `mmmu_electronics_unpacked/` — JSONL/CSV + extracted images
+
+Treat these as read-only target schema references.
+
+## Layout
+
+```
+src/electronics_qa_generator/   # package, one subpackage per pipeline stage
+  models.py                     # CircuitRecord, QAItem, Sample
+  questions/templates.py        # hand-written humanized question templates
+  render/svg/                   # SVG layout templates per topology
+  graph/                        # circuit graph model
+  simulation/                   # Xyce runner, fact cache
+  extraction/                   # fact extractors per topology
+  validation/                   # static + LLM + visual checks
+  output/                       # dataset assembler
+scripts/
+  batch_generate.py             # high-throughput batch generation
+docs/                           # design docs and paper explainers
+tests/                          # pytest suite
 ```
 
-When Ollama is not running (or the model is not pulled), vision checks
-return PASS silently — they are advisory (WARN), never blocking. Results
-are cached by image content hash to avoid repeated VLM calls.
+## License
+
+TBD.
