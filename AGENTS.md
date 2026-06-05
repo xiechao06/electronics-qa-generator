@@ -76,3 +76,111 @@ templates → sampling → netlist → simulation → parsing → extraction
 - Keep `mmmu_electronics*/` reference data read-only; treat it as the target
   schema, not something to modify.
 - Run `uv run pytest` and `uv run ruff check .` before declaring work done.
+
+## Pipeline
+
+The eqa CLI executes a five-stage pipeline:
+
+```
+emit → simulate → questions → validate → assemble
+```
+
+| Stage | Command | What it does |
+|-------|---------|--------------|
+| emit | `eqa emit` | Sample templates, emit SPICE netlist + JSON record |
+| simulate | `eqa simulate` | Run Xyce simulation, extract ground-truth facts |
+| questions | `eqa questions` | Generate Q/A items from simulation facts |
+| validate | `eqa validate` | Run static checks on generated QA items |
+| assemble | `eqa assemble` | Assemble full MMMU-compatible dataset |
+
+All commands use `uv run eqa <subcommand>`.
+
+### Common workflows
+
+**Single topology, all stages:**
+
+```bash
+uv run eqa emit <topology> --seed 42 -o output/<topology> --render
+uv run eqa simulate <topology> --seed 42
+uv run eqa questions <topology> --seed 42 -o output/<topology>
+uv run eqa validate <topology> --seed 42       # optional
+uv run eqa assemble -o dataset
+```
+
+**All topologies:**
+
+```bash
+uv run eqa emit --all --seed 42 -o output --render
+uv run eqa simulate --all --seed 42
+# questions doesn't support --all; use scripts/batch_generate.py instead
+uv run eqa validate --all --seed 42
+```
+
+**High-throughput batch generation:**
+
+```bash
+uv run python scripts/batch_generate.py --total 100000 --workers 8 -o output/batch
+```
+
+### Key options by stage
+
+**emit:** `--render` (schematic PNG), `--seed N`, `-o DIR`
+
+**simulate:** `--cache-dir DIR` (speed up repeated runs), `--no-cache`
+
+**questions:** `--jsonl` (one JSON per line), `-o DIR` (schematic output dir).
+The `--humanize` flag rewrites questions via LLM but is **deprecated** in
+favor of hand-written humanized templates in `questions/templates.py`.
+
+**validate:** `--llm` (LLM-assisted checks), `--visual` (VLM schematic checks),
+`--json` (report as JSON)
+
+**assemble:** `-o DIR` (default: `dataset/`)
+
+### Seed reproducibility
+
+Every sample is reproducible from (seed + template + parameters). Use the
+same `--seed` across emit/simulate/questions for consistency, or vary it
+for diverse parameter samples.
+
+### Cache strategy
+
+Simulation results are cached by netlist content hash under `cache/` (or
+`--cache-dir`). Use `--no-cache` to skip. The fact cache is shared across
+stages — `eqa questions` reads from the same cache `eqa simulate` writes to.
+
+### Visual checks (opt-in)
+
+`eqa validate --visual` runs two checks via a local Ollama VLM:
+- `topology_match` — schematic matches stated topology
+- `label_visibility` — component labels are readable
+
+Setup:
+```bash
+brew install ollama          # one-time
+ollama serve                   # start service (localhost:11434)
+ollama pull deepseek-vl2-tiny  # ~4 GB, one-time
+```
+
+`.env` defaults:
+```env
+VISION_BASE_URL=http://localhost:11434/v1
+VISION_MODEL=deepseek-vl2-tiny
+```
+
+When Ollama is not running, visual checks return PASS silently — they are
+advisory (WARN), never blocking.
+
+**Behavioral rule:** When asked to validate or run the pipeline with
+`--verify`, and `--visual` was not explicitly mentioned, always ask:
+"Would you also like to run visual checks on the schematics?" Do not ask
+when the user is only doing emit, simulate, or questions without validation.
+
+### Troubleshooting
+
+| Problem | Likely fix |
+|---------|-----------|
+| Xyce not found | Install Xyce or ensure it's on PATH |
+| Import errors | `uv sync --extra sim --extra data --extra render` |
+| No templates listed | Check `src/electronics_qa_generator/templates/` |
+| Simulation non-convergence | Try a different seed for different component values |
