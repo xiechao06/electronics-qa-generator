@@ -70,11 +70,11 @@ def _emit_one(
                 "Install with: uv sync --extra render"
             )
         else:
-            render_dir = out_dir / "render" if out_dir else Path("out/render")
+            render_dir = out_dir / "images" if out_dir else Path("out/images")
             render_dir.mkdir(parents=True, exist_ok=True)
             png_path = render_dir / f"{base}.png"
             render_schematic(record.graph, png_path)
-            schematic_path = f"render/{base}.png"
+            schematic_path = f"images/{base}.png"
 
     if out_dir is None:
         # stdout mode

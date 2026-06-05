@@ -17,7 +17,7 @@ class TestEmitRender:
         # Should exit 0
         assert rc == 0
         # Check that a schematic PNG was created
-        png_files = list((out_dir / "render").glob("*.png"))
+        png_files = list((out_dir / "images").glob("*.png"))
         assert len(png_files) >= 1
 
     def test_render_without_flag_does_not_produce_png(self, tmp_path):

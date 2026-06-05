@@ -13,6 +13,7 @@ from .output.emit import run_emit
 from .questions.cli_handler import run_questions
 from .simulation.cli_handler import run_simulate
 from .validation.cli_handler import run_validate
+from .output.assemble_cli import run_assemble
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -82,7 +83,7 @@ def build_parser() -> argparse.ArgumentParser:
     qa.add_argument(
         "--render",
         action="store_true",
-        help="render a schematic PNG for each circuit alongside QA items",
+        help="(deprecated — schematics are always rendered) render a schematic PNG",
     )
     qa.add_argument(
         "--verify",
@@ -119,6 +120,13 @@ def build_parser() -> argparse.ArgumentParser:
         help="run vision-model checks on schematic images (requires --render)",
     )
 
+    # -- assemble subcommand ------------------------------------------------
+    asm = sub.add_parser("assemble", help="assemble full MMMU-compatible dataset")
+    asm.add_argument("-o", "--out", default="dataset", help="output directory (default: dataset/)")
+    asm.add_argument("--seed", type=int, default=0, help="random seed for reproducible sampling")
+    asm.add_argument("--cache-dir", default=None, help="fact cache directory")
+    asm.add_argument("--no-cache", action="store_true", help="skip cache read/write")
+
     return parser
 
 
@@ -145,6 +153,10 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "validate":
         run_validate(args)
+        return 0
+
+    if args.command == "assemble":
+        run_assemble(args)
         return 0
 
     parser.print_help()

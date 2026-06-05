@@ -47,8 +47,12 @@ def _has_unit_mismatch(question_text: str, answer_unit: str | None) -> bool:
         "ms": "s",
     }
     conflict = conflicts.get(au)
-    if conflict and conflict in q:
-        return True
+    if conflict:
+        # Use word-boundary match to avoid false positives
+        # (e.g., "millivolts" contains "v" but isn't the unit "V")
+        pattern = r"\b" + re.escape(conflict) + r"\b"
+        if re.search(pattern, q):
+            return True
     return False
 
 
