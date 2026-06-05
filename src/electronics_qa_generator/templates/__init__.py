@@ -1,11 +1,56 @@
 """Template library: circuit families, topologies, and parameter ranges.
 
 Each template defines the topology graph, legal parameter ranges, legal
-simulation types, measurable outputs, and rejection rules. Start with the MVP
-families from docs/plan.md:
+simulation types, measurable outputs, and rejection rules.
 
+MVP families (see docs/plan.md):
     voltage_divider, rc_lowpass, rc_highpass, rlc_bandpass, half_wave_rectifier
 
-A template should expose a `sample()` method that returns a structured circuit
-record (not just a netlist), per docs/plan.md section 1.5.
+Usage:
+    >>> from electronics_qa_generator.templates import ALL_TEMPLATES
+    >>> for t in ALL_TEMPLATES:
+    ...     record = t.sample(seed=42)
 """
+
+from .base import CircuitTemplate
+from .e_series import E12_VALUES, E6_VALUES, INDUCTOR_VALUES, pick_e_value
+from .netlist_helpers import format_netlist
+from .parameter import Choice, LogUniform, Uniform
+from .passive import RCLowPass, RCHighPass, RLCBandPass, VoltageDivider
+from .rectifier import HalfWaveRectifier
+
+ALL_TEMPLATES: list[CircuitTemplate] = [
+    VoltageDivider(),
+    RCLowPass(),
+    RCHighPass(),
+    RLCBandPass(),
+    HalfWaveRectifier(),
+]
+"""Registry of all concrete template instances.
+
+The downstream sampler stage iterates over this list to drive circuit generation.
+"""
+
+__all__ = [
+    # Base
+    "CircuitTemplate",
+    # Distributions
+    "Uniform",
+    "LogUniform",
+    "Choice",
+    # E-series
+    "E6_VALUES",
+    "E12_VALUES",
+    "INDUCTOR_VALUES",
+    "pick_e_value",
+    # Netlist
+    "format_netlist",
+    # Templates
+    "VoltageDivider",
+    "RCLowPass",
+    "RCHighPass",
+    "RLCBandPass",
+    "HalfWaveRectifier",
+    # Registry
+    "ALL_TEMPLATES",
+]

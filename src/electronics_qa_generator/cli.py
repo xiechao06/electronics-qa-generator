@@ -9,6 +9,8 @@ from __future__ import annotations
 import argparse
 
 from . import __version__
+from .output.emit import run_emit
+from .simulation.cli_handler import run_simulate
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -24,6 +26,33 @@ def build_parser() -> argparse.ArgumentParser:
     gen.add_argument("-n", "--num", type=int, default=1000, help="number of samples")
     gen.add_argument("-o", "--out", default="dataset", help="output directory")
 
+    # -- emit subcommand ---------------------------------------------------
+    emit = sub.add_parser("emit", help="sample templates and emit netlist + JSON record")
+    emit.add_argument(
+        "topology",
+        nargs="?",
+        default=None,
+        help="topology name to emit (use --list to see available)",
+    )
+    emit.add_argument("--list", action="store_true", help="list available template topologies")
+    emit.add_argument("--all", action="store_true", help="emit all templates")
+    emit.add_argument("--seed", type=int, default=0, help="random seed for reproducible sampling")
+    emit.add_argument("-o", "--out", default=None, help="output directory (default: stdout)")
+
+    # -- simulate subcommand ------------------------------------------------
+    sim = sub.add_parser("simulate", help="run Xyce simulation and extract facts")
+    sim.add_argument(
+        "topology",
+        nargs="?",
+        default=None,
+        help="topology name to simulate (use --list to see available)",
+    )
+    sim.add_argument("--list", action="store_true", help="list available template topologies")
+    sim.add_argument("--all", action="store_true", help="simulate all templates")
+    sim.add_argument("--seed", type=int, default=0, help="random seed for reproducible sampling")
+    sim.add_argument("--cache-dir", default=None, help="fact cache directory")
+    sim.add_argument("--no-cache", action="store_true", help="skip cache read/write")
+
     return parser
 
 
@@ -34,6 +63,14 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "generate":
         print(f"[eqa] generate requested: n={args.num}, out={args.out!r}")
         print("[eqa] pipeline not implemented yet — see docs/plan.md")
+        return 0
+
+    if args.command == "emit":
+        run_emit(args)
+        return 0
+
+    if args.command == "simulate":
+        run_simulate(args)
         return 0
 
     parser.print_help()

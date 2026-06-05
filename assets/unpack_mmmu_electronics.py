@@ -87,7 +87,9 @@ def unpack_file(parquet_path: Path) -> dict:
                 continue
 
             suffix = image_suffix(original_path, data)
-            original_name = Path(original_path).name if original_path else f"{safe_row_id}_{col}{suffix}"
+            original_name = (
+                Path(original_path).name if original_path else f"{safe_row_id}_{col}{suffix}"
+            )
             if not Path(original_name).suffix:
                 original_name += suffix
             out_name = f"{safe_row_id}_{col}_{original_name}"
