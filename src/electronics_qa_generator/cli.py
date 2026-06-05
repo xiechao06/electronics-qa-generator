@@ -10,6 +10,7 @@ import argparse
 
 from . import __version__
 from .output.emit import run_emit
+from .questions.cli_handler import run_questions
 from .simulation.cli_handler import run_simulate
 
 
@@ -53,6 +54,25 @@ def build_parser() -> argparse.ArgumentParser:
     sim.add_argument("--cache-dir", default=None, help="fact cache directory")
     sim.add_argument("--no-cache", action="store_true", help="skip cache read/write")
 
+    # -- questions subcommand -----------------------------------------------
+    qa = sub.add_parser("questions", help="generate QA items from simulation facts")
+    qa.add_argument(
+        "topology",
+        nargs="?",
+        default=None,
+        help="topology name (use --list to see available)",
+    )
+    qa.add_argument("--list", action="store_true", help="list topologies with question counts")
+    qa.add_argument("--seed", type=int, default=0, help="random seed for reproducible sampling")
+    qa.add_argument("--cache-dir", default=None, help="fact cache directory")
+    qa.add_argument("--no-cache", action="store_true", help="skip cache read/write")
+    qa.add_argument("--jsonl", action="store_true", help="output one JSON object per line")
+    qa.add_argument(
+        "--humanize",
+        action="store_true",
+        help="rewrite questions in natural exam-style language via DeepSeek LLM",
+    )
+
     return parser
 
 
@@ -71,6 +91,10 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "simulate":
         run_simulate(args)
+        return 0
+
+    if args.command == "questions":
+        run_questions(args)
         return 0
 
     parser.print_help()

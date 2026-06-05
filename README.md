@@ -99,3 +99,39 @@ tests/                          # smoke tests
 ## License
 
 TBD.
+
+## LLM humanization (optional)
+
+The `eqa questions` command accepts an opt-in `--humanize` flag that rewrites
+questions in natural, exam-style language and generates optional explanations
+via a DeepSeek LLM (`deepseek-v4-pro`). Answers, values, units, and programs
+are **never** altered by the LLM — humanization runs strictly after the
+deterministic answer is fixed.
+
+### Setup
+
+Create a `.env` file in the project root:
+
+```env
+DEEPSEEK_API_KEY=sk-your-key-here
+# Optional overrides:
+# DEEPSEEK_BASE_URL=https://api.deepseek.com
+# DEEPSEEK_MODEL=deepseek-v4-pro
+```
+
+> The `.env` file is `.gitignore`d. No Python package is needed — keys are
+> read with the stdlib only.
+
+### Usage
+
+```bash
+# Normal run (no LLM calls)
+eq questions voltage_divider --seed 42
+
+# With humanization
+eq questions voltage_divider --seed 42 --humanize
+```
+
+When no key is configured (or the API is unreachable), `--humanize` falls back
+silently to the original templated questions. Tests use a fake provider and
+never touch the network.
