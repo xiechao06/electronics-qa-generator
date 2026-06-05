@@ -1,22 +1,19 @@
-"""Question template registry.
+"""Question template registry — humanized question phrasing.
 
 Each topology maps to a list of question template dicts. Template structure:
 
     {
         "id": str,                  # unique within topology
         "question_type": str,      # direct | derived | classification | comparison
-        "question_template": str,   # text — {fact} or {param} placeholders
+        "question_template": str,   # text — {param} placeholders for circuit values
         "program": list[dict],      # CLEVR-style program (from .programs)
         "answer_keys": list[str],   # which fact/param keys are used
         "answer_formatter": str,    # numeric | label | boolean
     }
 
-Question templates are inspired by real MMMU Electronics benchmark phrasing
-patterns (77 "find/calculate X" questions, unit specifications, precision
-constraints, and comparison prompts).
-
-16 templates inherited from the initial design + 9 new MMMU-inspired templates
-for a total of 25 across 5 topologies.
+All question text is hand-written in natural, exam-style English.
+The LLM is never used to create or rephrase questions — answers are always
+computed deterministically from simulation facts via the program engine.
 """
 
 from __future__ import annotations
@@ -29,14 +26,15 @@ from .future_templates import FUTURE_QUESTION_TEMPLATES
 # ---------------------------------------------------------------------------
 
 QUESTION_TEMPLATES: dict[str, list[dict]] = {
-    # ── voltage_divider (5 templates) ──────────────────────────────────
+    # ── voltage_divider ────────────────────────────────────────────────
     "voltage_divider": [
-        # --- Direct: Vout_dc ---
         {
             "id": "vd_direct_vout",
             "question_type": "direct",
             "question_template": (
-                "What is the DC voltage at the output node V(out) of this voltage divider?"
+                "Consider the voltage divider network shown in the schematic. "
+                "Determine the DC voltage measured at the output node V(out). "
+                "Express your answer in volts to three decimal places."
             ),
             "program": [
                 P.read_fact("Vout_dc"),
@@ -45,14 +43,14 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "answer_keys": ["Vout_dc"],
             "answer_formatter": "numeric",
         },
-        # --- Direct with parameter context (MMMU: "given the circuit values, find X") ---
         {
             "id": "vd_find_vout_given",
             "question_type": "direct",
             "question_template": (
-                "Given R1 = {R1_ohm} Ω and R2 = {R2_ohm} Ω "
-                "with Vin = {Vin_dc} V, find the output voltage V(out). "
-                "Provide your answer in volts, rounded to 2 decimal places."
+                "A voltage divider is constructed with R1 = {R1_ohm} Ω "
+                "and R2 = {R2_ohm} Ω, driven by an input of Vin = {Vin_dc} V. "
+                "Calculate the resulting output voltage V(out), "
+                "rounded to two decimal places."
             ),
             "program": [
                 P.read_fact("Vout_dc"),
@@ -61,12 +59,12 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "answer_keys": ["Vout_dc"],
             "answer_formatter": "numeric",
         },
-        # --- Derived: divider ratio ---
         {
             "id": "vd_derived_ratio",
             "question_type": "derived",
             "question_template": (
-                "Calculate the voltage divider ratio V(out) / V(in) for this circuit."
+                "For the voltage divider shown, compute the attenuation ratio "
+                "V(out) ÷ V(in) to four decimal places."
             ),
             "program": [
                 P.read_fact("Vout_dc"),
@@ -77,12 +75,13 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "answer_keys": ["Vout_dc", "Vin_dc"],
             "answer_formatter": "numeric",
         },
-        # --- Derived: Vout as percentage (MMMU: "in terms of X") ---
         {
             "id": "vd_percentage",
             "question_type": "derived",
             "question_template": (
-                "What percentage of the input voltage appears at V(out)? Round to 1 decimal place."
+                "In this voltage divider, what fraction of the input appears "
+                "at V(out)? State your answer as a percentage, "
+                "rounded to one decimal place."
             ),
             "program": [
                 P.read_fact("Vout_dc"),
@@ -95,11 +94,13 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "answer_keys": ["Vout_dc", "Vin_dc"],
             "answer_formatter": "numeric",
         },
-        # --- Comparison ---
         {
             "id": "vd_comparison_half",
             "question_type": "comparison",
-            "question_template": ("Is V(out) greater than half of V(in)?"),
+            "question_template": (
+                "In this voltage divider, does the output voltage V(out) "
+                "exceed one half of the input voltage V(in)? Answer yes or no."
+            ),
             "program": [
                 P.read_fact("Vout_dc"),
                 P.read_fact("Vin_dc"),
@@ -112,13 +113,16 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "answer_formatter": "boolean",
         },
     ],
-    # ── rc_lowpass (5 templates) ───────────────────────────────────────
+
+    # ── rc_lowpass ─────────────────────────────────────────────────────
     "rc_lowpass": [
-        # --- Direct cutoff ---
         {
             "id": "lp_direct_cutoff",
             "question_type": "direct",
-            "question_template": ("Find the −3 dB cutoff frequency of this RC low-pass filter."),
+            "question_template": (
+                "The schematic above shows a first-order RC low-pass filter. "
+                "Determine its −3 dB cutoff frequency in hertz to three decimal places."
+            ),
             "program": [
                 P.read_fact("cutoff_hz"),
                 P.format_numeric("$0", unit="Hz", precision=3),
@@ -126,14 +130,13 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "answer_keys": ["cutoff_hz"],
             "answer_formatter": "numeric",
         },
-        # --- Direct with theoretical comparison (MMMU: "compare to formula") ---
         {
             "id": "lp_theoretical_cutoff",
             "question_type": "direct",
             "question_template": (
-                "The theoretical cutoff is fc = 1/(2πRC). "
-                "With R = {R1_ohm} Ω and C = {C1_f} F, calculate fc. "
-                "Provide your answer in hertz, rounded to the nearest integer."
+                "Recall that the cutoff frequency of an RC low-pass filter is "
+                "f_c = 1 / (2πRC). For R = {R1_ohm} Ω and C = {C1_f} F, "
+                "compute f_c and round your answer to the nearest integer hertz."
             ),
             "program": [
                 P.read_fact("cutoff_hz"),
@@ -142,11 +145,13 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "answer_keys": ["cutoff_hz"],
             "answer_formatter": "numeric",
         },
-        # --- Derived: passband gain correctness check ---
         {
             "id": "lp_passband_gain",
             "question_type": "direct",
-            "question_template": ("What is the passband gain of this filter in dB?"),
+            "question_template": (
+                "What is the passband gain of this low-pass filter, "
+                "expressed in decibels? Provide your answer to two decimal places."
+            ),
             "program": [
                 P.read_fact("passband_gain_db"),
                 P.format_numeric("$0", unit="dB", precision=2),
@@ -154,11 +159,13 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "answer_keys": ["passband_gain_db"],
             "answer_formatter": "numeric",
         },
-        # --- Classification ---
         {
             "id": "lp_classification",
             "question_type": "classification",
-            "question_template": ("Classify the frequency response behavior of this filter."),
+            "question_template": (
+                "Based on its simulated frequency response, classify this "
+                "filter as low-pass, high-pass, or band-pass."
+            ),
             "program": [
                 P.read_fact("behavior"),
                 P.classify("$0", ["low-pass", "high-pass", "band-pass"]),
@@ -167,11 +174,13 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "answer_keys": ["behavior"],
             "answer_formatter": "label",
         },
-        # --- Comparison ---
         {
             "id": "lp_comparison_1khz",
             "question_type": "comparison",
-            "question_template": ("Is the cutoff frequency of this filter above 1 kHz?"),
+            "question_template": (
+                "Does the −3 dB cutoff frequency of this filter lie above "
+                "1 kHz? Answer 'above' or 'below'."
+            ),
             "program": [
                 P.read_fact("cutoff_hz"),
                 P.push_const(1000.0),
@@ -182,12 +191,16 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "answer_formatter": "boolean",
         },
     ],
-    # ── rc_highpass (5 templates) ──────────────────────────────────────
+
+    # ── rc_highpass ────────────────────────────────────────────────────
     "rc_highpass": [
         {
             "id": "hp_direct_cutoff",
             "question_type": "direct",
-            "question_template": ("Find the −3 dB cutoff frequency of this RC high-pass filter."),
+            "question_template": (
+                "The schematic above shows a first-order RC high-pass filter. "
+                "Determine its −3 dB cutoff frequency in hertz to three decimal places."
+            ),
             "program": [
                 P.read_fact("cutoff_hz"),
                 P.format_numeric("$0", unit="Hz", precision=3),
@@ -199,9 +212,9 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "id": "hp_theoretical_cutoff",
             "question_type": "direct",
             "question_template": (
-                "The theoretical cutoff is fc = 1/(2πRC). "
-                "With R = {R1_ohm} Ω and C = {C1_f} F, calculate fc. "
-                "Provide your answer in hertz, rounded to the nearest integer."
+                "Recall that the cutoff frequency of an RC high-pass filter is "
+                "f_c = 1 / (2πRC). For R = {R1_ohm} Ω and C = {C1_f} F, "
+                "compute f_c and round your answer to the nearest integer hertz."
             ),
             "program": [
                 P.read_fact("cutoff_hz"),
@@ -213,7 +226,10 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
         {
             "id": "hp_passband_gain",
             "question_type": "direct",
-            "question_template": ("What is the passband gain of this filter in dB?"),
+            "question_template": (
+                "What is the passband gain of this high-pass filter, "
+                "expressed in decibels? Provide your answer to two decimal places."
+            ),
             "program": [
                 P.read_fact("passband_gain_db"),
                 P.format_numeric("$0", unit="dB", precision=2),
@@ -224,7 +240,10 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
         {
             "id": "hp_classification",
             "question_type": "classification",
-            "question_template": ("Classify the frequency response behavior of this filter."),
+            "question_template": (
+                "Based on its simulated frequency response, classify this "
+                "filter as low-pass, high-pass, or band-pass."
+            ),
             "program": [
                 P.read_fact("behavior"),
                 P.classify("$0", ["low-pass", "high-pass", "band-pass"]),
@@ -236,7 +255,10 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
         {
             "id": "hp_comparison_1khz",
             "question_type": "comparison",
-            "question_template": ("Is the cutoff frequency of this filter above 1 kHz?"),
+            "question_template": (
+                "Does the −3 dB cutoff frequency of this filter lie above "
+                "1 kHz? Answer 'above' or 'below'."
+            ),
             "program": [
                 P.read_fact("cutoff_hz"),
                 P.push_const(1000.0),
@@ -247,14 +269,16 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "answer_formatter": "boolean",
         },
     ],
-    # ── rlc_bandpass (5 templates) ─────────────────────────────────────
+
+    # ── rlc_bandpass ───────────────────────────────────────────────────
     "rlc_bandpass": [
         {
             "id": "bp_direct_center",
             "question_type": "direct",
             "question_template": (
-                "Find the center (resonant) frequency "
-                "of this RLC band-pass filter. Provide your answer in Hz."
+                "The circuit shown is a parallel RLC band-pass filter. "
+                "Determine its center (resonant) frequency f₀ in hertz "
+                "to three decimal places."
             ),
             "program": [
                 P.read_fact("center_freq_hz"),
@@ -266,7 +290,10 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
         {
             "id": "bp_direct_bw",
             "question_type": "direct",
-            "question_template": ("What is the −3 dB bandwidth of this band-pass filter?"),
+            "question_template": (
+                "What is the −3 dB bandwidth of this band-pass filter? "
+                "Express your answer in hertz to three decimal places."
+            ),
             "program": [
                 P.read_fact("bandwidth_hz"),
                 P.format_numeric("$0", unit="Hz", precision=3),
@@ -278,7 +305,9 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "id": "bp_derived_q",
             "question_type": "derived",
             "question_template": (
-                "Calculate the quality factor Q = fc / BW of this RLC band-pass filter."
+                "Using your measured center frequency and bandwidth, compute "
+                "the quality factor Q = f₀ / BW for this RLC band-pass filter. "
+                "Report Q to three decimal places."
             ),
             "program": [
                 P.read_fact("center_freq_hz"),
@@ -292,7 +321,10 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
         {
             "id": "bp_classification",
             "question_type": "classification",
-            "question_template": ("Classify the frequency response behavior of this filter."),
+            "question_template": (
+                "Based on its simulated frequency response, classify this "
+                "filter as low-pass, high-pass, or band-pass."
+            ),
             "program": [
                 P.read_fact("behavior"),
                 P.classify("$0", ["low-pass", "high-pass", "band-pass"]),
@@ -304,7 +336,10 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
         {
             "id": "bp_comparison_bw",
             "question_type": "comparison",
-            "question_template": ("Is the bandwidth less than 10% of the center frequency?"),
+            "question_template": (
+                "Is the −3 dB bandwidth of this filter narrower than 10% "
+                "of its center frequency? Answer yes or no."
+            ),
             "program": [
                 P.read_fact("bandwidth_hz"),
                 P.read_fact("center_freq_hz"),
@@ -317,14 +352,16 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "answer_formatter": "boolean",
         },
     ],
-    # ── half_wave_rectifier (5 templates) ──────────────────────────────
+
+    # ── half_wave_rectifier ────────────────────────────────────────────
     "half_wave_rectifier": [
         {
             "id": "hw_direct_vout_dc",
             "question_type": "direct",
             "question_template": (
-                "Calculate the average (DC) output voltage "
-                "of this half-wave rectifier. Provide your answer in volts."
+                "A half-wave rectifier with a filter capacitor is shown. "
+                "Calculate the average (DC) voltage at the output. "
+                "Express your answer in volts to three decimal places."
             ),
             "program": [
                 P.read_fact("Vout_dc"),
@@ -337,8 +374,10 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "id": "hw_direct_vout_peak",
             "question_type": "direct",
             "question_template": (
-                "What is the peak output voltage of this half-wave rectifier, "
-                "given an input of {Vin_amplitude} V amplitude at {Vin_frequency_hz} Hz?"
+                "This half-wave rectifier is driven by a sinusoidal input of "
+                "{Vin_amplitude} V amplitude at {Vin_frequency_hz} Hz. "
+                "What is the peak voltage observed at the output? "
+                "Report your answer in volts to three decimal places."
             ),
             "program": [
                 P.read_fact("Vout_peak"),
@@ -351,8 +390,9 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "id": "hw_derived_ripple_ratio",
             "question_type": "derived",
             "question_template": (
-                "Calculate the ripple ratio (peak-to-peak ripple / DC output) "
-                "of this half-wave rectifier. Round to 4 decimal places."
+                "Using your simulation results, compute the ripple ratio "
+                "(peak-to-peak ripple voltage divided by DC output voltage) "
+                "for this half-wave rectifier. Round to four decimal places."
             ),
             "program": [
                 P.read_fact("ripple_vpp"),
@@ -367,8 +407,9 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "id": "hw_direct_ripple_mv",
             "question_type": "direct",
             "question_template": (
-                "What is the peak-to-peak ripple voltage? "
-                "Provide your answer in millivolts, rounded to 1 decimal place."
+                "What is the peak-to-peak ripple voltage at the output of this "
+                "half-wave rectifier? Express your answer in millivolts, "
+                "rounded to one decimal place."
             ),
             "program": [
                 P.read_fact("ripple_vpp"),
@@ -383,7 +424,8 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "id": "hw_comparison_ripple",
             "question_type": "comparison",
             "question_template": (
-                "Does the peak-to-peak ripple exceed 10% of the DC output voltage?"
+                "Does the peak-to-peak ripple voltage of this rectifier "
+                "exceed 10% of the DC output level? Answer yes or no."
             ),
             "program": [
                 P.read_fact("ripple_vpp"),

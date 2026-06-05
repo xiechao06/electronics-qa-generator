@@ -16,8 +16,8 @@ class TestEmitRender:
         rc = main(["emit", "voltage_divider", "--seed", "42", "--out", str(out_dir), "--render"])
         # Should exit 0
         assert rc == 0
-        # Check that a schematic PNG was created
-        png_files = list((out_dir / "images").glob("*.png"))
+        # Check that a schematic PNG was created (now in per-topology subdirectory)
+        png_files = list((out_dir / "images").rglob("*.png"))
         assert len(png_files) >= 1
 
     def test_render_without_flag_does_not_produce_png(self, tmp_path):

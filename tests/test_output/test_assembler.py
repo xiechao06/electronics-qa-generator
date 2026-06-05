@@ -70,8 +70,8 @@ class TestAssembleDataset:
         out = assemble_dataset([item], [str(png)], "rc_lowpass", 42, tmp_path)
         record = json.loads(out.read_text().strip())
         assert "image" in record
-        assert record["image"] == "images/rc_lowpass_0000002a.png"
-        assert (tmp_path / "images" / "rc_lowpass_0000002a.png").exists()
+        assert record["image"] == "images/rc_lowpass/0000002a.png"
+        assert (tmp_path / "images" / "rc_lowpass" / "0000002a.png").exists()
 
     def test_missing_schematic_omitted(self, tmp_path):
         item = _make_item()

@@ -114,12 +114,12 @@ def run_questions(args) -> None:
             )
         else:
             out_dir = Path(args.out) if getattr(args, "out", None) else Path("out")
-            render_dir = out_dir / "images"
+            render_dir = out_dir / "images" / name
             render_dir.mkdir(parents=True, exist_ok=True)
             seed_str = f"{seed & 0xFFFFFFFF:08x}"
-            png_path = render_dir / f"{name}_{seed_str}.png"
+            png_path = render_dir / f"{seed_str}.png"
             render_schematic(record.graph, png_path)
-            schematic_path = f"images/{name}_{seed_str}.png"
+            schematic_path = f"images/{name}/{seed_str}.png"
 
     # Run static verification (opt-in)
     verified: bool | None = None

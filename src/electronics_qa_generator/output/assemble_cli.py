@@ -80,12 +80,12 @@ def run_assemble(args) -> None:
             try:
                 from ..render.schematic import render_schematic
 
-                images_dir = out_dir / "images"
+                images_dir = out_dir / "images" / name
                 images_dir.mkdir(parents=True, exist_ok=True)
                 seed_str = f"{seed & 0xFFFFFFFF:08x}"
-                png_path = images_dir / f"{name}_{seed_str}.png"
+                png_path = images_dir / f"{seed_str}.png"
                 render_schematic(record.graph, png_path)
-                schematic_path = f"images/{name}_{seed_str}.png"
+                schematic_path = f"images/{name}/{seed_str}.png"
             except ImportError:
                 pass
 

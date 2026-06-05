@@ -105,7 +105,9 @@ def _copy_schematic(
     if not src.exists():
         return None
 
-    dest_name = f"{topology}_{seed_str}.png"
-    dest = images_dir / dest_name
+    topo_dir = images_dir / topology
+    topo_dir.mkdir(parents=True, exist_ok=True)
+    dest_name = f"{seed_str}.png"
+    dest = topo_dir / dest_name
     shutil.copy2(src, dest)
-    return f"images/{dest_name}"
+    return f"images/{topology}/{dest_name}"

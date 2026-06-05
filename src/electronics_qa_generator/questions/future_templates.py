@@ -1,18 +1,14 @@
-"""Question templates for future circuit topologies.
+"""Question templates for additional circuit topologies — humanized phrasing.
 
-These templates are grounded in MMMU Electronics benchmark question patterns
-(mined from assets/mmmu_electronics_unpacked/, 194 circuit questions).
+All question text is hand-written in natural, exam-style English matching
+the tone of MMMU Electronics benchmark questions. The LLM is never used to
+create or rephrase questions. Answers are always computed deterministically
+from simulation facts via the CLEVR-style program engine.
 
-Each topology listed here does NOT yet have a corresponding CircuitTemplate
-or FACT_EXTRACTOR. The templates are defined now so question structure is
-agreed before implementation. To activate a topology:
+To activate a topology:
   1. Implement the CircuitTemplate in templates/
   2. Implement the fact extractor in extraction/facts.py
-  3. Move the topology entry into QUESTION_TEMPLATES in templates.py
-
-Fact keys expected per topology are documented in comments.
-
-See docs/mmmu_question_catalog.md for the full mining analysis.
+  3. The templates here are already merged into QUESTION_TEMPLATES at import time.
 """
 
 from __future__ import annotations
@@ -22,7 +18,6 @@ from . import programs as P
 # ---------------------------------------------------------------------------
 # RC step response
 # Facts expected: tau_s, v_C_initial, v_C_final, v_C_at_1tau
-# Simulation: .tran — step input, capacitor voltage waveform
 # ---------------------------------------------------------------------------
 
 RC_STEP_RESPONSE: list[dict] = [
@@ -30,7 +25,9 @@ RC_STEP_RESPONSE: list[dict] = [
         "id": "rc_step_tau",
         "question_type": "direct",
         "question_template": (
-            "Find the time constant τ of this RC circuit. Provide your answer in milliseconds."
+            "The circuit above shows an RC network subjected to a step input. "
+            "Determine the time constant τ = RC. Express your answer "
+            "in milliseconds to three decimal places."
         ),
         "program": [
             P.read_fact("tau_s"),
@@ -45,8 +42,9 @@ RC_STEP_RESPONSE: list[dict] = [
         "id": "rc_step_initial_v",
         "question_type": "direct",
         "question_template": (
-            "At the instant just after the switch is thrown (t = 0⁺), "
-            "what is the capacitor voltage v_C(0⁺)?"
+            "At the instant immediately after the switch closes (t = 0⁺), "
+            "what is the voltage across the capacitor, v_C(0⁺)? "
+            "State your answer in volts to three decimal places."
         ),
         "program": [
             P.read_fact("v_C_initial"),
@@ -58,7 +56,11 @@ RC_STEP_RESPONSE: list[dict] = [
     {
         "id": "rc_step_final_v",
         "question_type": "direct",
-        "question_template": ("Find the steady-state capacitor voltage as t → ∞."),
+        "question_template": (
+            "After the transient has fully decayed (t → ∞), what is the "
+            "steady-state capacitor voltage v_C(∞)? "
+            "Report your answer in volts to three decimal places."
+        ),
         "program": [
             P.read_fact("v_C_final"),
             P.format_numeric("$0", unit="V", precision=3),
@@ -70,8 +72,9 @@ RC_STEP_RESPONSE: list[dict] = [
         "id": "rc_step_v_at_1tau",
         "question_type": "direct",
         "question_template": (
-            "What is v_C at t = 1τ (one time constant after the step)? "
-            "Provide your answer in volts."
+            "One time constant after the step (t = τ), what is the "
+            "capacitor voltage v_C(τ)? Express your answer in volts "
+            "to three decimal places."
         ),
         "program": [
             P.read_fact("v_C_at_1tau"),
@@ -83,7 +86,10 @@ RC_STEP_RESPONSE: list[dict] = [
     {
         "id": "rc_step_tau_compare",
         "question_type": "comparison",
-        "question_template": ("Is the time constant τ of this RC circuit greater than 1 ms?"),
+        "question_template": (
+            "Is the time constant τ of this RC circuit greater than 1 ms? "
+            "Answer yes or no."
+        ),
         "program": [
             P.read_fact("tau_s"),
             P.push_const(0.001),
@@ -97,8 +103,7 @@ RC_STEP_RESPONSE: list[dict] = [
 
 # ---------------------------------------------------------------------------
 # RL step response
-# Facts expected: tau_s (=L/R), i_L_initial, i_L_final, i_L_at_1tau
-# Simulation: .tran — step input, inductor current waveform
+# Facts expected: tau_s (=L/R), i_L_initial, i_L_final, i_L_at_1tau, R_load_ohm
 # ---------------------------------------------------------------------------
 
 RL_STEP_RESPONSE: list[dict] = [
@@ -106,8 +111,9 @@ RL_STEP_RESPONSE: list[dict] = [
         "id": "rl_step_tau",
         "question_type": "direct",
         "question_template": (
-            "Find the time constant τ = L/R of this RL circuit. "
-            "Provide your answer in milliseconds."
+            "The circuit above shows an RL network responding to a step input. "
+            "Determine the time constant τ = L / R. Express your answer "
+            "in milliseconds to three decimal places."
         ),
         "program": [
             P.read_fact("tau_s"),
@@ -121,7 +127,11 @@ RL_STEP_RESPONSE: list[dict] = [
     {
         "id": "rl_step_final_i",
         "question_type": "direct",
-        "question_template": ("Find the magnitude of the inductor current as t → ∞."),
+        "question_template": (
+            "After the transient has fully decayed (t → ∞), what is the "
+            "steady-state current through the inductor i_L(∞)? "
+            "Report your answer in amperes to three decimal places."
+        ),
         "program": [
             P.read_fact("i_L_final"),
             P.format_numeric("$0", unit="A", precision=3),
@@ -133,7 +143,9 @@ RL_STEP_RESPONSE: list[dict] = [
         "id": "rl_step_initial_i",
         "question_type": "direct",
         "question_template": (
-            "What is the inductor current i_L(0⁺) immediately after the switch closes?"
+            "At the instant immediately after the switch closes (t = 0⁺), "
+            "what is the inductor current i_L(0⁺)? State your answer "
+            "in amperes to three decimal places."
         ),
         "program": [
             P.read_fact("i_L_initial"),
@@ -146,14 +158,16 @@ RL_STEP_RESPONSE: list[dict] = [
         "id": "rl_step_power_at_t",
         "question_type": "derived",
         "question_template": (
-            "Find the power absorbed by the resistor at t = τ (one time constant after the step)."
+            "At t = τ (one time constant after the step), compute the "
+            "instantaneous power P = i²R absorbed by the resistor. "
+            "Express your answer in watts to three decimal places."
         ),
         "program": [
             P.read_fact("i_L_at_1tau"),
-            P.read_fact("i_L_at_1tau"),  # duplicate for squaring
-            P.mul("$0", "$1"),  # i²
+            P.read_fact("i_L_at_1tau"),
+            P.mul("$0", "$1"),
             P.read_fact("R_load_ohm"),
-            P.mul("$2", "$3"),  # i² × R
+            P.mul("$2", "$3"),
             P.format_numeric("$4", unit="W", precision=3),
         ],
         "answer_keys": ["i_L_at_1tau", "R_load_ohm"],
@@ -163,8 +177,7 @@ RL_STEP_RESPONSE: list[dict] = [
 
 # ---------------------------------------------------------------------------
 # AC phasor — RC circuit
-# Facts expected: V_C_mag_V, V_C_phase_deg, V_R_mag_V, I_mag_A, Z_mag_ohm, Z_phase_deg
-# Simulation: .ac at single frequency (source frequency)
+# Facts expected: V_C_mag_V, V_C_phase_deg, V_R_mag_V, Z_mag_ohm, P_avg_mW
 # ---------------------------------------------------------------------------
 
 AC_PHASOR_RC: list[dict] = [
@@ -172,7 +185,10 @@ AC_PHASOR_RC: list[dict] = [
         "id": "phasor_vc_amplitude",
         "question_type": "direct",
         "question_template": (
-            "Find the amplitude (in V) of the phasor voltage V_C in the circuit."
+            "The schematic shows an RC circuit driven by an AC source. "
+            "Determine the amplitude (magnitude) of the phasor voltage "
+            "V_C across the capacitor. Express your answer in volts "
+            "to three decimal places."
         ),
         "program": [
             P.read_fact("V_C_mag_V"),
@@ -185,7 +201,9 @@ AC_PHASOR_RC: list[dict] = [
         "id": "phasor_vc_phase",
         "question_type": "direct",
         "question_template": (
-            "Find the phase of the capacitor voltage V_C. Return the angular degree."
+            "What is the phase angle of the capacitor voltage V_C "
+            "relative to the source? Express your answer in degrees "
+            "to one decimal place."
         ),
         "program": [
             P.read_fact("V_C_phase_deg"),
@@ -198,8 +216,8 @@ AC_PHASOR_RC: list[dict] = [
         "id": "phasor_z_magnitude",
         "question_type": "direct",
         "question_template": (
-            "Find the magnitude of the total impedance Z_ab of the circuit "
-            "in ohms. Provide your answer rounded to 2 decimal places."
+            "Compute the magnitude of the total impedance Z_ab looking into "
+            "this RC circuit. Report your answer in ohms to two decimal places."
         ),
         "program": [
             P.read_fact("Z_mag_ohm"),
@@ -211,7 +229,11 @@ AC_PHASOR_RC: list[dict] = [
     {
         "id": "phasor_power_avg",
         "question_type": "direct",
-        "question_template": ("Find the average power (in mW) received by the resistor."),
+        "question_template": (
+            "What average power is delivered to the resistor in this "
+            "AC-driven RC circuit? State your answer in milliwatts "
+            "to two decimal places."
+        ),
         "program": [
             P.read_fact("P_avg_mW"),
             P.format_numeric("$0", unit="mW", precision=2),
@@ -222,7 +244,11 @@ AC_PHASOR_RC: list[dict] = [
     {
         "id": "phasor_phase_above_zero",
         "question_type": "comparison",
-        "question_template": ("Is the phase of V_C negative (lagging the source)?"),
+        "question_template": (
+            "In this RC circuit, does the capacitor voltage V_C lag "
+            "behind the source (i.e., is its phase angle negative)? "
+            "Answer 'yes, lagging' or 'no, leading'."
+        ),
         "program": [
             P.read_fact("V_C_phase_deg"),
             P.push_const(0.0),
@@ -236,8 +262,7 @@ AC_PHASOR_RC: list[dict] = [
 
 # ---------------------------------------------------------------------------
 # BJT common-emitter amplifier
-# Facts expected: V_CEQ, I_CQ_mA, A_v, r_out_ohm, r_in_ohm, in_saturation
-# Simulation: .op (bias) + .ac (gain/impedance)
+# Facts expected: V_CEQ, I_CQ_mA, A_v, operating_region
 # ---------------------------------------------------------------------------
 
 BJT_CE_AMPLIFIER: list[dict] = [
@@ -245,9 +270,12 @@ BJT_CE_AMPLIFIER: list[dict] = [
         "id": "bjt_ce_vce_q",
         "question_type": "direct",
         "question_template": (
-            "Given R1 = {R1_ohm} Ω, R2 = {R2_ohm} Ω, RC = {RC_ohm} Ω, "
-            "RE = {RE_ohm} Ω, VCC = {VCC_dc} V, β = {beta}, "
-            "find V_CE at the quiescent operating point."
+            "Consider the common-emitter amplifier with R1 = {R1_ohm} Ω, "
+            "R2 = {R2_ohm} Ω, RC = {RC_ohm} Ω, RE = {RE_ohm} Ω, "
+            "VCC = {VCC_dc} V, and β = {beta}. "
+            "Determine the quiescent collector-emitter voltage V_CE "
+            "at the DC operating point. Report your answer in volts "
+            "to two decimal places."
         ),
         "program": [
             P.read_fact("V_CEQ"),
@@ -260,8 +288,9 @@ BJT_CE_AMPLIFIER: list[dict] = [
         "id": "bjt_ce_ic_q",
         "question_type": "direct",
         "question_template": (
-            "What is the collector current I_C at the quiescent (DC) operating point? "
-            "Provide your answer in mA."
+            "For this BJT common-emitter stage, what is the quiescent "
+            "collector current I_C at the DC bias point? "
+            "Express your answer in milliamperes to two decimal places."
         ),
         "program": [
             P.read_fact("I_CQ_mA"),
@@ -274,8 +303,9 @@ BJT_CE_AMPLIFIER: list[dict] = [
         "id": "bjt_ce_av",
         "question_type": "direct",
         "question_template": (
-            "Find the small-signal voltage gain A_v = V_out / V_in "
-            "of this common-emitter amplifier."
+            "Determine the small-signal midband voltage gain "
+            "A_v = v_out / v_in for this common-emitter amplifier. "
+            "Report the gain to two decimal places."
         ),
         "program": [
             P.read_fact("A_v"),
@@ -287,7 +317,10 @@ BJT_CE_AMPLIFIER: list[dict] = [
     {
         "id": "bjt_ce_saturation",
         "question_type": "classification",
-        "question_template": ("Determine if the BJT is in saturation, active, or cut-off."),
+        "question_template": (
+            "Based on the DC operating point, determine the region of "
+            "operation for this BJT. Choose one: active, saturation, or cut-off."
+        ),
         "program": [
             P.read_fact("operating_region"),
             P.classify("$0", ["active", "saturation", "cut-off"]),
@@ -300,7 +333,10 @@ BJT_CE_AMPLIFIER: list[dict] = [
         "id": "bjt_ce_vce_compare",
         "question_type": "comparison",
         "question_template": (
-            "Is V_CE greater than V_CE(sat) ≈ 0.2 V (i.e., is the transistor NOT in saturation)?"
+            "Is V_CE greater than 0.2 V (the typical saturation voltage)? "
+            "In other words, is the transistor operating outside "
+            "the saturation region? Answer 'yes, active region' or "
+            "'no, saturated'."
         ),
         "program": [
             P.read_fact("V_CEQ"),
@@ -315,7 +351,7 @@ BJT_CE_AMPLIFIER: list[dict] = [
 
 # ---------------------------------------------------------------------------
 # BJT emitter follower (common-collector)
-# Facts expected: A_v, r_out_ohm, V_CEQ, I_EQ_mA
+# Facts expected: r_out_ohm, A_v, V_CEQ
 # ---------------------------------------------------------------------------
 
 BJT_EMITTER_FOLLOWER: list[dict] = [
@@ -323,8 +359,10 @@ BJT_EMITTER_FOLLOWER: list[dict] = [
         "id": "bjt_ef_rout",
         "question_type": "direct",
         "question_template": (
-            "Find the output resistance r_out of this common-collector (emitter follower) amplifier. "
-            "Provide your answer in ohms."
+            "For the emitter-follower (common-collector) stage shown, "
+            "determine the small-signal output resistance r_out looking "
+            "into the emitter terminal. Express your answer in ohms "
+            "to one decimal place."
         ),
         "program": [
             P.read_fact("r_out_ohm"),
@@ -337,7 +375,9 @@ BJT_EMITTER_FOLLOWER: list[dict] = [
         "id": "bjt_ef_av",
         "question_type": "direct",
         "question_template": (
-            "What is the voltage gain A_v of this emitter follower? (Expected: close to 1.)"
+            "An ideal emitter follower has a voltage gain close to unity. "
+            "Determine the actual small-signal voltage gain A_v of this "
+            "emitter follower. Report your answer to four decimal places."
         ),
         "program": [
             P.read_fact("A_v"),
@@ -349,7 +389,10 @@ BJT_EMITTER_FOLLOWER: list[dict] = [
     {
         "id": "bjt_ef_gain_near_unity",
         "question_type": "comparison",
-        "question_template": ("Is the voltage gain of this emitter follower greater than 0.9?"),
+        "question_template": (
+            "Does this emitter follower achieve a voltage gain greater "
+            "than 0.9 V/V? Answer yes or no."
+        ),
         "program": [
             P.read_fact("A_v"),
             P.push_const(0.9),
@@ -363,7 +406,7 @@ BJT_EMITTER_FOLLOWER: list[dict] = [
 
 # ---------------------------------------------------------------------------
 # MOSFET common-source amplifier
-# Facts expected: V_DSQ, I_DQ_mA, A_v, A_v_bypassed
+# Facts expected: V_DSQ, I_DQ_mA, A_v
 # ---------------------------------------------------------------------------
 
 MOSFET_CS_AMPLIFIER: list[dict] = [
@@ -371,8 +414,9 @@ MOSFET_CS_AMPLIFIER: list[dict] = [
         "id": "mosfet_cs_vds_q",
         "question_type": "direct",
         "question_template": (
-            "Given the circuit values, calculate V_DS at the quiescent operating point. "
-            "Provide your answer in volts, rounded to 2 decimal places."
+            "For the NMOS common-source amplifier shown, determine the "
+            "quiescent drain-source voltage V_DS at the DC operating point. "
+            "Report your answer in volts to two decimal places."
         ),
         "program": [
             P.read_fact("V_DSQ"),
@@ -385,7 +429,9 @@ MOSFET_CS_AMPLIFIER: list[dict] = [
         "id": "mosfet_cs_id_q",
         "question_type": "direct",
         "question_template": (
-            "What is the drain current I_D at the quiescent point? Provide your answer in mA."
+            "What is the drain current I_D at the quiescent operating point "
+            "of this MOSFET amplifier? Express your answer in milliamperes "
+            "to two decimal places."
         ),
         "program": [
             P.read_fact("I_DQ_mA"),
@@ -397,7 +443,11 @@ MOSFET_CS_AMPLIFIER: list[dict] = [
     {
         "id": "mosfet_cs_av",
         "question_type": "direct",
-        "question_template": ("Find the voltage gain A_v with the source resistor unbypassed."),
+        "question_template": (
+            "Determine the small-signal voltage gain A_v of this MOSFET "
+            "common-source amplifier (with the source resistor unbypassed). "
+            "Report the gain to two decimal places."
+        ),
         "program": [
             P.read_fact("A_v"),
             P.format_numeric("$0", unit=None, precision=2),
@@ -409,8 +459,7 @@ MOSFET_CS_AMPLIFIER: list[dict] = [
 
 # ---------------------------------------------------------------------------
 # Resistor network / Thevenin equivalent
-# Facts expected: R_eq_ohm, V_th_V, R_th_ohm, V_node_V, P_source_W
-# Simulation: .op with test sources
+# Facts expected: R_eq_ohm, V_th_V, R_th_ohm, P_source_W
 # ---------------------------------------------------------------------------
 
 RESISTOR_NETWORK: list[dict] = [
@@ -418,8 +467,9 @@ RESISTOR_NETWORK: list[dict] = [
         "id": "rnet_req",
         "question_type": "direct",
         "question_template": (
-            "Find the equivalent resistance R_eq as seen from the terminals. "
-            "Provide your answer in ohms."
+            "For the resistor network shown, compute the equivalent "
+            "resistance R_eq as seen from the output terminals. "
+            "Express your answer in ohms to three decimal places."
         ),
         "program": [
             P.read_fact("R_eq_ohm"),
@@ -432,7 +482,10 @@ RESISTOR_NETWORK: list[dict] = [
         "id": "rnet_vth",
         "question_type": "direct",
         "question_template": (
-            "Use Thevenin's theorem. Find the open-circuit voltage V_th at terminals a-b."
+            "Apply Thevenin's theorem to this resistor network. "
+            "Determine the open-circuit voltage V_th appearing "
+            "at terminals a-b. Report your answer in volts "
+            "to three decimal places."
         ),
         "program": [
             P.read_fact("V_th_V"),
@@ -444,7 +497,11 @@ RESISTOR_NETWORK: list[dict] = [
     {
         "id": "rnet_rth",
         "question_type": "direct",
-        "question_template": ("Find the Thevenin resistance R_th at terminals a-b."),
+        "question_template": (
+            "For the same network, compute the Thevenin equivalent "
+            "resistance R_th at terminals a-b. Express your answer "
+            "in ohms to three decimal places."
+        ),
         "program": [
             P.read_fact("R_th_ohm"),
             P.format_numeric("$0", unit="Ω", precision=3),
@@ -455,7 +512,11 @@ RESISTOR_NETWORK: list[dict] = [
     {
         "id": "rnet_power_source",
         "question_type": "direct",
-        "question_template": ("Find the power (in W) supplied by the source."),
+        "question_template": (
+            "How much power is delivered by the voltage source in this "
+            "resistor network? State your answer in watts "
+            "to three decimal places."
+        ),
         "program": [
             P.read_fact("P_source_W"),
             P.format_numeric("$0", unit="W", precision=3),
@@ -466,7 +527,10 @@ RESISTOR_NETWORK: list[dict] = [
     {
         "id": "rnet_rth_compare",
         "question_type": "comparison",
-        "question_template": ("Is the Thevenin resistance R_th greater than 1 kΩ?"),
+        "question_template": (
+            "Is the Thevenin resistance R_th of this network greater "
+            "than 1 kΩ? Answer yes or no."
+        ),
         "program": [
             P.read_fact("R_th_ohm"),
             P.push_const(1000.0),
@@ -480,8 +544,7 @@ RESISTOR_NETWORK: list[dict] = [
 
 # ---------------------------------------------------------------------------
 # Op-amp inverting amplifier
-# Facts expected: A_v, V_out_dc, V_out_peak, f_3dB_hz
-# Simulation: .op + .ac
+# Facts expected: A_v, V_out_dc, f_3dB_hz, configuration
 # ---------------------------------------------------------------------------
 
 OP_AMP_INVERTING: list[dict] = [
@@ -489,7 +552,9 @@ OP_AMP_INVERTING: list[dict] = [
         "id": "opamp_inv_av",
         "question_type": "direct",
         "question_template": (
-            "Find the closed-loop voltage gain A_v = −R_f / R_in of this inverting amplifier."
+            "The schematic shows an op-amp in an inverting amplifier "
+            "configuration. Determine the closed-loop voltage gain "
+            "A_v = −R_f / R_in. Report your answer to two decimal places."
         ),
         "program": [
             P.read_fact("A_v"),
@@ -502,7 +567,9 @@ OP_AMP_INVERTING: list[dict] = [
         "id": "opamp_inv_vout",
         "question_type": "direct",
         "question_template": (
-            "For the inverting amplifier shown, determine the DC output voltage."
+            "For the inverting amplifier circuit shown, determine the "
+            "DC voltage at the output terminal. Express your answer "
+            "in volts to three decimal places."
         ),
         "program": [
             P.read_fact("V_out_dc"),
@@ -515,7 +582,8 @@ OP_AMP_INVERTING: list[dict] = [
         "id": "opamp_inv_bw",
         "question_type": "direct",
         "question_template": (
-            "What is the −3 dB bandwidth of this inverting amplifier configuration?"
+            "What is the −3 dB bandwidth of this inverting amplifier? "
+            "Express your answer in hertz to three decimal places."
         ),
         "program": [
             P.read_fact("f_3dB_hz"),
@@ -528,7 +596,8 @@ OP_AMP_INVERTING: list[dict] = [
         "id": "opamp_inv_inverting",
         "question_type": "classification",
         "question_template": (
-            "Is this amplifier configuration inverting, non-inverting, or a buffer?"
+            "Identify the configuration of this op-amp circuit: "
+            "is it inverting, non-inverting, or a voltage buffer?"
         ),
         "program": [
             P.read_fact("configuration"),
@@ -542,8 +611,7 @@ OP_AMP_INVERTING: list[dict] = [
 
 # ---------------------------------------------------------------------------
 # Series RLC resonance
-# Facts expected: f_r_hz, Q, bandwidth_hz, Z_at_resonance_ohm
-# Simulation: .ac sweep
+# Facts expected: f_r_hz, Q, bandwidth_hz, Z_at_resonance_ohm, R_ohm
 # ---------------------------------------------------------------------------
 
 RLC_SERIES_RESONANCE: list[dict] = [
@@ -551,7 +619,9 @@ RLC_SERIES_RESONANCE: list[dict] = [
         "id": "rlc_res_freq",
         "question_type": "direct",
         "question_template": (
-            "Find the resonant frequency of this series RLC circuit. Provide your answer in Hz."
+            "The circuit shown is a series RLC network. Determine its "
+            "resonant frequency f_r. Express your answer in hertz "
+            "to three decimal places."
         ),
         "program": [
             P.read_fact("f_r_hz"),
@@ -563,7 +633,10 @@ RLC_SERIES_RESONANCE: list[dict] = [
     {
         "id": "rlc_res_q",
         "question_type": "direct",
-        "question_template": ("Calculate the quality factor Q of this series RLC circuit."),
+        "question_template": (
+            "Compute the quality factor Q of this series RLC circuit "
+            "at resonance. Report Q to three decimal places."
+        ),
         "program": [
             P.read_fact("Q"),
             P.format_numeric("$0", unit=None, precision=3),
@@ -574,7 +647,10 @@ RLC_SERIES_RESONANCE: list[dict] = [
     {
         "id": "rlc_res_bw",
         "question_type": "direct",
-        "question_template": ("Find the −3 dB bandwidth of this series RLC circuit."),
+        "question_template": (
+            "What is the −3 dB bandwidth of this series RLC circuit? "
+            "Express your answer in hertz to three decimal places."
+        ),
         "program": [
             P.read_fact("bandwidth_hz"),
             P.format_numeric("$0", unit="Hz", precision=3),
@@ -586,9 +662,10 @@ RLC_SERIES_RESONANCE: list[dict] = [
         "id": "rlc_res_z_resistive",
         "question_type": "comparison",
         "question_template": (
-            "At resonance, the impedance of a series RLC circuit is purely resistive. "
-            "Is the impedance at the measured resonant frequency within 5% of the "
-            "resistance R?"
+            "At resonance, a series RLC circuit presents a purely resistive "
+            "impedance equal to R. Is the measured impedance at the resonant "
+            "frequency within 5% of the nominal resistance R? "
+            "Answer yes or no."
         ),
         "program": [
             P.read_fact("Z_at_resonance_ohm"),
@@ -618,6 +695,3 @@ FUTURE_QUESTION_TEMPLATES: dict[str, list[dict]] = {
     "op_amp_inverting": OP_AMP_INVERTING,
     "rlc_series_resonance": RLC_SERIES_RESONANCE,
 }
-
-# Total question count
-_total = sum(len(v) for v in FUTURE_QUESTION_TEMPLATES.values())
