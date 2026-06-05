@@ -17,11 +17,16 @@ and [`AGENTS.md`](AGENTS.md) for the full design and pipeline commands.
 
 ## Quick start
 
-The fastest way to generate Q/A pairs is to ask a coding agent:
+```bash
+git clone https://github.com/xiechao06/electronics-qa-generator
+cd electronics-qa-generator
+```
 
-> *"Generate roughly 10,000 Q/A pairs from the available circuit templates."*
+Then prompt a coding agent:
 
-The agent will read `AGENTS.md`, run the pipeline, and produce JSONL output
+> *"Generate roughly 10,000 Q/A pairs."*
+
+The agent reads `AGENTS.md`, runs the pipeline, and produces JSONL output
 with schematics. No manual setup beyond `uv sync`.
 
 To run directly:
