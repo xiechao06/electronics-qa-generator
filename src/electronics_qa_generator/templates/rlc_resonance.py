@@ -42,7 +42,7 @@ class RLCSeriesResonance(CircuitTemplate):
             tool="Xyce",
             params={"start_hz": 10, "stop_hz": 10_000_000, "points_per_decade": 50},
         )
-        netlist = graph.to_spice(sim, print_signals=["V(n1)", "I(R1)"])
+        netlist = graph.to_spice(sim, print_signals=["V(mid)", "V(n1)"])
 
         return CircuitRecord(
             id=f"{self.topology}_{seed:08x}" if seed is not None else self.topology,

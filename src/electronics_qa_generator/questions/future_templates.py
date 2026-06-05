@@ -150,10 +150,11 @@ RL_STEP_RESPONSE: list[dict] = [
         ),
         "program": [
             P.read_fact("i_L_at_1tau"),
+            P.read_fact("i_L_at_1tau"),  # duplicate for squaring
+            P.mul("$0", "$1"),  # i²
             P.read_fact("R_load_ohm"),
-            P.mul("$0", "$0"),  # i^2
-            P.mul("$1", "$2"),  # i^2 * R
-            P.format_numeric("$2", unit="W", precision=3),
+            P.mul("$2", "$3"),  # i² × R
+            P.format_numeric("$4", unit="W", precision=3),
         ],
         "answer_keys": ["i_L_at_1tau", "R_load_ohm"],
         "answer_formatter": "numeric",

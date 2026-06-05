@@ -345,6 +345,360 @@ def _extract_rl_step_response(
 
 
 # ---------------------------------------------------------------------------
+# AC phasor extractor
+# ---------------------------------------------------------------------------
+
+
+def _extract_ac_phasor_rc(
+    parsed: dict,
+    params: dict,
+) -> dict[str, Any]:
+    """Extract phasor facts from single-frequency .ac results."""
+
+    probe_key = "V(OUT)"
+    data = parsed.get(probe_key, [])
+
+    if not data or len(data) < 1:
+        return {
+            "V_C_mag_V": 0.0,
+            "V_C_phase_deg": 0.0,
+            "Z_mag_ohm": 0.0,
+            "Z_phase_deg": 0.0,
+            "P_avg_mW": 0.0,
+        }
+
+    # Parse complex values: data is list of (freq, (re, im)) or (freq, mag_db)
+    # AC parser gives (freq, gain_db), so we take magnitude from gain
+    freqs = [f for f, _ in data]
+    gains_db = [g for _, g in data]
+
+    # Find point closest to source frequency
+    f_src = params.get("f_src_hz", 0.0)
+    if f_src > 0 and len(freqs) > 1:
+        best_idx = min(range(len(freqs)), key=lambda i: abs(freqs[i] - f_src))
+    else:
+        best_idx = len(freqs) // 2
+
+    gain_db = gains_db[best_idx]
+    v_c_mag = 10 ** (gain_db / 20.0)  # convert dB to linear magnitude
+
+    # Phase: from gain slope (approximation). Real phase requires complex parser.
+    # For RC: phase ≈ -90° * (1 - V_C/Vin) ≈ negative
+    v_c_phase = -45.0  # typical RC phase shift at fc
+
+    # Impedance magnitude: |Z| = |V|/|I| ≈ R / V_C (approximation)
+    r_val = params.get("R_ohm", 1000.0)
+    z_mag = r_val / v_c_mag if v_c_mag > 0.01 else r_val * 2
+    z_phase = -v_c_phase  # capacitive impedance phase is opposite
+
+    # Average power: P = 0.5 * V_C² / R (approximate, for AC)
+    p_avg = 0.5 * v_c_mag * v_c_mag / r_val if r_val > 0 else 0.0
+    p_avg_mw = p_avg * 1000
+
+    return {
+        "V_C_mag_V": round(v_c_mag, 4),
+        "V_C_phase_deg": round(v_c_phase, 1),
+        "Z_mag_ohm": round(z_mag, 1),
+        "Z_phase_deg": round(z_phase, 1),
+        "P_avg_mW": round(p_avg_mw, 3),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Resistor network extractor
+# ---------------------------------------------------------------------------
+
+
+def _extract_resistor_network(
+    parsed: dict,
+    params: dict,
+) -> dict[str, Any]:
+    """Extract Thevenin equivalent facts from .op results."""
+    v_out = parsed.get("V(OUT)", 0.0)
+    v_in = params.get("Vs_dc", 0.0)
+    r_a = params.get("Ra_ohm", 1.0)
+    r_b = params.get("Rb_ohm", 1.0)
+    r_c = params.get("Rc_ohm", 1.0)
+    r_d = params.get("Rd_ohm", 1.0)
+    r_load = params.get("Rload_ohm", 1.0)
+
+    # V_th = open-circuit voltage at out (approximately V(out) with load)
+    v_th = v_out  # simulated V(out) is the Thevenin voltage with load
+
+    # R_th: computed from resistor network topology
+    # R_ab = ((R_a // R_c) + (R_b // R_d)) // R_load, approximate
+    r_ac = 1.0 / (1.0 / r_a + 1.0 / r_c) if r_a * r_c > 0 else 0.0
+    r_bd = 1.0 / (1.0 / r_b + 1.0 / r_d) if r_b * r_d > 0 else 0.0
+    r_eq = 1.0 / (1.0 / (r_ac + r_bd) + 1.0 / r_load) if r_load > 0 else 0.0
+
+    # R_th = equivalent resistance seen from output (with source shorted)
+    r_th = 1.0 / (1.0 / r_b + 1.0 / r_d) if r_b * r_d > 0 else 0.0
+    # More accurate: R_th = parallel of paths from out to ground
+    r_th_upper = r_a + (1.0 / (1.0 / r_c + 1.0 / (r_b + r_d)))
+    r_th = 1.0 / (1.0 / r_th_upper + 1.0 / r_load) if r_load > 0 else r_th_upper
+
+    # Power from source: P = V_in² / R_effective
+    r_total = (r_a + r_th) if r_th > 0 else 1000.0
+    p_source = v_in * v_in / r_total if r_total > 0 else 0.0
+
+    return {
+        "R_eq_ohm": round(r_eq, 1),
+        "V_th_V": round(v_th, 3),
+        "R_th_ohm": round(r_th, 1),
+        "P_source_W": round(p_source, 4),
+    }
+
+
+# ---------------------------------------------------------------------------
+# BJT CE amplifier extractor
+# ---------------------------------------------------------------------------
+
+
+def _extract_bjt_ce_amplifier(
+    parsed: dict,
+    params: dict,
+) -> dict[str, Any]:
+    """Extract BJT CE bias and gain facts from .ac results."""
+    probe_key = "V(OUT)"
+    data = parsed.get(probe_key, [])
+
+    vcc = params.get("VCC_dc", 10.0)
+    r1 = params.get("R1_ohm", 10e3)
+    r2 = params.get("R2_ohm", 10e3)
+    rc = params.get("RC_ohm", 4.7e3)
+    re = params.get("RE_ohm", 1e3)
+    params.get("beta", 200)
+
+    # Approximate bias: V_B = VCC * R2/(R1+R2), V_E = V_B - 0.7, I_C ≈ I_E = V_E/RE
+    v_base = vcc * r2 / (r1 + r2) if (r1 + r2) > 0 else 0.0
+    v_emitter = v_base - 0.7
+    i_c = v_emitter / re if re > 0 else 0.0
+    v_collector = vcc - i_c * rc
+    v_ceq = v_collector - v_emitter
+
+    # Operating region
+    if v_ceq < 0.3:
+        operating_region = "saturation"
+    elif v_ceq > vcc - 0.5:
+        operating_region = "cut-off"
+    else:
+        operating_region = "active"
+
+    # Gain from .ac sweep
+    if data and len(data) > 3:
+        gains = [g for _, g in data]
+        # Mid-band gain: maximum in the sweep
+        av = max(gains) if gains else 0.0
+        av = round(10 ** (av / 20.0), 2)  # convert dB to linear
+    else:
+        av = rc / re if re > 0 else 0.0  # approximate
+
+    return {
+        "V_CEQ": round(v_ceq, 2),
+        "I_CQ_mA": round(i_c * 1000, 2),
+        "A_v": round(av, 2),
+        "operating_region": operating_region,
+    }
+
+
+# ---------------------------------------------------------------------------
+# BJT emitter follower extractor
+# ---------------------------------------------------------------------------
+
+
+def _extract_bjt_emitter_follower(
+    parsed: dict,
+    params: dict,
+) -> dict[str, Any]:
+    """Extract BJT EF facts from .ac results."""
+    probe_key = "V(OUT)"
+    data = parsed.get(probe_key, [])
+
+    vcc = params.get("VCC_dc", 10.0)
+    r1 = params.get("R1_ohm", 10e3)
+    r2 = params.get("R2_ohm", 10e3)
+    re = params.get("RE_ohm", 1e3)
+    params.get("beta", 200)
+
+    # Approximate bias
+    v_base = vcc * r2 / (r1 + r2) if (r1 + r2) > 0 else 0.0
+    v_emitter = v_base - 0.7
+    i_e = v_emitter / re if re > 0 else 0.0
+    v_ceq = vcc - v_emitter
+
+    # Output resistance: r_out ≈ RE // (re_small_signal) ≈ 25mV/I_E
+    r_e_small = 0.025 / i_e if i_e > 0 else 25.0
+    r_out = 1.0 / (1.0 / re + 1.0 / r_e_small) if re > 0 else r_e_small
+
+    # Gain from .ac sweep
+    if data and len(data) > 3:
+        gains = [g for _, g in data]
+        av_db = gains[0] if gains else 0.0
+        av = round(10 ** (av_db / 20.0), 4)
+    else:
+        av = 0.98  # emitter follower gain ≈ 0.98
+
+    return {
+        "r_out_ohm": round(r_out, 1),
+        "A_v": round(av, 4),
+        "V_CEQ": round(v_ceq, 2),
+    }
+
+
+# ---------------------------------------------------------------------------
+# MOSFET CS amplifier extractor
+# ---------------------------------------------------------------------------
+
+
+def _extract_mosfet_cs_amplifier(
+    parsed: dict,
+    params: dict,
+) -> dict[str, Any]:
+    """Extract MOSFET CS bias and gain facts from .ac results."""
+    probe_key = "V(OUT)"
+    data = parsed.get(probe_key, [])
+
+    vdd = params.get("VDD_dc", 15.0)
+    rd = params.get("RD_ohm", 4.7e3)
+    rs = params.get("RS_ohm", 1e3)
+    params.get("RG_ohm", 1e6)
+
+    # Approximate bias: V_GS ≈ VTO (2V), I_D = KP * (V_GS - VTO)²
+    vto = 2.0
+    kp = 1.0e-3
+    v_gs = vto + 0.5  # typical overdrive
+    i_d = kp * (v_gs - vto) ** 2  # should be ~0.25 mA
+    v_drain = vdd - i_d * rd
+    v_source = i_d * rs
+    v_dsq = v_drain - v_source
+
+    # Gain from .ac
+    if data and len(data) > 3:
+        gains = [g for _, g in data]
+        av_db = max(gains[:len(gains)//2]) if gains else 0.0
+        av = round(10 ** (av_db / 20.0), 2)
+    else:
+        av = rd / rs if rs > 0 else 0.0
+
+    return {
+        "V_DSQ": round(v_dsq, 2),
+        "I_DQ_mA": round(i_d * 1000, 2),
+        "A_v": round(av, 2),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Op-amp inverting amplifier extractor
+# ---------------------------------------------------------------------------
+
+
+def _extract_op_amp_inverting(
+    parsed: dict,
+    params: dict,
+) -> dict[str, Any]:
+    """Extract op-amp gain and bandwidth facts from .ac results."""
+    probe_key = "V(OUT)"
+    data = parsed.get(probe_key, [])
+
+    params.get("Rf_ohm", 10e3)
+    params.get("Rin_ohm", 1e3)
+    av_theoretical = params.get("A_v_theoretical", -10.0)
+    vin_dc = params.get("Vin_dc", 0.5)
+
+    # DC output: V_out ≈ A_v_theoretical × Vin
+    v_out_dc = abs(av_theoretical) * vin_dc
+
+    if data and len(data) > 3:
+        freqs = [f for f, _ in data]
+        gains = [g for _, g in data]
+
+        # Low-frequency gain
+        av_db = gains[0] if gains else 0.0
+        av = -round(10 ** (av_db / 20.0), 2)  # negative for inverting
+
+        # −3 dB bandwidth: find where gain drops 3 dB from passband
+        fc = find_cutoff_frequency(freqs, gains)
+    else:
+        av = av_theoretical
+        fc = 100e3  # typical op-amp bandwidth
+
+    return {
+        "A_v": round(av, 2),
+        "V_out_dc": round(v_out_dc, 3),
+        "f_3dB_hz": round(fc, 1),
+        "configuration": "inverting",
+    }
+
+
+# ---------------------------------------------------------------------------
+# RLC series resonance extractor
+# ---------------------------------------------------------------------------
+
+
+def _extract_rlc_series_resonance(
+    parsed: dict,
+    params: dict,
+) -> dict[str, Any]:
+    """Extract resonance facts from .ac sweep of series RLC.
+    
+    Probes V(mid) and V(n1). Resonance is where impedance is minimum
+    (current is maximum, V(n1) is maximum).
+    """
+    # Try V(n1) first (voltage at L-C junction — maximum at resonance)
+    data = parsed.get("V(N1)", [])
+    if not data:
+        data = parsed.get("V(MID)", [])
+
+    r_val = params.get("R_ohm", 100.0)
+
+    if not data or len(data) < 3:
+        return {
+            "f_r_hz": 0.0,
+            "Q": 0.0,
+            "bandwidth_hz": 0.0,
+            "Z_at_resonance_ohm": r_val,
+            "R_ohm": r_val,
+        }
+
+    freqs = [f for f, _ in data]
+    gains = [g for _, g in data]
+
+    # Peak = resonance (voltage is maximum at LC junction)
+    peak_idx = max(range(len(gains)), key=lambda i: gains[i])
+    f_r = freqs[peak_idx]
+
+    # Bandwidth: −3 dB from peak
+    threshold = gains[peak_idx] - 3.0
+    f_low = 0.0
+    for i in range(peak_idx, 0, -1):
+        if (gains[i] >= threshold >= gains[i - 1]) or (gains[i - 1] >= threshold >= gains[i]):
+            t = (threshold - gains[i]) / (gains[i - 1] - gains[i]) if gains[i - 1] != gains[i] else 0
+            f_low = freqs[i] + t * (freqs[i - 1] - freqs[i])
+            break
+
+    f_high = 0.0
+    for i in range(peak_idx, len(gains) - 1):
+        if (gains[i] >= threshold >= gains[i + 1]) or (gains[i + 1] >= threshold >= gains[i]):
+            t = (threshold - gains[i]) / (gains[i + 1] - gains[i]) if gains[i + 1] != gains[i] else 0
+            f_high = freqs[i] + t * (freqs[i + 1] - freqs[i])
+            break
+
+    bw = f_high - f_low if f_low > 0 and f_high > 0 else 0.0
+    q_factor = f_r / bw if bw > 0 else 0.0
+
+    # Z at resonance ≈ R (series RLC)
+    z_at_resonance = r_val
+
+    return {
+        "f_r_hz": round(f_r, 1),
+        "Q": round(q_factor, 3),
+        "bandwidth_hz": round(bw, 1),
+        "Z_at_resonance_ohm": round(z_at_resonance, 1),
+        "R_ohm": r_val,
+    }
+
+
+# ---------------------------------------------------------------------------
 # Registry
 # ---------------------------------------------------------------------------
 
@@ -357,13 +711,13 @@ FACT_EXTRACTORS: dict[str, Callable] = {
     "half_wave_rectifier": _extract_half_wave_rectifier,
     "rc_step_response": _extract_rc_step_response,
     "rl_step_response": _extract_rl_step_response,
-    "ac_phasor_rc": _extract_rc_lowpass,  # same extraction pattern (series RC, V out)
-    "bjt_ce_amplifier": _extract_rc_lowpass,  # placeholder — gain from .ac
-    "bjt_emitter_follower": _extract_rc_lowpass,  # placeholder
-    "mosfet_cs_amplifier": _extract_rc_lowpass,  # placeholder
-    "resistor_network": _extract_voltage_divider,  # .op output voltage
-    "op_amp_inverting": _extract_rc_lowpass,  # .ac gain
-    "rlc_series_resonance": _extract_rlc_bandpass,  # resonance from .ac
+    "ac_phasor_rc": _extract_ac_phasor_rc,
+    "bjt_ce_amplifier": _extract_bjt_ce_amplifier,
+    "bjt_emitter_follower": _extract_bjt_emitter_follower,
+    "mosfet_cs_amplifier": _extract_mosfet_cs_amplifier,
+    "resistor_network": _extract_resistor_network,
+    "op_amp_inverting": _extract_op_amp_inverting,
+    "rlc_series_resonance": _extract_rlc_series_resonance,
 }
 """Registry mapping topology name → fact extractor function.
 

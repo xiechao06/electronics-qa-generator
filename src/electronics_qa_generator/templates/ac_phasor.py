@@ -41,12 +41,12 @@ class ACPhasorRC(CircuitTemplate):
             type="ac",
             tool="Xyce",
             params={
-                "start_hz": f_src,
-                "stop_hz": f_src,
-                "points_per_decade": 1,
+                "start_hz": max(0.1, f_src * 0.5),
+                "stop_hz": f_src * 2.0,
+                "points_per_decade": 10,
             },
         )
-        netlist = graph.to_spice(sim, print_signals=["V(out)", "I(R1)"])
+        netlist = graph.to_spice(sim, print_signals=["V(out)"])
 
         return CircuitRecord(
             id=f"{self.topology}_{seed:08x}" if seed is not None else self.topology,

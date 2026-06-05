@@ -111,9 +111,10 @@ def _emit_bjt(c) -> str:
 
 
 def _emit_mosfet(c) -> str:
-    """Emit a MOSFET: Mname drain gate source model"""
+    """Emit a MOSFET: Mname drain gate source bulk model"""
     source = c.params.get("source", c.neg)
-    return f"{c.name} {c.pos} {c.neg} {source} {c.params['model']}"
+    bulk = c.params.get("bulk", "0")  # bulk usually tied to source or ground
+    return f"{c.name} {c.pos} {c.neg} {source} {bulk} {c.params['model']}"
 
 
 _COMPONENT_EMITTERS = {
