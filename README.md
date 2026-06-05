@@ -25,6 +25,8 @@ cd electronics-qa-generator
 Then prompt a coding agent:
 
 > *"Generate roughly 10,000 Q/A pairs."*
+> *"Generate roughly 10,000 Q/A pairs without visual validation."*
+> *"Generate roughly 10,000 Q/A pairs without visual validation, across topologies voltage_divider, rc_lowpass and rc_highpass"*
 
 The agent reads `AGENTS.md`, runs the pipeline, and produces JSONL output
 with schematics. No manual setup beyond `uv sync`.
@@ -34,12 +36,37 @@ To run directly:
 ```bash
 uv sync --extra sim --extra data --extra render
 
+# List available topologies
+uv run python scripts/batch_generate.py --list-topologies
+
 # Small batch (200 items, ~1 second):
 uv run python scripts/batch_generate.py --total 200 --workers 4 -o output/batch
+
+# Specific topologies only:
+uv run python scripts/batch_generate.py --total 5000 --topologies voltage_divider,rc_lowpass
 
 # Large batch (100k items, ~2 minutes):
 uv run python scripts/batch_generate.py --total 100000 --workers 8 -o output/batch
 ```
+
+### Batch generation options
+
+| Option | Default | Description |
+|---|---|---|
+| `--total` | 100000 | Target number of QA pairs |
+| `--topologies` | all 14 | Comma-separated topology names to generate |
+| `--list-topologies` | — | Print available topologies with QA-per-seed counts and exit |
+| `--workers` | 8 | Parallel simulation worker processes |
+| `--start-seed` | 0 | First seed value (use with `--total` to avoid overlapping prior runs) |
+| `-o, --out` | `output/batch/` | Output directory |
+| `--cache-dir` | `cache/` | Fact cache directory; speeds repeated runs |
+| `--humanize` | off | Reword questions via DeepSeek LLM (opt-in, slow; hand-written templates preferred) |
+
+The script runs seeds through the pipeline in parallel. Each seed produces
+one parameter sample per topology. Results are cached by netlist content hash
+so re-running with overlapping seed ranges is near-instant. QA items with zero
+or nonsensical simulation results are still produced and should be filtered
+post-hoc.
 
 ## What it produces
 
@@ -107,6 +134,7 @@ ollama pull deepseek-vl2-tiny
 ```
 
 `.env` defaults:
+
 ```env
 VISION_BASE_URL=http://localhost:11434/v1
 VISION_MODEL=deepseek-vl2-tiny

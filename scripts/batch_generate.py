@@ -10,7 +10,19 @@ Phases:
 
 Usage:
     uv run python scripts/batch_generate.py --total 100000 --workers 8 -o output/batch
+    uv run python scripts/batch_generate.py --total 100000 --topologies voltage_divider,rc_lowpass
     uv run python scripts/batch_generate.py --total 100000 --workers 8 --humanize -o output/batch
+
+Options:
+    --total        Target number of QA pairs (default: 100000)
+    --topologies   Comma-separated topology names to generate (default: all 14)
+                   Use --list-topologies to see available names
+    --workers      Parallel simulation worker processes (default: 8)
+    --start-seed   First seed value (default: 0)
+    --cache-dir    Fact cache directory (default: cache)
+    -o, --out      Output directory (default: output/batch)
+    --humanize     Reword questions via DeepSeek LLM (opt-in)
+    --list-topologies  Print available topology names and exit
 """
 
 from __future__ import annotations
@@ -200,6 +212,17 @@ def _write_jsonl(items: list[dict], path: Path) -> None:
 def main():
     parser = argparse.ArgumentParser(description="Batch generate QA pairs")
     parser.add_argument("--total", type=int, default=100_000, help="Target QA pairs")
+    parser.add_argument(
+        "--topologies",
+        type=str,
+        default=None,
+        help="Comma-separated topology names to generate (default: all)",
+    )
+    parser.add_argument(
+        "--list-topologies",
+        action="store_true",
+        help="Print available topology names and exit",
+    )
     parser.add_argument("--workers", type=int, default=8, help="Simulation workers")
     parser.add_argument("-o", "--out", type=str, default="output/batch", help="Output directory")
     parser.add_argument("--start-seed", type=int, default=0, help="Starting seed")
@@ -220,7 +243,25 @@ def main():
 
     from electronics_qa_generator.templates import ALL_TEMPLATES
 
-    topologies = sorted(t.topology for t in ALL_TEMPLATES)
+    all_topos = sorted(t.topology for t in ALL_TEMPLATES)
+
+    if args.list_topologies:
+        print("Available topologies:")
+        for t in all_topos:
+            qa_count = count_qa_per_seed([t])
+            print(f"  {t:30s} ({qa_count} QA/seed)")
+        return
+
+    if args.topologies is not None:
+        requested = [t.strip() for t in args.topologies.split(",")]
+        invalid = [t for t in requested if t not in all_topos]
+        if invalid:
+            print(f"Unknown topology(s): {', '.join(invalid)}")
+            print(f"Available: {', '.join(all_topos)}")
+            raise SystemExit(1)
+        topologies = requested
+    else:
+        topologies = all_topos
     qa_per_seed = count_qa_per_seed(topologies)
     num_seeds = (args.total + qa_per_seed - 1) // qa_per_seed
     expected_total = num_seeds * qa_per_seed

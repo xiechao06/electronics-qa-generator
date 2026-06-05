@@ -119,8 +119,34 @@ uv run eqa validate --all --seed 42
 **High-throughput batch generation:**
 
 ```bash
+# All topologies, 100k QA pairs
 uv run python scripts/batch_generate.py --total 100000 --workers 8 -o output/batch
+
+# Specific topologies only
+uv run python scripts/batch_generate.py --total 5000 --topologies voltage_divider,rc_lowpass
+
+# List available topologies with QA-per-seed counts
+uv run python scripts/batch_generate.py --list-topologies
 ```
+
+### Batch generation options
+
+| Option | Default | Description |
+|---|---|---|
+| `--total` | 100000 | Target number of QA pairs |
+| `--topologies` | all 14 | Comma-separated topology names |
+| `--list-topologies` | — | Print topologies with QA/seed counts and exit |
+| `--workers` | 8 | Parallel simulation worker processes |
+| `--start-seed` | 0 | First seed value for reproducible sampling |
+| `--cache-dir` | `cache/` | Fact cache directory; speeds repeated runs |
+| `-o, --out` | `output/batch/` | Output directory |
+| `--humanize` | off | Reword questions via DeepSeek LLM (opt-in, slow) |
+
+The script generates diverse QA items by running many seeds through the
+pipeline in parallel. Each seed produces one parameter sample per topology.
+Results are cached by netlist content hash so re-running with overlapping
+seed ranges is near-instant. Output is a single `qa_items.jsonl` with
+per-topology schematic images in `images/<topology>/`.
 
 ### Key options by stage
 
