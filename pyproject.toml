@@ -1,0 +1,45 @@
+[project]
+name = "electronics-qa-generator"
+version = "0.1.0"
+description = "A SPICE/Xyce-grounded pipeline for generating multimodal electronics circuit Q/A items (MMMU-style), inspired by CLEVR and AutoCkt."
+readme = "README.md"
+authors = [
+    { name = "Chao", email = "xiechao06@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = []
+
+[project.optional-dependencies]
+# Numerics, simulation parsing, and rendering. Kept optional so the basic
+# skeleton installs with no heavy deps; pull these in as you implement stages.
+sim = [
+    "numpy>=2.0",
+    "scipy>=1.14",
+]
+data = [
+    "pyarrow>=17.0",
+    "pandas>=2.2",
+]
+render = [
+    "matplotlib>=3.9",
+]
+
+[project.scripts]
+eqa = "electronics_qa_generator.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.6",
+]
+
+[build-system]
+requires = ["uv_build>=0.10.2,<0.11.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
