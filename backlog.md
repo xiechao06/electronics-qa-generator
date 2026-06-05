@@ -152,7 +152,7 @@ LLM — deterministic, fast, and suitable as a CI gate.
 
 ### Checks to implement
 
-#### Static correctness (no LLM needed)
+#### Static correctness ✅ implemented (`validation/checks.py`)
 
 1. **Answer matches expected** — recompute answer from facts via the program and compare
    byte-for-byte with the stored answer.
@@ -170,7 +170,7 @@ LLM — deterministic, fast, and suitable as a CI gate.
 7. **Question template coverage** — assert at least N question types are used per
    topology; no template produces identical questions across different seeds.
 
-#### LLM-assisted checks (optional)
+#### LLM-assisted checks ✅ implemented (`validation/llm_checks.py`)
 
 8. **Wording ambiguity** — LLM identifies vague or ambiguous phrasing ("the filter"
    when two filters exist, unspecified reference node).
@@ -179,19 +179,15 @@ LLM — deterministic, fast, and suitable as a CI gate.
 10. **Difficulty scoring** — LLM assigns a difficulty label based on question
     complexity (simple recall vs. multi-step derivation).
 
-#### Visual checks (with schematic rendering)
+#### Visual checks ✅ implemented (`validation/visual_checks.py`)
 
 11. **Schematic–topology match** — verify the rendered schematic PNG visually matches
     the topology named in the question.
 12. **Label visibility** — check that component labels are readable in the rendered
     image (adequate contrast, non-overlapping).
 
-**Vision model strategy:**
-- **Current (local):** `deepseek-vl2-tiny` — small VLM, runs locally via Ollama/vLLM,
-  no API cost, good enough for schematic label reading and topology matching.
-- **Future (cloud):** Volcengine `doubao-seed-1-6-vision` on Ark platform
-  (https://console.volcengine.com/ark/region:ark+cn-beijing/model/detail?Id=doubao-seed-1-6-vision).
-  Higher accuracy for complex schematics; swap behind the same vision provider interface.
+**Vision model:** Ollama `deepseek-vl2-tiny` (local). Future upgrade: Volcengine
+`doubao-seed-1-6-vision` (saved below).
 
 ### Known issues resolved
 
@@ -221,12 +217,27 @@ LLM — deterministic, fast, and suitable as a CI gate.
 
 ---
 
+## Future vision model upgrade
+
+- **Volcengine `doubao-seed-1-6-vision`** — higher accuracy cloud VLM for complex
+  schematics. Access via Ark platform:
+  https://console.volcengine.com/ark/region:ark+cn-beijing/model/detail?Id=doubao-seed-1-6-vision
+- Swap behind the existing `complete_vision()` provider interface (change
+  `VISION_BASE_URL` and `VISION_MODEL` in `.env`).
+
+---
+
 ## Summary
 
 | Category | Count | Status |
 |---|---|---|
 | Active circuit templates | 5 | ✅ done |
 | Active question templates | 25 | ✅ done |
+| Schematic rendering | 5 topologies | ✅ done |
+| LLM humanization (question rewording) | DeepSeek v4 pro | ✅ done |
+| Verifier — static checks | 7 checks | ✅ done |
+| Verifier — LLM checks | 3 checks | ✅ done |
+| Verifier — visual checks | 2 checks | ✅ done |
 | Future circuit templates (backlog §1–9) | 9 | 🔲 pending |
 | Future question templates (ready to activate) | 38 | ✅ written, pending circuits |
 | MMMU patterns catalogued | 14 families, ~194 questions | ✅ `docs/mmmu_question_catalog.md` |
