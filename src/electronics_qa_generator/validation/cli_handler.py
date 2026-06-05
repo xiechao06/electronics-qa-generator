@@ -90,9 +90,11 @@ def run_validate(args) -> None:
 
     items = generate_questions(name, facts, record.parameters)
 
-    # Run validation (with optional LLM checks)
+    # Run validation (with optional LLM and visual checks)
     provider = None
     llm_cache = None
+    vision_provider = None
+    vision_cache = None
     if getattr(args, "llm", False):
         from ..llm.provider import is_available
 
@@ -101,6 +103,13 @@ def run_validate(args) -> None:
             from .llm_checks import LLMCheckCache
 
             llm_cache = LLMCheckCache(cache_dir=cache_dir / "llm_checks" if cache_dir else None)
+    if getattr(args, "visual", False):
+        vision_provider = True
+        from .visual_checks import VisualCheckCache
+
+        vision_cache = VisualCheckCache(
+            cache_dir=cache_dir / "visual_checks" if cache_dir else None
+        )
 
     report = ValidationReport.from_items(
         items,
@@ -108,6 +117,8 @@ def run_validate(args) -> None:
         record.parameters,
         provider=provider,
         llm_cache=llm_cache,
+        vision_provider=vision_provider,
+        vision_cache=vision_cache,
     )
 
     if getattr(args, "json", False):

@@ -87,6 +87,9 @@ class ValidationReport:
         *,
         provider: object = None,
         llm_cache: object = None,
+        vision_provider: object = None,
+        vision_cache: object = None,
+        schematic_path: str | None = None,
     ) -> ValidationReport:
         """Run all checks on a list of QA items and produce a report.
 
@@ -118,6 +121,26 @@ class ValidationReport:
                 for check_fn in LLM_CHECKS:
                     try:
                         r = check_fn(item, provider=provider, cache=llm_cache)
+                    except Exception as exc:
+                        r = CheckResult(
+                            check_fn.__name__,
+                            Verdict.PASS,
+                            f"check raised: {exc}",
+                        )
+                    results.append(r)
+
+            # Visual checks (opt-in, requires schematic PNG)
+            if vision_provider is not None:
+                from .visual_checks import VISUAL_CHECKS
+
+                for check_fn in VISUAL_CHECKS:
+                    try:
+                        r = check_fn(
+                            item,
+                            schematic_path,
+                            provider=vision_provider,
+                            cache=vision_cache,
+                        )
                     except Exception as exc:
                         r = CheckResult(
                             check_fn.__name__,

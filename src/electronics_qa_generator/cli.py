@@ -113,6 +113,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="run LLM-assisted checks (ambiguity, leakage, difficulty)",
     )
+    val.add_argument(
+        "--visual",
+        action="store_true",
+        help="run vision-model checks on schematic images (requires --render)",
+    )
 
     return parser
 

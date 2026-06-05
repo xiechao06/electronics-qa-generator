@@ -186,6 +186,13 @@ LLM — deterministic, fast, and suitable as a CI gate.
 12. **Label visibility** — check that component labels are readable in the rendered
     image (adequate contrast, non-overlapping).
 
+**Vision model strategy:**
+- **Current (local):** `deepseek-vl2-tiny` — small VLM, runs locally via Ollama/vLLM,
+  no API cost, good enough for schematic label reading and topology matching.
+- **Future (cloud):** Volcengine `doubao-seed-1-6-vision` on Ark platform
+  (https://console.volcengine.com/ark/region:ark+cn-beijing/model/detail?Id=doubao-seed-1-6-vision).
+  Higher accuracy for complex schematics; swap behind the same vision provider interface.
+
 ### Known issues resolved
 
 - **Voltage divider ratio bug** (fixed) — derived ratio and percentage now compute

@@ -128,12 +128,21 @@ def run_questions(args) -> None:
 
         provider = None
         llm_cache = None
+        vision_provider = None
+        vision_cache = None
         if getattr(args, "llm", False):
             if is_available():
                 provider = True
                 from ..validation.llm_checks import LLMCheckCache
 
                 llm_cache = LLMCheckCache(cache_dir=cache_dir / "llm_checks" if cache_dir else None)
+        if getattr(args, "visual", False):
+            vision_provider = True
+            from ..validation.visual_checks import VisualCheckCache
+
+            vision_cache = VisualCheckCache(
+                cache_dir=cache_dir / "visual_checks" if cache_dir else None
+            )
 
         report = ValidationReport.from_items(
             items,
@@ -141,6 +150,9 @@ def run_questions(args) -> None:
             record.parameters,
             provider=provider,
             llm_cache=llm_cache,
+            vision_provider=vision_provider,
+            vision_cache=vision_cache,
+            schematic_path=schematic_path,
         )
         verified = report.ok
         for i, item_results in enumerate(report.items):

@@ -190,3 +190,97 @@ def complete(
         raise DeepSeekError("response missing string 'content'")
 
     return content
+
+
+# ---------------------------------------------------------------------------
+# Vision provider (Ollama-hosted VLM via OpenAI-compatible endpoint)
+# ---------------------------------------------------------------------------
+
+_VISION_BASE_URL_DEFAULT = "http://localhost:11434/v1"
+_VISION_MODEL_DEFAULT = "deepseek-vl2-tiny"
+
+
+def is_vision_available() -> bool:
+    """Return True when a VISION_BASE_URL is configured."""
+    cfg = _read_config()
+    return bool(cfg.get("VISION_BASE_URL") or True)  # always has a default
+
+
+def complete_vision(
+    system_prompt: str,
+    user_prompt: str,
+    image_path: str,
+    *,
+    timeout: float | None = None,
+) -> str:
+    """Send a prompt + base64-encoded image to a VLM.
+
+    Uses the OpenAI-compatible ``/v1/chat/completions`` endpoint with an
+    ``image_url`` content part containing the PNG as a base64 data URI.
+
+    Configured via ``.env``:
+      ``VISION_BASE_URL`` — default ``http://localhost:11434/v1``
+      ``VISION_MODEL``  — default ``deepseek-vl2-tiny``
+
+    Returns an empty string on any failure (pass-through semantics).
+    """
+    import base64
+    from pathlib import Path
+
+    cfg = _read_config()
+    base_url = cfg.get("VISION_BASE_URL", _VISION_BASE_URL_DEFAULT).rstrip("/")
+    model = cfg.get("VISION_MODEL", _VISION_MODEL_DEFAULT)
+    url = f"{base_url}/chat/completions"
+
+    # Read and encode the image
+    img_path = Path(image_path)
+    if not img_path.exists():
+        return ""
+    img_bytes = img_path.read_bytes()
+    img_b64 = base64.b64encode(img_bytes).decode("ascii")
+    data_uri = f"data:image/png;base64,{img_b64}"
+
+    payload: dict[str, Any] = {
+        "model": model,
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": user_prompt},
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": data_uri},
+                    },
+                ],
+            },
+        ],
+        "temperature": 0.0,
+        "max_tokens": 256,
+    }
+
+    data = json.dumps(payload).encode("utf-8")
+    req = urllib.request.Request(url, data=data, method="POST")
+    req.add_header("Content-Type", "application/json")
+    req.add_header("Accept", "application/json")
+
+    timeout_val = timeout if timeout is not None else 30.0
+
+    try:
+        with urllib.request.urlopen(req, timeout=timeout_val) as resp:
+            body = resp.read().decode("utf-8")
+    except Exception:
+        return ""
+
+    try:
+        result = json.loads(body)
+        choices = result.get("choices")
+        if choices and isinstance(choices, list):
+            msg = choices[0].get("message", {})
+            content = msg.get("content", "")
+            if isinstance(content, str):
+                return content
+    except json.JSONDecodeError, KeyError, IndexError, TypeError:
+        pass
+
+    return ""
