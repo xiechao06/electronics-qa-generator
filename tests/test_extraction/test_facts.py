@@ -89,7 +89,7 @@ class TestRegistry:
 
 class TestVoltageDividerExtractor:
     def test_basic(self):
-        parsed = {"V(out)": 3.0}
+        parsed = {"V(OUT)": 3.0}
         params = {"Vin_dc": 9.0}
         facts = FACT_EXTRACTORS["voltage_divider"](parsed, params)
         assert facts["Vout_dc"] == 3.0
@@ -104,7 +104,7 @@ class TestVoltageDividerExtractor:
 class TestRcLowPassExtractor:
     def test_basic(self):
         parsed = {
-            "V(out)": [
+            "V(OUT)": [
                 (1.0, 0.0),
                 (100.0, -0.1),
                 (1000.0, -3.0),
@@ -130,7 +130,7 @@ class TestRcLowPassExtractor:
 class TestRlcBandPassExtractor:
     def test_basic(self):
         parsed = {
-            "V(out)": [
+            "V(OUT)": [
                 (10.0, -30.0),
                 (100.0, -20.0),
                 (1000.0, 0.0),
@@ -153,7 +153,7 @@ class TestHalfWaveRectifierExtractor:
     def test_basic(self):
         # Steady-state rectified waveform
         data = [(0.01, 4.0), (0.02, 4.5), (0.03, 4.0), (0.04, 4.5)]
-        parsed = {"V(out)": data}
+        parsed = {"V(OUT)": data}
         facts = FACT_EXTRACTORS["half_wave_rectifier"](parsed, {})
         assert facts["Vout_peak"] == 4.5
         assert 4.0 < facts["Vout_dc"] < 4.5

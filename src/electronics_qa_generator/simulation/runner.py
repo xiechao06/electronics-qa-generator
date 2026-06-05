@@ -51,8 +51,23 @@ def invoke_xyce(netlist: str, timeout_s: int = 30) -> tuple[str, int, bool]:
         )
         stdout = result.stdout
         returncode = result.returncode
-        # Xyce convergence: look for "Solution by Newton" or similar marker
-        converged = "Solution by Newton" in stdout and returncode == 0
+
+        # Xyce writes simulation results to a .prn or .FD.prn file next to the
+        # .cir file. Read it so we can actually parse the results.
+        _stem = cir_path.stem
+        _parent = cir_path.parent
+        output_file: Path | None = None
+        for _cand in _parent.glob(f"{_stem}*.prn"):
+            output_file = _cand
+            break
+        if output_file is not None and output_file.exists():
+            stdout += "\n" + output_file.read_text()
+
+        # Xyce convergence: look for "Solution by Newton" for .op/.tran,
+        # or "End of Xyce(TM) Simulation" for .ac and other analyses
+        converged = returncode == 0 and (
+            "Solution by Newton" in stdout or "End of Xyce(TM) Simulation" in stdout
+        )
     except subprocess.TimeoutExpired:
         stdout = ""
         returncode = -1
@@ -60,9 +75,9 @@ def invoke_xyce(netlist: str, timeout_s: int = 30) -> tuple[str, int, bool]:
     finally:
         # Clean up temp file and any Xyce-generated files
         cir_path.unlink(missing_ok=True)
-        for ext in (".prn", ".out", ".log", ".res", ".mt0", ".txt"):
-            for generated in cir_path.parent.glob(f"{cir_path.stem}{ext}"):
-                generated.unlink(missing_ok=True)
+        _stem = cir_path.stem
+        for generated in cir_path.parent.glob(f"{_stem}*"):
+            generated.unlink(missing_ok=True)
 
     return stdout, returncode, converged
 

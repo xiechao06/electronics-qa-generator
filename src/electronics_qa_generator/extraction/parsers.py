@@ -84,7 +84,19 @@ def parse_op(raw_output: str) -> dict[str, float]:
     Returns an empty dict on failure to parse.
     """
     lines = raw_output.splitlines()
-    headers, data_rows = _parse_table(lines)
+
+    # Find the table header line
+    header_line_idx: int | None = None
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if "Index" in stripped:
+            header_line_idx = i
+            break
+
+    if header_line_idx is None:
+        return {}
+
+    headers, data_rows = _parse_table(lines[header_line_idx:])
 
     if not headers or not data_rows:
         return {}
@@ -95,7 +107,8 @@ def parse_op(raw_output: str) -> dict[str, float]:
     result: dict[str, float] = {}
     for i, header in enumerate(headers):
         if i < len(values):
-            result[header] = values[i]
+            # Normalize probe names to uppercase for consistency with .ac parser
+            result[header.upper()] = values[i]
 
     return result
 
@@ -108,44 +121,90 @@ def parse_op(raw_output: str) -> dict[str, float]:
 def parse_ac(raw_output: str) -> dict[str, list[tuple[float, float]]]:
     """Parse Xyce .print ac output into {probe: [(freq_hz, mag_db), ...]}.
 
-    Xyce AC format:
-        Index   FREQ            V(out)
-        ------  --------        ------
-             0  1.000000e-02    9.999987e-01
-             1  1.258925e-02    9.999978e-01
+    Xyce AC format (complex columns):
+        Index   FREQ            Re(V(out))      Im(V(out))
+        ------  --------        ----------      ----------
+             0  1.000000e-02    9.999987e-01    -4.27e-05
 
     Each probe maps to a list of (frequency_hz, magnitude_db) tuples.
-    The first column after FREQ is assumed to be magnitude in dB.
-    If a second value column exists, it is assumed to be phase in degrees
-    (appended as (freq, phase_deg) to a separate "<probe>_phase" key).
-
-    Returns empty dict on failure.
+    Complex voltage (Re, Im) is combined into a single magnitude in dB.
     """
-    lines = raw_output.splitlines()
-    headers, data_rows = _parse_table(lines)
+    import math
 
+    lines = raw_output.splitlines()
+
+    # Find the table start: the line containing "Index" and "FREQ"
+    header_line_idx: int | None = None
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if "Index" in stripped and ("FREQ" in stripped or "Freq" in stripped):
+            header_line_idx = i
+            break
+
+    if header_line_idx is None:
+        return {}
+
+    # Only parse from the header onward
+    headers, data_rows = _parse_table(lines[header_line_idx:])
     if not headers or not data_rows:
         return {}
 
-    # First header is FREQ, remaining are probe names
-    if len(headers) < 2:
-        return {}
-
+    # headers: e.g. ["FREQ", "Re(V(OUT))", "Im(V(OUT))"]
     freq_idx = 0
-    probe_headers = headers[1:]
 
     result: dict[str, list[tuple[float, float]]] = {}
-    for probe in probe_headers:
-        result[probe] = []
+
+    # Map probe names: strip "Re(" and "Im(" prefixes to group under canonical name
+    # e.g., "Re(V(OUT))" and "Im(V(OUT))" → "V(OUT)"
+    # Also handle simple magnitude-only headers like "V(out)" or "V(OUT)"
+    _header_map: dict[int, str] = {}  # col_idx → canonical probe name
+    _re_im_pairs: dict[str, tuple[int, int]] = {}  # canonical_name → (re_col, im_col)
+
+    import re as _re
+
+    for i, h in enumerate(headers):
+        if h.upper() == "FREQ":
+            continue  # frequency column, not a probe
+        m_re = _re.match(r"^\s*Re\(\s*(.+)\s*\)\s*$", h, _re.IGNORECASE)
+        m_im = _re.match(r"^\s*Im\(\s*(.+)\s*\)\s*$", h, _re.IGNORECASE)
+        if m_re:
+            inner = m_re.group(1).strip()
+            canonical = inner  # e.g. "V(OUT)"
+            pair = _re_im_pairs.setdefault(canonical.upper(), [-1, -1])
+            pair[0] = i
+        elif m_im:
+            inner = m_im.group(1).strip()
+            canonical = inner
+            pair = _re_im_pairs.setdefault(canonical.upper(), [-1, -1])
+            pair[1] = i
+        else:
+            _header_map[i] = h.upper()
+
+    # Initialize result dict
+    for canonical in set(_header_map.values()) | set(_re_im_pairs.keys()):
+        result[canonical.upper()] = []
 
     for row in data_rows:
         if len(row) < 2:
             continue
         freq = row[freq_idx]
-        for i, probe in enumerate(probe_headers):
-            val_idx = i + 1
-            if val_idx < len(row):
-                result[probe].append((freq, row[val_idx]))
+
+        # Fill scalar probes
+        for col_idx, canonical in _header_map.items():
+            if col_idx < len(row):
+                # Treat scalar as dB directly (for simple formats)
+                result[canonical.upper()].append((freq, row[col_idx]))
+
+        # Fill complex probe pairs
+        for canonical, (re_col, im_col) in _re_im_pairs.items():
+            if re_col < len(row) and im_col < len(row):
+                re_v = row[re_col]
+                im_v = row[im_col]
+                mag = math.sqrt(re_v**2 + im_v**2)
+                mag_db = 20 * math.log10(mag) if mag > 0 else -200.0
+                result[canonical.upper()].append((freq, mag_db))
+
+    return result
 
     return result
 
@@ -169,7 +228,19 @@ def parse_tran(raw_output: str) -> dict[str, list[tuple[float, float]]]:
     Returns empty dict on failure.
     """
     lines = raw_output.splitlines()
-    headers, data_rows = _parse_table(lines)
+
+    # Find the table header line
+    header_line_idx: int | None = None
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if "Index" in stripped and ("TIME" in stripped or "Time" in stripped):
+            header_line_idx = i
+            break
+
+    if header_line_idx is None:
+        return {}
+
+    headers, data_rows = _parse_table(lines[header_line_idx:])
 
     if not headers or not data_rows:
         return {}
@@ -182,7 +253,7 @@ def parse_tran(raw_output: str) -> dict[str, list[tuple[float, float]]]:
 
     result: dict[str, list[tuple[float, float]]] = {}
     for probe in probe_headers:
-        result[probe] = []
+        result[probe.upper()] = []
 
     for row in data_rows:
         if len(row) < 2:
@@ -191,6 +262,6 @@ def parse_tran(raw_output: str) -> dict[str, list[tuple[float, float]]]:
         for i, probe in enumerate(probe_headers):
             val_idx = i + 1
             if val_idx < len(row):
-                result[probe].append((time_val, row[val_idx]))
+                result[probe.upper()].append((time_val, row[val_idx]))
 
     return result

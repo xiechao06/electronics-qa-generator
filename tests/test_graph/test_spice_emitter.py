@@ -36,7 +36,7 @@ class TestOpEmission:
     def test_contains_print_op(self):
         g = _make_divider()
         netlist = g.to_spice(SimulationConfig(type="op"))
-        assert ".print op" in netlist
+        assert ".print dc" in netlist
 
     def test_ends_with_end(self):
         g = _make_divider()
@@ -211,7 +211,7 @@ class TestPrintSignals:
             SimulationConfig(type="op"),
             print_signals=["V(in)", "I(R1)"],
         )
-        assert ".print op V(in) I(R1)" in netlist
+        assert ".print dc V(in) I(R1)" in netlist
 
     def test_multiple_signals(self):
         g = _make_divider()
@@ -219,4 +219,4 @@ class TestPrintSignals:
             SimulationConfig(type="op"),
             print_signals=["V(out)", "V(in)"],
         )
-        assert ".print op V(out) V(in)" in netlist
+        assert ".print dc V(out) V(in)" in netlist

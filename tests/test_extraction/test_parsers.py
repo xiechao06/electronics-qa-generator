@@ -21,8 +21,8 @@ Index   V(out)      V(in)
 class TestParseOp:
     def test_single_probe(self):
         result = parse_op(OP_OUTPUT)
-        assert result.get("V(out)") == pytest.approx(3.14159)
-        assert result.get("V(in)") == pytest.approx(5.0)
+        assert result.get("V(OUT)") == pytest.approx(3.14159)
+        assert result.get("V(IN)") == pytest.approx(5.0)
 
     def test_empty_input(self):
         assert parse_op("") == {}
@@ -47,14 +47,14 @@ Index   FREQ            V(out)
 class TestParseAc:
     def test_three_point_sweep(self):
         result = parse_ac(AC_OUTPUT)
-        assert "V(out)" in result
-        data = result["V(out)"]
+        assert "V(OUT)" in result
+        data = result["V(OUT)"]
         assert len(data) == 3
         assert data[0] == pytest.approx((10.0, 0.9999987))
 
     def test_frequencies_in_ascending_order(self):
         result = parse_ac(AC_OUTPUT)
-        freqs = [f for f, _ in result["V(out)"]]
+        freqs = [f for f, _ in result["V(OUT)"]]
         assert freqs == sorted(freqs)
 
     def test_empty_input(self):
@@ -80,19 +80,19 @@ Index   TIME            V(out)          V(in)
 class TestParseTran:
     def test_two_probes(self):
         result = parse_tran(TRAN_OUTPUT)
-        assert "V(out)" in result
-        assert "V(in)" in result
-        assert len(result["V(out)"]) == 3
-        assert len(result["V(in)"]) == 3
+        assert "V(OUT)" in result
+        assert "V(IN)" in result
+        assert len(result["V(OUT)"]) == 3
+        assert len(result["V(IN)"]) == 3
 
     def test_time_values_increasing(self):
         result = parse_tran(TRAN_OUTPUT)
-        times = [t for t, _ in result["V(out)"]]
+        times = [t for t, _ in result["V(OUT)"]]
         assert times == sorted(times)
 
     def test_value_at_first_time(self):
         result = parse_tran(TRAN_OUTPUT)
-        assert result["V(out)"][0][1] == pytest.approx(0.0)
+        assert result["V(OUT)"][0][1] == pytest.approx(0.0)
 
     def test_empty_input(self):
         assert parse_tran("") == {}

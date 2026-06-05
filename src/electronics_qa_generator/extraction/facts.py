@@ -97,11 +97,12 @@ def _extract_voltage_divider(
     params: dict,
 ) -> dict[str, Any]:
     """Extract DC output voltage and divider ratio from .op results."""
-    vout = parsed.get("V(out)", 0.0)
+    vout = parsed.get("V(OUT)", 0.0)
     vin = params.get("Vin_dc", 1.0)
     return {
         "Vout_dc": vout,
         "divider_ratio": vout / vin if vin else 0.0,
+        "Vin_dc": vin,
     }
 
 
@@ -110,7 +111,7 @@ def _extract_rc_lowpass(
     params: dict,
 ) -> dict[str, Any]:
     """Extract cutoff frequency, passband gain, and behavior from .ac results."""
-    probe_key = "V(out)"
+    probe_key = "V(OUT)"
     data = parsed.get(probe_key, [])
 
     if not data:
@@ -139,7 +140,7 @@ def _extract_rc_highpass(
     params: dict,
 ) -> dict[str, Any]:
     """Extract cutoff frequency, passband gain, and behavior from .ac results."""
-    probe_key = "V(out)"
+    probe_key = "V(OUT)"
     data = parsed.get(probe_key, [])
 
     if not data:
@@ -168,7 +169,7 @@ def _extract_rlc_bandpass(
     params: dict,
 ) -> dict[str, Any]:
     """Extract center frequency, bandwidth, Q, and peak gain from .ac results."""
-    probe_key = "V(out)"
+    probe_key = "V(OUT)"
     data = parsed.get(probe_key, [])
 
     if not data:
@@ -224,7 +225,7 @@ def _extract_half_wave_rectifier(
     params: dict,
 ) -> dict[str, Any]:
     """Extract peak output voltage, DC level, and ripple from .tran results."""
-    probe_key = "V(out)"
+    probe_key = "V(OUT)"
     data = parsed.get(probe_key, [])
 
     if not data:

@@ -157,9 +157,7 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
         {
             "id": "lp_classification",
             "question_type": "classification",
-            "question_template": (
-                "Is this circuit a low-pass filter, a high-pass filter, or a band-pass filter?"
-            ),
+            "question_template": ("Classify the frequency response behavior of this filter."),
             "program": [
                 P.read_fact("behavior"),
                 P.classify("$0", ["low-pass", "high-pass", "band-pass"]),
@@ -225,9 +223,7 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
         {
             "id": "hp_classification",
             "question_type": "classification",
-            "question_template": (
-                "Is this circuit a low-pass filter, a high-pass filter, or a band-pass filter?"
-            ),
+            "question_template": ("Classify the frequency response behavior of this filter."),
             "program": [
                 P.read_fact("behavior"),
                 P.classify("$0", ["low-pass", "high-pass", "band-pass"]),
@@ -295,10 +291,7 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
         {
             "id": "bp_classification",
             "question_type": "classification",
-            "question_template": (
-                "Determine whether this circuit is a low-pass filter, "
-                "a high-pass filter, or a band-pass filter."
-            ),
+            "question_template": ("Classify the frequency response behavior of this filter."),
             "program": [
                 P.read_fact("behavior"),
                 P.classify("$0", ["low-pass", "high-pass", "band-pass"]),

@@ -120,7 +120,7 @@ def _emit_simulation(sim: SimulationConfig) -> tuple[str, str]:
     params = sim.params
 
     if sim_type == "op":
-        return ".op", ".print op"
+        return ".op", ".print dc"
 
     if sim_type == "ac":
         start = _fmt_frequency(params["start_hz"])
