@@ -126,7 +126,22 @@ def run_questions(args) -> None:
     if getattr(args, "verify", False):
         from ..validation.report import ValidationReport
 
-        report = ValidationReport.from_items(items, facts, record.parameters)
+        provider = None
+        llm_cache = None
+        if getattr(args, "llm", False):
+            if is_available():
+                provider = True
+                from ..validation.llm_checks import LLMCheckCache
+
+                llm_cache = LLMCheckCache(cache_dir=cache_dir / "llm_checks" if cache_dir else None)
+
+        report = ValidationReport.from_items(
+            items,
+            facts,
+            record.parameters,
+            provider=provider,
+            llm_cache=llm_cache,
+        )
         verified = report.ok
         for i, item_results in enumerate(report.items):
             for r in item_results:

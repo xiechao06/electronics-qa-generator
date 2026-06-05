@@ -314,5 +314,8 @@ BATCH_CHECKS = [
     check_coverage,
 ]
 
+# LLM-assisted checks (require a provider callable, run via CLI --llm flag)
+from .llm_checks import LLM_CHECKS  # noqa: E402
+
 # Combined for convenience
-ALL_CHECKS = ITEM_CHECKS + BATCH_CHECKS
+ALL_CHECKS = ITEM_CHECKS + BATCH_CHECKS + LLM_CHECKS

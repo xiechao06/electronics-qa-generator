@@ -84,15 +84,20 @@ class ValidationReport:
         qa_items: list,
         facts: dict[str, object],
         params: dict[str, object],
+        *,
+        provider: object = None,
+        llm_cache: object = None,
     ) -> ValidationReport:
-        """Run all per-item checks on a list of QA items and produce a report."""
+        """Run all checks on a list of QA items and produce a report.
+
+        If *provider* is given, LLM-assisted checks are also run.
+        """
         item_results: list[list[CheckResult]] = []
         for item in qa_items:
             results: list[CheckResult] = []
             for check_fn in ITEM_CHECKS:
                 name = check_fn.__name__
                 try:
-                    # Determine which args the check function expects
                     import inspect
 
                     sig = inspect.signature(check_fn)
@@ -105,6 +110,22 @@ class ValidationReport:
                 except Exception as exc:
                     r = CheckResult(name, Verdict.FAIL, f"check raised: {exc}")
                 results.append(r)
+
+            # LLM-assisted checks (opt-in)
+            if provider is not None:
+                from .llm_checks import LLM_CHECKS
+
+                for check_fn in LLM_CHECKS:
+                    try:
+                        r = check_fn(item, provider=provider, cache=llm_cache)
+                    except Exception as exc:
+                        r = CheckResult(
+                            check_fn.__name__,
+                            Verdict.PASS,
+                            f"check raised: {exc}",
+                        )
+                    results.append(r)
+
             item_results.append(results)
 
         # Batch checks

@@ -89,6 +89,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="run static validation checks on generated QA items",
     )
+    qa.add_argument(
+        "--llm",
+        action="store_true",
+        help="run LLM-assisted checks (requires --verify)",
+    )
 
     # -- validate subcommand ------------------------------------------------
     val = sub.add_parser("validate", help="run static QA-item checks and print report")
@@ -103,6 +108,11 @@ def build_parser() -> argparse.ArgumentParser:
     val.add_argument("--cache-dir", default=None, help="fact cache directory")
     val.add_argument("--no-cache", action="store_true", help="skip cache read/write")
     val.add_argument("--json", action="store_true", help="output report as JSON")
+    val.add_argument(
+        "--llm",
+        action="store_true",
+        help="run LLM-assisted checks (ambiguity, leakage, difficulty)",
+    )
 
     return parser
 

@@ -90,8 +90,25 @@ def run_validate(args) -> None:
 
     items = generate_questions(name, facts, record.parameters)
 
-    # Run validation
-    report = ValidationReport.from_items(items, facts, record.parameters)
+    # Run validation (with optional LLM checks)
+    provider = None
+    llm_cache = None
+    if getattr(args, "llm", False):
+        from ..llm.provider import is_available
+
+        if is_available():
+            provider = True  # signal to use default provider
+            from .llm_checks import LLMCheckCache
+
+            llm_cache = LLMCheckCache(cache_dir=cache_dir / "llm_checks" if cache_dir else None)
+
+    report = ValidationReport.from_items(
+        items,
+        facts,
+        record.parameters,
+        provider=provider,
+        llm_cache=llm_cache,
+    )
 
     if getattr(args, "json", False):
         print(report.to_json())
