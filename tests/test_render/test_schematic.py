@@ -11,15 +11,23 @@ from electronics_qa_generator.render.schematic import render_schematic
 
 
 def _build_voltage_divider() -> CircuitGraph:
-    g = CircuitGraph(header_comment="* Voltage divider")
-    g.add_voltage_source("V1", "in", "0", dc=5)
+    g = CircuitGraph(
+        family="passive",
+        topology="voltage_divider",
+        header_comment="* Voltage divider",
+    )
+    g.add_voltage_source("Vin", "in", "0", dc=5)
     g.add_resistor("R1", "in", "out", 4700)
     g.add_resistor("R2", "out", "0", 10000)
     return g
 
 
 def _build_rc_lowpass() -> CircuitGraph:
-    g = CircuitGraph(header_comment="* RC low-pass filter")
+    g = CircuitGraph(
+        family="passive",
+        topology="rc_lowpass",
+        header_comment="* RC low-pass filter",
+    )
     g.add_voltage_source("Vin", "in", "0", ac=1)
     g.add_resistor("R1", "in", "out", 1000)
     g.add_capacitor("C1", "out", "0", 1e-7)
@@ -27,7 +35,11 @@ def _build_rc_lowpass() -> CircuitGraph:
 
 
 def _build_rc_highpass() -> CircuitGraph:
-    g = CircuitGraph(header_comment="* RC high-pass filter")
+    g = CircuitGraph(
+        family="passive",
+        topology="rc_highpass",
+        header_comment="* RC high-pass filter",
+    )
     g.add_voltage_source("Vin", "in", "0", ac=1)
     g.add_capacitor("C1", "in", "out", 1e-7)
     g.add_resistor("R1", "out", "0", 1000)
@@ -35,7 +47,11 @@ def _build_rc_highpass() -> CircuitGraph:
 
 
 def _build_rlc_bandpass() -> CircuitGraph:
-    g = CircuitGraph(header_comment="* RLC band-pass filter")
+    g = CircuitGraph(
+        family="passive",
+        topology="rlc_bandpass",
+        header_comment="* RLC band-pass filter",
+    )
     g.add_voltage_source("Vin", "in", "0", ac=1)
     g.add_resistor("R1", "in", "n1", 47)
     g.add_inductor("L1", "n1", "out", 0.01)
@@ -44,10 +60,15 @@ def _build_rlc_bandpass() -> CircuitGraph:
 
 
 def _build_half_wave_rectifier() -> CircuitGraph:
-    g = CircuitGraph(header_comment="* Half-wave rectifier")
-    g.add_voltage_source("V1", "in", "0", sin={"amplitude": 5, "freq": 60})
+    g = CircuitGraph(
+        family="diode",
+        topology="half_wave_rectifier",
+        header_comment="* Half-wave rectifier",
+    )
+    g.add_voltage_source("Vin", "in", "0", sin={"amplitude": 5, "freq": 60})
     g.add_diode("D1", "in", "out", model="D1N4148")
-    g.add_resistor("R_load", "out", "0", 1000)
+    g.add_capacitor("C1", "out", "0", 4.7e-5)
+    g.add_resistor("Rload", "out", "0", 1000)
     return g
 
 

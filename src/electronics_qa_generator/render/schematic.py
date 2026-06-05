@@ -1,7 +1,8 @@
 """Schematic PNG renderer from CircuitGraph.
 
-Renders a complete circuit schematic image using matplotlib, with automatic
-left-to-right layout for single-loop series circuits (the 5 MVP topologies).
+Renders a complete circuit schematic image. When an SVG layout template
+is registered for the circuit's topology, the hand-authored SVG is filled
+and rasterized; otherwise the existing matplotlib auto-layout is used.
 """
 
 from __future__ import annotations
@@ -65,9 +66,10 @@ def render_schematic(
 ) -> None:
     """Render a ``CircuitGraph`` as a schematic PNG.
 
-    This produces a single-loop left-to-right schematic layout suitable for
-    all 5 MVP topologies (voltage divider, RC low-pass, RC high-pass,
-    RLC band-pass, half-wave rectifier).
+    If an SVG layout template is registered for the graph's topology,
+    the template is filled with the sampled circuit's values and
+    rasterized via cairosvg. Otherwise, the matplotlib auto-layout
+    is used for single-loop series circuits.
 
     Parameters
     ----------
@@ -76,12 +78,41 @@ def render_schematic(
     output_path : Path
         Output PNG file path (parent dirs created if needed).
     width : int
-        Image width in pixels at the given dpi.
+        Image width in pixels at the given dpi (matplotlib path only).
     height : int
-        Image height in pixels.
+        Image height in pixels (matplotlib path only).
     dpi : int
         DPI for deterministic rendering.
     """
+    # -- SVG template path (when a hand-authored layout is available) -----
+    try:
+        from .svg_templates import registry
+
+        if registry.has_template(graph):
+            tpl = registry.resolve(graph)
+            from .svg_render import render_svg_schematic as _svg_render
+
+            _svg_render(graph, tpl, output_path, dpi=dpi)
+            return
+    except ImportError:
+        logger.debug("cairosvg not installed; falling back to matplotlib")
+
+    # -- Fallback: matplotlib auto-layout ---------------------------------
+    _render_matplotlib(graph, output_path, width=width, height=height, dpi=dpi)
+
+
+# -- Matplotlib fallback renderer -------------------------------------------
+
+
+def _render_matplotlib(
+    graph: CircuitGraph,
+    output_path: Path,
+    *,
+    width: int = _FIG_WIDTH,
+    height: int = _FIG_HEIGHT,
+    dpi: int = _DPI,
+) -> None:
+    """Render a CircuitGraph as a schematic PNG using matplotlib auto-layout."""
     import matplotlib
 
     matplotlib.use("Agg")
@@ -105,15 +136,12 @@ def render_schematic(
     mid_point = (_TOP_Y + _BOTTOM_Y) / 2
 
     # Source: vertical orientation
-    src_x = center_x
     src = sources[0] if sources else None
     if src is not None:
-        # Draw source vertically centered
-        draw_voltage_source(ax, src_x, mid_point, angle=90)
-        # Source label
+        draw_voltage_source(ax, _LEFT_X, mid_point, angle=90)
         src_label = format_component_label(src.name, src.kind, src.params)
         ax.text(
-            src_x,
+            _LEFT_X,
             mid_point + _LABEL_OFFSET_Y,
             src_label,
             ha="center",
@@ -129,11 +157,9 @@ def render_schematic(
         is_last = i == n - 1
 
         if not is_last:
-            # Horizontal placement on top rail
             draw_symbol = _SYMBOL_DRAWERS.get(comp.kind)
             if draw_symbol:
                 draw_symbol(ax, comp_x, _TOP_Y, angle=0)
-            # Label
             label = format_component_label(comp.name, comp.kind, comp.params)
             ax.text(
                 comp_x + SYMBOL_LENGTH / 2,
@@ -146,8 +172,6 @@ def render_schematic(
             center_x += _COMP_SPACING
         else:
             # Last component: drop vertically to bottom rail
-            # Draw horizontal segment then vertical down
-            # Top horizontal lead
             ax.plot(
                 [comp_x - _COMP_SPACING * 0.3, comp_x],
                 [_TOP_Y, _TOP_Y],
@@ -157,15 +181,12 @@ def render_schematic(
             draw_symbol = _SYMBOL_DRAWERS.get(comp.kind)
             if draw_symbol:
                 draw_symbol(ax, comp_x, (_TOP_Y + _BOTTOM_Y) / 2, angle=90)
-            # Vertical lead down to bottom rail
-            # (symbol draws its own leads, but connect to bottom)
             ax.plot(
                 [comp_x, comp_x],
                 [(_TOP_Y + _BOTTOM_Y) / 2 + SYMBOL_LENGTH / 2 + 10, _BOTTOM_Y],
                 "k-",
                 lw=LINE_WIDTH,
             )
-            # Label to the right of vertical symbol
             label = format_component_label(comp.name, comp.kind, comp.params)
             ax.text(
                 comp_x + _LABEL_OFFSET_Y,
@@ -178,14 +199,10 @@ def render_schematic(
             center_x += _COMP_SPACING * 0.5
 
     # ---- Connecting wires ----
-    # Top rail: from source top to first component
     if sources:
         src_top_y = mid_point + 30
-        ax.plot(
-            [_LEFT_X, _LEFT_X], [_BOTTOM_Y, src_top_y], "k-", lw=LINE_WIDTH
-        )  # source vertical wire
+        ax.plot([_LEFT_X, _LEFT_X], [_BOTTOM_Y, src_top_y], "k-", lw=LINE_WIDTH)
     if passives:
-        # Top rail from source area to last horizontal component
         wire_start_x = _LEFT_X + _COMP_SPACING - SYMBOL_LENGTH / 2
         if n > 1:
             wire_end_x = center_x - _COMP_SPACING - _COMP_SPACING * 0.3
@@ -211,10 +228,17 @@ def render_schematic(
         "0": (_LEFT_X, _BOTTOM_Y - 20),
     }
     for node_name, (nx, ny) in node_positions.items():
-        if node_name != "0" or True:  # always show "0" as GND label
+        if node_name != "0" or True:
             label_text = node_name if node_name != "0" else ""
             if label_text:
-                ax.text(nx, ny, label_text, ha="center", va="bottom", fontsize=FONT_SIZE_NODE)
+                ax.text(
+                    nx,
+                    ny,
+                    label_text,
+                    ha="center",
+                    va="bottom",
+                    fontsize=FONT_SIZE_NODE,
+                )
 
     # ---- Save ----
     fig.savefig(str(output_path), dpi=dpi, facecolor="white", edgecolor="none")

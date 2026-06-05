@@ -40,6 +40,8 @@ class CircuitGraph:
     manipulating ``nodes`` or ``components`` directly.
     """
 
+    family: str = ""
+    topology: str = ""
     nodes: dict[str, int] = field(default_factory=dict)
     components: list[Component] = field(default_factory=list)
     directives: list[str] = field(default_factory=list)

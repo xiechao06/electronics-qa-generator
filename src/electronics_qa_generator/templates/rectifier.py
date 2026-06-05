@@ -39,7 +39,11 @@ class HalfWaveRectifier(CircuitTemplate):
         stop_time = 20 * period  # 20 periods ≈ 333 ms
         time_step = period / 1000  # ~16.7 μs for 60 Hz
 
-        graph = CircuitGraph(header_comment="* Half-wave rectifier with filter capacitor")
+        graph = CircuitGraph(
+            family=self.family,
+            topology=self.topology,
+            header_comment="* Half-wave rectifier with filter capacitor",
+        )
         graph.add_voltage_source(
             "Vin",
             "in",

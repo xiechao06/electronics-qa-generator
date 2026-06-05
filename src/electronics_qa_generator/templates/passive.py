@@ -38,7 +38,11 @@ class VoltageDivider(CircuitTemplate):
         r2 = pick_e_value(E12_VALUES, decade_min=2, decade_max=6, rng=rng)
         vin = rng.uniform(1.0, 30.0)
 
-        graph = CircuitGraph(header_comment="* Voltage divider — DC operating point")
+        graph = CircuitGraph(
+            family=self.family,
+            topology=self.topology,
+            header_comment="* Voltage divider — DC operating point",
+        )
         graph.add_voltage_source("Vin", "in", "0", dc=vin)
         graph.add_resistor("R1", "in", "out", r1)
         graph.add_resistor("R2", "out", "0", r2)
@@ -81,7 +85,11 @@ class RCLowPass(CircuitTemplate):
         r1 = pick_e_value(E12_VALUES, decade_min=3, decade_max=6, rng=rng)
         c1 = pick_e_value(E6_VALUES, decade_min=-9, decade_max=-6, rng=rng)
 
-        graph = CircuitGraph(header_comment="* RC low-pass filter")
+        graph = CircuitGraph(
+            family=self.family,
+            topology=self.topology,
+            header_comment="* RC low-pass filter",
+        )
         graph.add_voltage_source("Vin", "in", "0", ac=1)
         graph.add_resistor("R1", "in", "out", r1)
         graph.add_capacitor("C1", "out", "0", c1)
@@ -130,7 +138,11 @@ class RCHighPass(CircuitTemplate):
         r1 = pick_e_value(E12_VALUES, decade_min=3, decade_max=6, rng=rng)
         c1 = pick_e_value(E6_VALUES, decade_min=-9, decade_max=-6, rng=rng)
 
-        graph = CircuitGraph(header_comment="* RC high-pass filter")
+        graph = CircuitGraph(
+            family=self.family,
+            topology=self.topology,
+            header_comment="* RC high-pass filter",
+        )
         graph.add_voltage_source("Vin", "in", "0", ac=1)
         graph.add_capacitor("C1", "in", "out", c1)
         graph.add_resistor("R1", "out", "0", r1)
@@ -179,7 +191,11 @@ class RLCBandPass(CircuitTemplate):
         l1 = rng.choice(INDUCTOR_VALUES)
         c1 = pick_e_value(E6_VALUES, decade_min=-8, decade_max=-6, rng=rng)
 
-        graph = CircuitGraph(header_comment="* RLC series band-pass filter  (output across R)")
+        graph = CircuitGraph(
+            family=self.family,
+            topology=self.topology,
+            header_comment="* RLC series band-pass filter  (output across R)",
+        )
         graph.add_voltage_source("Vin", "in", "0", ac=1)
         graph.add_inductor("L1", "in", "mid", l1)
         graph.add_capacitor("C1", "mid", "out", c1)
