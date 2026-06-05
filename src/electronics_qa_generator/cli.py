@@ -39,6 +39,11 @@ def build_parser() -> argparse.ArgumentParser:
     emit.add_argument("--all", action="store_true", help="emit all templates")
     emit.add_argument("--seed", type=int, default=0, help="random seed for reproducible sampling")
     emit.add_argument("-o", "--out", default=None, help="output directory (default: stdout)")
+    emit.add_argument(
+        "--render",
+        action="store_true",
+        help="render a schematic PNG alongside the netlist/JSON",
+    )
 
     # -- simulate subcommand ------------------------------------------------
     sim = sub.add_parser("simulate", help="run Xyce simulation and extract facts")
@@ -71,6 +76,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--humanize",
         action="store_true",
         help="rewrite questions in natural exam-style language via DeepSeek LLM",
+    )
+    qa.add_argument("-o", "--out", default=None, help="output directory for rendered schematics")
+    qa.add_argument(
+        "--render",
+        action="store_true",
+        help="render a schematic PNG for each circuit alongside QA items",
     )
 
     return parser

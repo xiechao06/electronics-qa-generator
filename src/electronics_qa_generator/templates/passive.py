@@ -55,6 +55,7 @@ class VoltageDivider(CircuitTemplate):
             netlist=netlist,
             simulation=sim,
             probes=["V(out)"],
+            graph=graph,
         )
 
 
@@ -101,6 +102,7 @@ class RCLowPass(CircuitTemplate):
             netlist=netlist,
             simulation=sim,
             probes=["V(out)"],
+            graph=graph,
         )
 
 
@@ -149,6 +151,7 @@ class RCHighPass(CircuitTemplate):
             netlist=netlist,
             simulation=sim,
             probes=["V(out)"],
+            graph=graph,
         )
 
 
@@ -198,4 +201,5 @@ class RLCBandPass(CircuitTemplate):
             netlist=netlist,
             simulation=sim,
             probes=["V(out)"],
+            graph=graph,
         )

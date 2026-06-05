@@ -72,4 +72,5 @@ class HalfWaveRectifier(CircuitTemplate):
             netlist=netlist,
             simulation=sim,
             probes=["V(out)"],
+            graph=graph,
         )

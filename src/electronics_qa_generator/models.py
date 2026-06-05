@@ -33,6 +33,7 @@ class CircuitRecord:
     netlist: str = ""
     simulation: SimulationConfig | None = None
     probes: list[str] = field(default_factory=list)
+    graph: Any = None  # CircuitGraph (lazy-typed to avoid circular import)
 
 
 @dataclass

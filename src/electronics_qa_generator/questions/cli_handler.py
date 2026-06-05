@@ -99,6 +99,27 @@ def run_questions(args) -> None:
             hcache = None
         items = [humanize_item(item, cache=hcache) for item in items]
 
+    # Render schematic (opt-in)
+    schematic_path: str | None = None
+    if getattr(args, "render", False) and record.graph is not None:
+        try:
+            from ..render.schematic import render_schematic
+        except ImportError:
+            import logging
+
+            logging.getLogger(__name__).warning(
+                "matplotlib not installed — cannot render schematic. "
+                "Install with: uv sync --extra render"
+            )
+        else:
+            out_dir = Path(args.out) if getattr(args, "out", None) else Path("out")
+            render_dir = out_dir / "render"
+            render_dir.mkdir(parents=True, exist_ok=True)
+            seed_str = f"{seed & 0xFFFFFFFF:08x}"
+            png_path = render_dir / f"{name}_{seed_str}.png"
+            render_schematic(record.graph, png_path)
+            schematic_path = f"render/{name}_{seed_str}.png"
+
     # Print as JSON array or JSONL
     result = [
         {
@@ -111,6 +132,7 @@ def run_questions(args) -> None:
             "choices": item.choices,
             "program": item.program,
             "explanation": item.explanation,
+            "schematic_path": schematic_path,
         }
         for item in items
     ]
