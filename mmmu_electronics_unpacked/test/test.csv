@@ -1,0 +1,1186 @@
+id,question,options,explanation,img_type,answer,topic_difficulty,question_type,subfield,images_json
+test_Electronics_1,The circuit is described in <image 1>. What does $V_0$ become after the switch is closed? Answer the amplitude of $V_0$.,[],,['Diagrams'],22.03,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_1_image_1_test_Electronics_1_1.png"", ""original_path"": ""test_Electronics_1_1.png""}]"
+test_Electronics_2,"Two discrete systems shown in fig. 1 of <image 1> and fig. 2 <image 1> are cascaded (i.e., connected in series). Solve y [n] using b_0 = b_1 = 1, ax = 2, x [n] = u [n] and y [-1] = 0","['y [n] = -2u [n] + \\times 2^n u[n]', 'y [n] = -2u [n] + 2 \\times 2^n u[n]', 'y [n] = -2u [n] + 3 \\times 2^n u[n]', 'y [n] = -3u [n] + 3 \\times 2^n u[n]']",,['Diagrams'],C,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_2_image_1_test_Electronics_2_1.png"", ""original_path"": ""test_Electronics_2_1.png""}]"
+test_Electronics_3,"In <image 1>. A current source, $8u(t)$A, a 5-ohm resistor, and a 20 mH inductor are in parallel. At t = 3ms, find the power absorbed by the source.",[],,['Diagrams'],-151.2,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_3_image_1_test_Electronics_3_1.png"", ""original_path"": ""test_Electronics_3_1.png""}]"
+test_Electronics_4,Find $|I_2| / |I_s|$ in the circuit shown in <image 1> if $\omega$ = 2000;,[],,['Diagrams'],50,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_4_image_1_test_Electronics_4_1.png"", ""original_path"": ""test_Electronics_4_1.png""}]"
+test_Electronics_5,"Suppose that in the circuit shown in <image 1> with $V_{EE}$ = - 21 V, $V_{CC}$ = 24 V, and RC = 8 k-ohm. What is the collector saturation current $I_{C(sat)}$, and what value of RE (in terms of k-ohm) will cause the collector to saturate?",[],"Saturation occurs when both junctions are forward biased. As a
+
+                        simplifying assumption, we may say that at saturation VCB = 0, VBE = 0,
+
+                        and IE = IC. Thus, the collector is saturated when the voltage across RC is
+
+                        about equal to the source VCC. Therefore
+
+                                    IC(sat) = [(24 V) / (8 k-ohm)] = 3 mA
+
+                        The emitter current IE that causes saturation is about 3 mA too. This
+
+                        IE = 3 mA flows when RE = 21 V/3 mA = 7 k-ohm.",['Diagrams'],7,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_5_image_1_test_Electronics_5_1.png"", ""original_path"": ""test_Electronics_5_1.png""}]"
+test_Electronics_6," For the circuit shown in <image 1>, find $v_c (t)$ if $i_s$ = 25u(t) mA","['40 + 60(1 - e^{-20t}) u(t) V', '50 + 60(1 - e^{-20t}) u(t) V', '40 + 40(1 - e^{-20t}) u(t) V', '50 + 50(1 - e^{-20t}) u(t) V']",,['Diagrams'],A,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_6_image_1_test_Electronics_6_1.png"", ""original_path"": ""test_Electronics_6_1.png""}]"
+test_Electronics_7," In the circuit of <image 1>, $v(t) = V_m cos(\omega t)$ V and, in the steady state, $v_{ab}(t) = (V_{ab})_m cos(\omega t - \theta)$ V. Find $(V_{ab})_m/V_m$ as a function of $\omega$.","['[{2j\\omega + 1} / {12j\\omega - 1}]', '[{4j\\omega + 1} / {12j\\omega + 1}]', '[{2j\\omega + 1} / {12j\\omega + 1}]', '[{3j\\omega + 1} / {12j\\omega + 1}]']",,['Diagrams'],C,Easy,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_7_image_1_test_Electronics_7_1.png"", ""original_path"": ""test_Electronics_7_1.png""}]"
+test_Electronics_8,"After having been closed for a long time, the switch in the network of <image 1> is opened at t=0. Find $v_c(t)$ for t> 0.",[],"The voltage across the capacitor vC at steady state (t = 0-) can be found in Fig. 2. to be 20V. After the switch is opened, the capacitor is no longer in an RC loop. Therefore the voltage vC remains at 20V for t > 0.",['Geometric Shapes'],20,Easy,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_8_image_1_test_Electronics_8_1.png"", ""original_path"": ""test_Electronics_8_1.png""}]"
+test_Electronics_9,Find $i_1(0^+)$ (in terms of A) in the circuit shown in <image 1> if $i_s$ = 3u(t) A,[],,['Diagrams'],3,Easy,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_9_image_1_test_Electronics_9_1.png"", ""original_path"": ""test_Electronics_9_1.png""}]"
+test_Electronics_10,For the circuit shown in <image 1>: let R = infinity and use nodal methods to find the power (in terms of W) supplied by the 7-A source;,[],,['Diagrams'],238,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_10_image_1_test_Electronics_10_1.png"", ""original_path"": ""test_Electronics_10_1.png""}]"
+test_Electronics_11, In <image 1>. $v_c = sin 2 \pi T$. Find an expression for i and calculate i at the instants t = 1/4s.,"['$0 \\pi x 10^-5 A$', '$1 \\pi x 10^-5 A$', '$2 \\pi x 10^-5 A$', '$3 \\pi x 10^-4 A$']",,['Diagrams'],A,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_11_image_1_test_Electronics_11_1.png"", ""original_path"": ""test_Electronics_11_1.png""}]"
+test_Electronics_12,"In the circuit shown in <image 1>, determine the summation of currents $i_1$, $i_2$, and $i_3$.",[],,['Geometric Shapes'],3.92,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_12_image_1_test_Electronics_12_1.png"", ""original_path"": ""test_Electronics_12_1.png""}]"
+test_Electronics_13,Each circuit shown in <image 1> has been in the condition shown for an extremely long time. Determine i(0) in the (c) circuit.,[],,['Diagrams'],-2,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_13_image_1_test_Electronics_13_1.png"", ""original_path"": ""test_Electronics_13_1.png""}]"
+test_Electronics_14,The left switch in the circuit of <image 1> closed at t = 0. Find $i_L (t)$ for 0 < t < 0.1s,"['$2e^[- t / (0.03)]$', '$2e^[- t / (0.02)]$', '$2e^[- t / (0.04)]$', '$2e^[- t / (0.06)]$']",,['Diagrams'],D,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_14_image_1_test_Electronics_14_1.png"", ""original_path"": ""test_Electronics_14_1.png""}]"
+test_Electronics_15,"After having been closed for a long time, the switch in the network of <image 1> is opened at t = 0. Find $v_C (t)$ for t > 0 in terms of V.",[],,['Diagrams'],20,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_15_image_1_test_Electronics_15_1.png"", ""original_path"": ""test_Electronics_15_1.png""}]"
+test_Electronics_16,Use Thevenin's theorem to calculate the phasor $V_{ab}$ in the circuit in <image 1>.,"['1.2\\phase{-37.8} V', '2.5\\phase{-37.8} V', '1.2\\phase{-30.8} V', '1.2\\phase{-24.8} V']",,['Diagrams'],A,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_16_image_1_test_Electronics_16_1.png"", ""original_path"": ""test_Electronics_16_1.png""}]"
+test_Electronics_17,Find $v_x(t)$ in the circuit shown in <image 1>.,"['12.67 cos(1000t + 156.4^{\\circ})V', '13.97 cos(1000t + 156.4^{\\circ})V', '13.97 cos(500t + 156.4^{\\circ})V', '12.97 cos(1000t + 145.4^{\\circ})V']",,['Diagrams'],B,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_17_image_1_test_Electronics_17_1.png"", ""original_path"": ""test_Electronics_17_1.png""}]"
+test_Electronics_18,Find the steady-state voltage $v_c(t)$ in the circuit of <image 1>.,"['0.892 cos ((2\\pi x 104) - 59^{\\circ})V', '0.866 cos ((2\\pi x 104) - 59^{\\circ})V', '0.892 cos ((2\\pi x 104) - 56^{\\circ})V', '0.866 cos ((2\\pi x 102) - 59^{\\circ})V']",,['Diagrams'],B,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_18_image_1_test_Electronics_18_1.png"", ""original_path"": ""test_Electronics_18_1.png""}]"
+test_Electronics_19,Find the system function H (z) = [{Y (z)} / {X (z)}] and the delta response h[n] of the system shown in <image 1>.,"['4 (1/2)^n u[n] - 1 (1/3)^n u[n].', '4 (1/2)^n u[n] - 2 (1/3)^n u[n].', '3 (1/2)^n u[n] - 2 (1/3)^n u[n].', '3 (1/2)^n u[n] - 3 (1/3)^n u[n].']",,['Diagrams'],C,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_19_image_1_test_Electronics_19_1.png"", ""original_path"": ""test_Electronics_19_1.png""}]"
+test_Electronics_20,"Given that the circuit shown in <image 1> has the following values: $I_{DSS}$ = 5 mA ,$V_P$ = - 5 V, $R_S$ = 5 k-ohm, $R_L$ = 2 k-ohm, and $V_{DD}$ = 10 V. Calculate the values of $V_{DS}$ at  the quiescent point.",[],"The gate is at ground potential because Eg is a sine wave input
+
+                        with a 0 DC level. Thus IS \approx ID. Using KVL:
+
+                                                0 = VGS  + ISRS \approx VGS + IDRS
+
+                        therefore  VGS = IDRS 
+
+                                    or  VGS = - 5000 ID                                                                            (1)
+
+                        The inverse square law can be used to solve equation (1) which has two
+
+                        Unknowns:
+
+                                                ID = IDSS [1 - (VGS / VP)]2
+
+                                                ID = (5 * 10-3) [1 - {(VGS) / (- 5)}]2                                        (2)
+
+                        Combining equations (1) and (2), we get
+
+                                                VGS = (- 5000) (5 * 10-3) (1 + 0.2VGS)2
+
+                                                VGS2 + 11VGS + 25 = 0
+
+                        The solutions to this equation are
+
+                                                VGS = - 3.2 V and
+
+                                                VGS = -7.8 V
+
+                        VGS = - 7.8 V cannot be correct because it exceeds VP, the voltage at
+
+                        which the drain current is zero. Therefore the correct value of VGS is
+
+                        - 3.2 V. Now I can be calculated using equation 2.
+
+                                                ID = (5 * 10-3) (1 - 0.64)2 = 0.65 mA
+
+                        To determine VDS, we must find the drops across RL and RS.
+
+                        Drop across   RL = IDRL =  2,000ID = 1.3 V
+
+                        Drop across RS = ISRS \approx IDRS = 5,000ID = 3.25 V",['Diagrams'],5.45,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_20_image_1_test_Electronics_20_1.png"", ""original_path"": ""test_Electronics_20_1.png""}]"
+test_Electronics_21,"In order to indicate that active elements may be used to increase the Q of resonant circuits, find $Q_o$ for the circuit shown in <image 1> by an inspection of the input admittance presented to the independent source if $k = 4 x 10^{-5}$",[],,['Diagrams'],250,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_21_image_1_test_Electronics_21_1.png"", ""original_path"": ""test_Electronics_21_1.png""}]"
+test_Electronics_22,"For the circuit in <image 1>, solve analytically for the capacitor voltage $v_C(t)$. Establish the initial conditions from the circuit relationships","['4^{-0.5t} (cos 0.5t + sin 0.5t) V', '1.5^{-1t} (cos 1.0t + sin 1.0t) V', '2.5^{-0.5t} (cos 0.5t + sin 0.5t) V', '1.5^{-0.5t} (cos 0.5t + sin 0.5t) V']",,['Diagrams'],D,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_22_image_1_test_Electronics_22_1.png"", ""original_path"": ""test_Electronics_22_1.png""}]"
+test_Electronics_23,Each circuit shown in <image 1> has been in the condition shown for an extremely long time. Determine i(0) in the (a) circuit.,[],,['Diagrams'],2,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_23_image_1_test_Electronics_23_1.png"", ""original_path"": ""test_Electronics_23_1.png""}]"
+test_Electronics_24,"The admittance and impedance of the network shown in <image 1>, are equal at every frequency. Find C in terms of F.",[],,['Diagrams'],1,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_24_image_1_test_Electronics_24_1.png"", ""original_path"": ""test_Electronics_24_1.png""}]"
+test_Electronics_25,"For the series RLC network of <image 1>, calculate the current i(t).","['6.26e^{-0.2t} sin (.968 t) u(t) A.', '6.26e^{-0.25t} sin (.968 t) u(t) A.', '3.44e^{-0.25t} sin (.968 t) u(t) A.', '9.56e^{-0.25t} sin (.968 t) u(t) A.']",,['Diagrams'],B,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_25_image_1_test_Electronics_25_1.png"", ""original_path"": ""test_Electronics_25_1.png""}]"
+test_Electronics_26,Find $R_{eq}$ for the network of <image 1>.,[],"Start to combine resistors at the right side of the circuit.
+
+                                    Add the 5, 9, and $1-\Omega$ resistors, which now form a resistor parallel
+
+                        to the 10-\Omega resistor.
+
+                        Next,               [(15 * 10) / (15 + 10)] = 6\Omega
+
+                                    Fig. 3 shows the resulting circuit, This circuit can be further
+
+                        simplified similarly.
+
+                        and                 [(12 * 4) / (12 + 4)] = 3\Omega
+
+                                    Req = 3 + 3 + 4 = 10\Omega",['Diagrams'],10,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_26_image_1_test_Electronics_26_1.png"", ""original_path"": ""test_Electronics_26_1.png""}]"
+test_Electronics_27,Find the amplitude (in terms of V) of the phasor voltage $I_2$ in the circuit of <image 1>.,[],,['Diagrams'],6.55,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_27_image_1_test_Electronics_27_1.png"", ""original_path"": ""test_Electronics_27_1.png""}]"
+test_Electronics_28,"For the circuit shown in <image 1>, determine the dc output voltage.",[],"The maximum voltage across the secondary of the transform,
+
+Vs(max), is
+
+ Vs(max) = 4Vp (max) = 4 * 10 = 40 V
+
+where Vp (max) is the maximum voltage across the primary winding. While
+
+the current is positive, it is given by
+
+                        i (\Omegat) = Imax sin \Omegat                  0 < \Omegat < \pi
+
+It cannot go negative because of the diode, so
+
+                        i (\Omegat) = 0                                 \pi \leq \Omegat \leq 2 \pi
+
+                        Then the dc (average) value of i (\Omegat) is
+
+                                          Idc  = Imax (1 / 2\pi) [\pi\int 0 sin (\Omegat) d (\Omegat) + 2\pi\int \pi o d (\Omegat)]
+
+                                                = [(Imax) / \pi] = 0.318 Imax
+
+                                          Idc  = [{0.318 Vs(max)} / {RL}] = [(0.318 * 40) / 1] = 12.72 mA
+
+                        Similarly,
+
+                                         Vdc  = [(Vmax) / \pi]
+
+                                         Vdc  = 0.318 * 40 = 12.72 V
+
+                                    The dc output also can be determined from the following
+
+                        relationship:
+
+                                         Vdc  = Idc(HW) RL = 12.72 * 1 = 12.72 V",['Diagrams'],12.72,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_28_image_1_test_Electronics_28_1.png"", ""original_path"": ""test_Electronics_28_1.png""}]"
+test_Electronics_29,Evaluate the sinusoidal steady-state current for the circuit shown in <image 1>  by replacing the circuit by its sinusoidal steady state equivalent.,"['$(1 / sqrt(3)) sin[3t + (\\pi / 16)]A$', '$(1 / sqrt(2)) sin[2t + (\\pi / 12)]A$', '$(1 / sqrt(3)) sin[2t + (\\pi / 12)]A$', '$(1 / sqrt(3)) sin[3t + (\\pi / 12)]A$']",,['Diagrams'],B,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_29_image_1_test_Electronics_29_1.png"", ""original_path"": ""test_Electronics_29_1.png""}]"
+test_Electronics_30,"For the series RLC network of <image 1>, calculate input impedance Z(s).","['[(2s^3 + s + 4) / s]', '[(2s^2 + s + 2) / 2s]', '[(2s^2 + s + 4) / s]', '[(2s^2 + s + 4) / 2s]']",,['Diagrams'],B,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_30_image_1_test_Electronics_30_1.png"", ""original_path"": ""test_Electronics_30_1.png""}]"
+test_Electronics_31,Two p-n silicon diodes are connected in series as shown in <image 1>. A 5-V voltage is impressed upon them. Find the voltage across each junction at room temperature ($\eta V_T$ = 0.052 V). What is their absolute difference in terms of V?,[],"The current I is the same throughout a series circuit. Clearly, this
+
+    current is in the forward direction through one diode and in the reverse
+    
+    direction through the second diode. Hence I = IO and the voltage V1 across
+    
+    the forward-biased junction can be found from the following equation:
+    
+                            I = IO(e[{(V)1} / {\eta(V)T}] - 1) = Io
+    Dividing by IO we can obtain
+
+                            e[{(V)1} / {\eta(V)T}] = 2
+    
+    Taking the natural logarithm of both sides of the equation,
+    
+                            [(V1) / (\etaVT)] = 0.693
+    
+    V1 = 0.036 V
+    
+    The voltage V2 across the reverse-biased diode is V2 = 5 - 0.036 = 4.964
+    
+    V. Note that only a small voltage is needed across the forward-biased
+    
+    junction to produce the small current Io and that almost all of the applied
+    
+    voltage appears across the reverse-biased diode.",['Diagrams'],4.928,Easy,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_31_image_1_test_Electronics_31_1.png"", ""original_path"": ""test_Electronics_31_1.png""}]"
+test_Electronics_32,In <image 1> find $v_A$ (in terms of V).,[],,['Diagrams'],5,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_32_image_1_test_Electronics_32_1.png"", ""original_path"": ""test_Electronics_32_1.png""}]"
+test_Electronics_33, Find the steady-state current $i(t)$ in the circuit shown in <image 1>. Assume v(t) = 4 sin[2t + (\pi/4)]V.,"['$4 sin[2t + (\\pi/4)] A$', '$6 sin[2t + (\\pi/4)] A$', '$4 cos[2t + (\\pi/4)] A$', '$4 cos[2t + (\\pi/6)] A$']",,['Diagrams'],A,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_33_image_1_test_Electronics_33_1.png"", ""original_path"": ""test_Electronics_33_1.png""}]"
+test_Electronics_34,"In the balanced triangle-connected generator shown in <image 1>, $|V_a| = |V_b| = |V_c| = 173 V$ and $V_a + V_b + V_c = 0$. Calculate the absolute value of the current phasor I in the 6-ohm resistor.",[],,['Technical Blueprints'],17.3,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_34_image_1_test_Electronics_34_1.png"", ""original_path"": ""test_Electronics_34_1.png""}]"
+test_Electronics_35,Consider applying a unit ramp voltage source to a series RL circuit as shown in <image 1>. Compute the voltages $v_R (t)$ with zero initial condition for L = 10H;,"['t + 20(e^{-(t/20)} - 1) V', 't + 10(e^{-(t/10)} - 1) V', 't + 10(e^{-(t/10)} + 1) V', 't - 10(e^{-(t/10)} - 1) V']",,"['Plots and Charts', 'Diagrams']",B,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_35_image_1_test_Electronics_35_1.png"", ""original_path"": ""test_Electronics_35_1.png""}]"
+test_Electronics_36,"In the circuit of <image 1>, find the average power (in terms of mW) received by the resistor.",[],,['Diagrams'],35,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_36_image_1_test_Electronics_36_1.png"", ""original_path"": ""test_Electronics_36_1.png""}]"
+test_Electronics_37,"Find y[n] (for n > 1) for the input x[n], shown in <image 1>, by first finding the delta response h[n] of the system.","['7 (1/2)^(n-1)', '3 (1/2)^n', '6 (1/2)^n + 1', '7 (1/2)^n']",,['Diagrams'],D,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_37_image_1_test_Electronics_37_1.png"", ""original_path"": ""test_Electronics_37_1.png""}]"
+test_Electronics_38,Calculate the current at t = 0+ in the circuit of <image 1>. The current at t = 0- is zero.,"['(A / L)', '(A / 2L)', '(A / 3L)', '(2A / L)']",,['Diagrams'],A,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_38_image_1_test_Electronics_38_1.png"", ""original_path"": ""test_Electronics_38_1.png""}]"
+test_Electronics_39,"In the emitter-bias circuit shown in <image 1>, $R_C$ = 10 k$\Omega$, $R_E$ = 1 k$\Omega$, and $V_{CC}$ = 20 V. Given that $\beta _O$ = 80 and $V_{BE}$ = 0.6 V, find R1 (k$\Omega$) to set $V_{CQ}$ at the center of the active region.",[],"We will first assume that R2 = 10RE is a condition imposed on the
+
+                        circuit by stability requirements. This gives a value of R2 = 10 k\Omega for this
+
+                        example. We now must find the desired value of IBQ.
+
+                        The center of the active region must be located. The center lies halfway
+
+                        between the maximum and minimum values of VC. The maximum value
+
+                        occurs when IC = 0, VC = VCC. The minimum value occurs when the
+
+                        transistor saturates. It then acts as a short (VCE(sat) << VCC), so by voltage
+
+                        division
+
+                                    VC = [RE / (RC + RE)]VCC
+
+                        The halfway point is then
+
+                                    VCQ = (1 / 2) (VCmax + VCmin) = (VCC / 2){1 + [RE / (RC + RE)]}
+
+                                    VCQ = 10{1 + (1 / 11)} = 10.9 V.
+
+                        The required collector current and base current can now be found to give
+
+                        this value of VCQ:
+
+                                    VCQ = [(VCC - VCQ) / RC] = [(20 - 10.9) / 10 k\Omega] = 0.91 mA,
+
+                                    IBQ = (ICQ / \betao) = (0.91 / 80) 0.0114 mA.
+
+                        We now select R1 to give the calculated value of IBQ. By noting in the
+
+                        figure that I1 = IBQ + I2, we can find the necessary value of R1:
+
+                                I2 = (VBQ / R2) = [(IEQRE + VBE) / R2] = [{(IBQ + ICQ)RE + 0.6} / R2]
+
+                                    = [{(0.92)1 k\Omega + 0.6} / 10 k\Omega] = 0.152 mA;
+
+                                I1  = IBQ + I2 = 0.011 + 0.152 = 0.163 mA:
+
+                        Since the voltage across R1 is VCC - VBQ, then
+
+                                    R1 = [(VCC - VBQ) / I1] = [(20 - 1.52) / 0.163] = 113 k\Omega.",['Diagrams'],113,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_39_image_1_test_Electronics_39_1.png"", ""original_path"": ""test_Electronics_39_1.png""}]"
+test_Electronics_40,Both switches in the circuit of <image 1> are closed at t = 0. Find $i_3(t)$ for t > 0.,"['20 - 12e^{-10t} mA', '10 - 12e^{-10t} mA', '10 - 12e^{-20t} mA', '20 - 5e^{-10t} mA']",,['Diagrams'],A,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_40_image_1_test_Electronics_40_1.png"", ""original_path"": ""test_Electronics_40_1.png""}]"
+test_Electronics_41,"In the circuit shown in <image 1>, the following magnitudes are known: $|V_{ab}| = 100 V$, $|V_{a'b}| = 200 V$,  $|I| = 20 A$. In addition, it is known that $X_L$ = 2R. Solve for $Z_{aa'}->$","['3 + j12 ohm', '4 + j6 ohm', '3 + j6 ohm', '3 + j8 ohm']",,['Geometric Shapes'],C,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_41_image_1_test_Electronics_41_1.png"", ""original_path"": ""test_Electronics_41_1.png""}]"
+test_Electronics_42,Find the current in the circuit shown in <image 1>.,"['$18.02 \\phase{- 21.8} A$', '$18.02 \\phase{- 25.8} A$', '$18.57 \\phase{- 21.8} A$', '$12.02 \\phase{- 45.8} A$']",,['Diagrams'],C,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_42_image_1_test_Electronics_42_1.png"", ""original_path"": ""test_Electronics_42_1.png""}]"
+test_Electronics_43,For the circuit of <image 1>. Let $v_s(t) = 3\delta(t)$ and find v(t).,"['3 e^{-2t} u(t) V', '4 e^{-2t} u(t) V', '6 e^{-t} u(t) V', '6 e^{-2t} u(t) V']",,['Diagrams'],D,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_43_image_1_test_Electronics_43_1.png"", ""original_path"": ""test_Electronics_43_1.png""}]"
+test_Electronics_44,"Find the equivalent resistor R as shown in <image 1>, where $\mu F$ denotes a microfarad, equivalent to $10^{-6}$ farad.",[],,['Diagrams'],2.667,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_44_image_1_test_Electronics_44_1.png"", ""original_path"": ""test_Electronics_44_1.png""}]"
+test_Electronics_45,"Consider the network of <image 1>. Use the convolution integral to understand the output voltage $v_C(t)$ when the input applied is v(t) = sin(t), $0 < t < \pi$, and v(t) = 0 otherwise. Find the maximum value of output voltage.",[],,['Diagrams'],0.754,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_45_image_1_test_Electronics_45_1.png"", ""original_path"": ""test_Electronics_45_1.png""}]"
+test_Electronics_46,"Using Laplace transform techniques, find the current in resistor $R_2$ in <image 1>. Assume that the initial current in the inductor, $i_L(0^-) = 1A$.","['e^{-(1 / 2)t} A', '(1 / 4) e^{-(1 / 3)t} A', '(1 / 2) e^{-(1 / 2)t} A', '(1 / 3) e^{-(1 / 3)t} A']",,['Diagrams'],C,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_46_image_1_test_Electronics_46_1.png"", ""original_path"": ""test_Electronics_46_1.png""}]"
+test_Electronics_47,Determine the Laplace transform of the time functions shown in Figure (a) of <image 1>.,"['[{2(\\pi / 3)} / {s^2 + (\\pi^2 / 9)}] (e^{-2s} + e^{-4s})', '[{2(\\pi / 3)} / {s^2 + (\\pi^2 / 9)}] (e^{-s} + e^{-2s})', '[{2(\\pi / 3)} / {s^2 + (\\pi^2 / 9)}] (e^{-s} + e^{-4s})', '[{2(\\pi / 3)} / {s^2 + (\\pi^2 / 8)}] (e^{-s} + e^{-4s})']",,['Diagrams'],C,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_47_image_1_test_Electronics_47_1.png"", ""original_path"": ""test_Electronics_47_1.png""}]"
+test_Electronics_48,"In the circuit of Fig. 1 of <image 1>, $v_C(0+)$ = 4V, and the source voltage is plotted in Fig. 2 of <image 1>. Use Laplace transform techniques to find $i_x(t)$ for $t \ge 0+$ ","['(1 / 2)t - (24 / 18) + 2 e^{-(3 / 4)t}', '(1 / 2)t - (25 / 18) + (95 / 36)e^{-(3 / 4)t}', '(5 / 12)t - (25 / 18) + (95 / 36)e^{-(3 / 4)t}', '(1 / 3)t - (25 / 18) + (95 / 36)e^{-(3 / 4)t}']",,['Diagrams'],B,Easy,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_48_image_1_test_Electronics_48_1.png"", ""original_path"": ""test_Electronics_48_1.png""}]"
+test_Electronics_49,"Using superposition and Laplace transform techniques, calculate the voltage vc(t) in <image 1> .","['[(5 / 4)e^{-2t} - e^{-4t} + (1 / 3)t - (1 / 3)] u(t)', '[(5 / 4)e^{-2t} - e^{-3t} + (1 / 2)t - (1 / 4)] u(t)', '[(1 / 4)e^{-2t} - e^{-4t} + (1 / 3)t - (1 / 4)] u(t)', '[(5 / 4)e^{-2t} - e^{-4t} + (1 / 2)t - (1 / 4)] u(t)']",,['Diagrams'],D,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_49_image_1_test_Electronics_49_1.png"", ""original_path"": ""test_Electronics_49_1.png""}]"
+test_Electronics_50,In <image 1> find $v_1$ (in terms of V).,[],,['Diagrams'],23.75,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_50_image_1_test_Electronics_50_1.png"", ""original_path"": ""test_Electronics_50_1.png""}]"
+test_Electronics_51,Both switches in the circuit of <image 1> are closed at t = 0. Find $i_2(t)$ for t > 0.,"['+12 e^{-10t} mA', '-12 e^{-10t} mA', '10 e^{-10t} mA', '-10 e^{-10t} mA']",,['Diagrams'],A,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_51_image_1_test_Electronics_51_1.png"", ""original_path"": ""test_Electronics_51_1.png""}]"
+test_Electronics_52,Find the amplitude (in terms of V) of the phasor voltage $I_3$ in the circuit of <image 1>.,[],,['Diagrams'],3.58,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_52_image_1_test_Electronics_52_1.png"", ""original_path"": ""test_Electronics_52_1.png""}]"
+test_Electronics_53,Determine the Laplace transform of the time functions shown in Figure (b) of <image 1>.,"['3e^{-s} + (3 / s) (e^{-2s} - e^{-3s})', '3e^{-s} + (5 / s) (e^{-2s} - e^{-3s})', '3e^{-s} + (5 / s) (e^{-s} - e^{-3s})', '4e^{-s} + (5 / s) (e^{-2s} - e^{-3s})']",,['Mathematical Notations'],B,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_53_image_1_test_Electronics_53_1.png"", ""original_path"": ""test_Electronics_53_1.png""}]"
+test_Electronics_54,"In <image 1>. A current source, $8u(t)$A, a 5-ohm resistor, and a 20 mH inductor are in parallel. At t = 3ms, find the power absorbed by the resistor.",[],,['Diagrams'],71.44,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_54_image_1_test_Electronics_54_1.png"", ""original_path"": ""test_Electronics_54_1.png""}]"
+test_Electronics_55,"Find $i_L(t)$ for $t \ge 0$ in <image 1>, assume $v_C(0) = i_L(0) = 0$.","['0.27e^{-0.87t} - 0.27e^{-8.63t} A', '0.30e^{-0.87t} - 0.30e^{-8.63t} A', '0.39e^{-0.84t} - 0.39e^{-8.40t} A', '0.39e^{-0.87t} - 0.39e^{-8.63t} A']",,['Diagrams'],D,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_55_image_1_test_Electronics_55_1.png"", ""original_path"": ""test_Electronics_55_1.png""}]"
+test_Electronics_56,For the circuit shown in <image 1>: let R = 4 ohm and use nodal methods to find the power (in terms of W) supplied by the 7-A source;,[],,['Diagrams'],95.2,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_56_image_1_test_Electronics_56_1.png"", ""original_path"": ""test_Electronics_56_1.png""}]"
+test_Electronics_57,"For the circuit shown in <image 1>, find $i_L(t)$.","['.01 (1 - e^{-25,000t}) u(t) A', '.02 (1 - e^{-25,000t}) u(t) A', '.02 (1 - e^{-50,000t}) u(t) A', '.01 (1 - e^{-50,000t}) u(t) A']",,['Diagrams'],B,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_57_image_1_test_Electronics_57_1.png"", ""original_path"": ""test_Electronics_57_1.png""}]"
+test_Electronics_58,"For the circuit shown in <image 1>, find $i_L (t)$.","['$.01 (2 - e^{-25,000t}) u(t) A$', '$.01 (1 - e^{-25,000t}) u(t) A$', '$.02 (1 - e^{-25,000t}) u(t) A$', '$.01 (1 + e^{-25,000t}) u(t) A$']",,['Diagrams'],C,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_58_image_1_test_Electronics_58_1.png"", ""original_path"": ""test_Electronics_58_1.png""}]"
+test_Electronics_59,"For the circuit shown in <image 1>, calculate the total response, $v_C(t)$, as the sum of the particular and homogeneous solutions of the second order differential equation describing the network. (Assume zero initial conditions).","['0.3 v_0 e^{-0.293t} - 0.3 v_0 e^{-1.747} - 0.345 v_0 te^{-1.747t}', '0.3 v_0 e^{-0.293t} - 0.3 v_0 e^{-1.707t} - 0.345 v_0 te^{-1.707t}', '0.25 v_0 e^{-0.293t} - 0.25 v_0 e^{-1.707t} - 0.345 v_0 te^{-1.707t}', '0.25 v_0 e^{-0.293t} - 0.15 v_0 e^{-1.707t} - 0.527 v_0 te^{-1.707t}']",,['Diagrams'],C,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_59_image_1_test_Electronics_59_1.png"", ""original_path"": ""test_Electronics_59_1.png""}]"
+test_Electronics_60,"In <image 1>. A parallel circuit is comprised of the elements; L = 10H, R = 320-ohm, C = (125 / 8) \muF. The initial capacitor voltage is $v_C(0^+) = - 160 V$. The initial value of the capacitor current is $i_C (0^+) = 0.7 A$, where $i_C$ and $v_C$ are related by the passive sign convention. At what value (in terms of ms) of t is $v_C$ a positive maximum?",[],,['Diagrams'],17.3,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_60_image_1_test_Electronics_60_1.png"", ""original_path"": ""test_Electronics_60_1.png""}]"
+test_Electronics_61,"The voltage ratio $(V_2/ V_1)$ for the circuit shown in <image 1> has a pole at -100 + j700. If R = 500-ohm, find C in terms of uF.",[],,['Diagrams'],0.83,Medium,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_61_image_1_test_Electronics_61_1.png"", ""original_path"": ""test_Electronics_61_1.png""}]"
+test_Electronics_62,"As depicted in <image 1>. A current source of 0.2 u(t) A, a 100-ohm resistor, and a 0.4-H inductor are in parallel. Find the magnitude of the inductor current as t -> infinity.",[],,['Diagrams'],12,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_62_image_1_test_Electronics_62_1.png"", ""original_path"": ""test_Electronics_62_1.png""}]"
+test_Electronics_63,"In the circuit shown in <image 1>, the switch has been in the position shown for a long time. At t = 0 it is moved to the left. Find $i_L(t)$.","['2 + (-4 + 4 e^{-t}) u (t) A', '-2 + (-4 + 4 e^{-(1/2)t}) u (t) A', '2 + (4 + 4 e^{-(1/2)t}) u (t) A', '2 + (-4 + 4 e^{-(1/2)t}) u (t) A']",,['Technical Blueprints'],D,Easy,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_63_image_1_test_Electronics_63_1.png"", ""original_path"": ""test_Electronics_63_1.png""}]"
+test_Electronics_64,A partially designed current-source-type ramp generator is shown in <image 1>. The peak ramp voltage is to be +5 V. Find the required value of $R^E$ (in terms of K).,[],,['Diagrams'],1.72,Medium,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_64_image_1_test_Electronics_64_1.png"", ""original_path"": ""test_Electronics_64_1.png""}]"
+test_Electronics_65,Find $v_x$ in the circuit shown in <image 1> by nodal analysis,[],,['Diagrams'],0.667,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_65_image_1_test_Electronics_65_1.png"", ""original_path"": ""test_Electronics_65_1.png""}]"
+test_Electronics_66, Find the unit impulse response of the network of <image 1>. Assume zero initial conditions and v(t) = $\delta(t)$.,"['(2 / RC)e^{-t / 2RC} u_0 (t)', '(2 / RC)e^{-t / RC} u_0 (t)', '(1 / 2RC)e^{-t / 2RC} u_0 (t)', '(1 / RC)e^{-t / RC} u_0 (t)']",,['Diagrams'],D,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_66_image_1_test_Electronics_66_1.png"", ""original_path"": ""test_Electronics_66_1.png""}]"
+test_Electronics_67,Calculate the voltage drops $V_1$ (in terms of volts) in <image 1>. The impressed voltage will be taken along the reference axis,"['19.52 + j33.14', '19.34 + j36.14', '16.52 + j33.19', '9.52 + j13.14']",,['Diagrams'],A,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_67_image_1_test_Electronics_67_1.png"", ""original_path"": ""test_Electronics_67_1.png""}]"
+test_Electronics_68,Determine the Laplace transform of the functions of time depicted in Fig (c) of <image 1>.,"['[(1.5) / s2] (e^{-s} - 2e^{-3s} + e^{-5s})', '[(1.5) / s2] (e^{-s} - 3e^{-3s} + e^{-5s})', '[(1.5) / s2] (e^{-s} + 2e^{-3s} - e^{-5s})', '[(2.0) / s2] (e^{-s} - 2e^{-3s} + e^{-5s})']",,['Diagrams'],A,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_68_image_1_test_Electronics_68_1.png"", ""original_path"": ""test_Electronics_68_1.png""}]"
+test_Electronics_69,"Consider the monostable MV shown in <image 1>. The two MOSFETs being used are the enhancement-type. For the MOSFETs, assume: $I_D(max)$ = 10 mA, $V_{DS} (max)$ = 15 V, $BV_{GSS}$ = $\pm $ 30 V, $R_{DS}(ON)$ = 100, $V_{TH}$ = 6 V. Assume all diodes as ideal. Find: Whether the MOSFETs operate within safe limits.","['Yes', 'No']","In the stable state, Q2 is on and Q1 is off. The gate of Q2 draws
+
+                        no current, and there is no drain current in Q1, so VGS2 = VGS1 = VDD.
+
+                        There is no input at the trigger, so VGS1 = 0.
+
+                        A pulse at the trigger turns Q1 on. This causes VDS1 to go low, and C
+
+                        transmits the drop to the gate of Q2, turning it off, and forcing VDS2 to go
+
+                        high. C begins charging. When VDS1 + VC = VTH, Q2 goes on, VDS2 goes
+
+                        low , Q1 shuts off, C discharges, and the circuit goes back into its stable
+
+                        state.
+
+                        When a MOSFET in this circuit is on, the current through it is
+
+                                             ID (ON)   = {(VDD) / (RD + RDS(ON))}
+
+                                                            = {(12) / (2k\Omega + 100)}
+
+                                                            = 5.714 mA
+
+                        ID , VDD , VGS are all below their respective maximum\xadrated values.
+
+                        Therefore, the MOSFETs operate within safe limits.",['Diagrams'],A,Medium,multiple-choice,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_69_image_1_test_Electronics_69_1.png"", ""original_path"": ""test_Electronics_69_1.png""}]"
+test_Electronics_70,"Find the output y[n] of the discrete recursive system in (in <image 1>) given the input function $w[n] = 2u[n] - \delta[n]$, the multiplication factor $a_1 = -2$, and the initial condition y[-1] = 0.","['1, 4, 8, ...', '1, 4, 12, ...', '1, 2, 12, ...', '1, 6, 12, ...']",,['Diagrams'],B,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_70_image_1_test_Electronics_70_1.png"", ""original_path"": ""test_Electronics_70_1.png""}]"
+test_Electronics_71,Calculate the phase of voltage $v_c(t)$ in the circuit shown in <image 1>.,"['(3/2) sin[t - (4/3)π] V', '(5/2) sin[t - (4/3)π] V', '(3/2) sin[t - (1/3)π] V', '(5/2) sin[t - (1/2)π] V']",,['Diagrams'],A,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_71_image_1_test_Electronics_71_1.png"", ""original_path"": ""test_Electronics_71_1.png""}]"
+test_Electronics_72,"Find the logic expression represented by the circuit shown in <image 1>, and reduce it to the simplest sum of products form.","['D + C ^ not A + not B ^ C', 'not D + C ^ not A + B ^ not C', 'not D + C ^ not A + not B ^ not C', 'not D + C ^ not A + not B ^ C']",,['Diagrams'],D,Medium,multiple-choice,Digital electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_72_image_1_test_Electronics_72_1.png"", ""original_path"": ""test_Electronics_72_1.png""}]"
+test_Electronics_73,"As depicted in <image 1>. A current source of 0.2 u(t) A, a 100-ohm resistor, and a 0.4-H inductor are in parallel. Find the magnitude of the inductor current as t -> 0+.",[],,['Sketches and Drafts'],0,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_73_image_1_test_Electronics_73_1.png"", ""original_path"": ""test_Electronics_73_1.png""}]"
+test_Electronics_74, Find the transfer function [{V2(s)} / {V1(s)}] for the circuit in <image 1>.,"['[{2(s^2 + 2)} / (s^3 + 4s^2 + 3s + 3)]', '[{2(s^2 + 1)} / (s^3 + 4s^2 + 4s + 3)]', '[{2(s^2 + 1)} / (2s^3 + 4s^2 + 3s + 3)]', '[{2(s^2 + 1)} / (s^3 + 4s^2 + 3s + 3)]']",,['Diagrams'],D,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_74_image_1_test_Electronics_74_1.png"", ""original_path"": ""test_Electronics_74_1.png""}]"
+test_Electronics_75,"<image 1> shows a multivibrator op-amp circuit. Find the frequency (Hz) of the output. Component values are $R_1 = 100 k\Omega$, $R_2 = 86 k\Omega$, $\pm V_{sat} = \pm15V$, $R_f = 100 k\Omega$, $C = 0.1 \mu F$",[],,['Diagrams'],50,Easy,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_75_image_1_test_Electronics_75_1.png"", ""original_path"": ""test_Electronics_75_1.png""}]"
+test_Electronics_76,"At  the instant just after the switches are thrown in the circuits of <image 1>, find v.","['-6v -10v 20v', '-2v -10v 10v', '-8v -10v 10v', '-8v -10v 20v']",,['Diagrams'],D,Hard,multiple-choice,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_76_image_1_test_Electronics_76_1.png"", ""original_path"": ""test_Electronics_76_1.png""}]"
+test_Electronics_77,"Note that the current source in the circuit of <image 1> goes to zero at t = 0, and find i(0+) and i'(0+) if R =  500 ohm",[],,['Diagrams'],0,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_77_image_1_test_Electronics_77_1.png"", ""original_path"": ""test_Electronics_77_1.png""}]"
+test_Electronics_78,"Find the equivalent impedance (in terms of ohm) of the network to the right of the terminals a, b in <image 1>.",[],,['Diagrams'],1,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_78_image_1_test_Electronics_78_1.png"", ""original_path"": ""test_Electronics_78_1.png""}]"
+test_Electronics_79,Calculate $\tau$ (in terms of ms) for the one-shot shown in <image 1>.,[],"Let Ei = Ov, and assume Vo = +Vsat. Then, at the positive terminal,
+
+                                                Vf = {(R2) / (R1 + R2)} Vsat = VUT
+
+                        so the output remains at +Vsat . Now, assume that a pulse is applied, i.e.,.
+
+                        Ei \leq - 2VUT. This will cause the output to change to Vo = -Vsat , and
+
+                        Vf = -VUT . Initially diode D1 is forward - biased, so that Vc is clamped at
+
+                        Vd = 0.5 V. After the switch D1 becomes reverse-biased, and acts as
+
+                        an open circuit. While Vo = - Vsat , the circuit looks like Fig. 2.
+
+ The capacitor voltage will be
+
+                                                Vc = - Vsat + (Vsat + Vd) e-t/{(R)f C}                                           (1)
+
+                        The output will switch back when Vc = - VUT. Substituting this into Eq. (1)
+
+                        and solving for t, we get
+
+                                                e-t/{(R)f C} = {(Vsat - VUT) / (Vsat + VUT)}
+
+                        so
+
+                                                t = Rf C ln {(Vsat + Vd) / (Vsat - VUT)}                                     (2)
+
+                        From the definition of VUT, we have
+
+                                    (Vsat - VUT) = Vsat [1 - {(R2) / (R1 + R2)}] = {(R1) / (R1 + R2)} Vsat
+
+                        Substituting into Eq. (2),
+
+                                                t = Rf C ln [{1 + (R2 / R1)} / {1 + (Vd / Vsat)}]                        (3)
+
+                        Using the value given for R1, R2, Vd and Vsat,
+
+                                                \tau \approx (RfC / 5)
+
+                        Then
+
+                                                \tau = [{(100 k\Omega) (0.1 \mu F)} / {5}]
+
+                                                  = 2 ms.",['Diagrams'],2,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_79_image_1_test_Electronics_79_1.png"", ""original_path"": ""test_Electronics_79_1.png""}]"
+test_Electronics_80,A non-linear resistor is connected in series with a 5-V source and a linear 2$\Omega $ resistor. Use the v-i characteristics of the non-linear resistor in <image 1> to find the largest possible current through the circuit.,[],,['Diagrams'],2.2,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_80_image_1_test_Electronics_80_1.png"", ""original_path"": ""test_Electronics_80_1.png""}]"
+test_Electronics_81,Write an expression for vc(t) in the circuit shown in <image 1> by using a sinusoidal steady-state equivalent network.,"['$V / {jwCR + (R / R_C) + [R / (jwL + R_L)]}]$', '$V / {jwCR + (R / R_C) + [R / (jwL + R_L)] + 1}]$', '$V / {jwCR + (R / R_C) + [R / (j2wL + R_L)]}]$', '$V / {jwCR + (R / R_C) + [R / (jwL + R_L)] + 2}]$']",,['Diagrams'],B,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_81_image_1_test_Electronics_81_1.png"", ""original_path"": ""test_Electronics_81_1.png""}]"
+test_Electronics_82,Find the current i(t) for all t in the circuit shown in <image 1>,"['-0.1 + 0.2e^{-500t} - 0.1e^{-2000t} A', '-0.1 + 0.3e^{-500t} - 0.1e^{-2000t} A', '-0.2 + 0.2e^{-500t} - 0.1e^{-2000t} A', '-0.1 + 0.2e^{-500t} - 0.3e^{-2000t} A']",,['Diagrams'],A,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_82_image_1_test_Electronics_82_1.png"", ""original_path"": ""test_Electronics_82_1.png""}]"
+test_Electronics_83,"In the circuit shown in <image 1>, determine the power (in terms of watt) dissipated in the R - L branch.",[],,['Diagrams'],1989,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_83_image_1_test_Electronics_83_1.png"", ""original_path"": ""test_Electronics_83_1.png""}]"
+test_Electronics_84,Find the average power delivered to a 12-ohm resistor by each of the three periodic current waveforms displayed in Figure (c) of <image 1>.,[],,['Diagrams'],144,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_84_image_1_test_Electronics_84_1.png"", ""original_path"": ""test_Electronics_84_1.png""}]"
+test_Electronics_85,"After being closed for 1s, the switch in the circuit of <image 1> is opened at t = 0. Find $i_1(t)$ for all t > 0.","['e^{-10^6 t} [6 cos (2 \times 10^6t) - 3 sin (2 \times 10^6 t)] mA', 'e^{-10^6 t} [9 cos (2 \times 10^6t) - 3 sin (2 \times 10^6 t)] mA', 'e^{-10^6 t} [6 cos (2 \times 10^6t) - 3 sin (2 \times 10^6 t)] mA', 'e^{-10^6 t} [6 cos (2 \times 10^6t) - 2 sin (2 \times 10^6 t)] mA']",,['Diagrams'],B,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_85_image_1_test_Electronics_85_1.png"", ""original_path"": ""test_Electronics_85_1.png""}]"
+test_Electronics_86,Use superposition to find v (in terms of voltage) in each of the circuits shown in Figure (b) of <image 1>.,[],,['Geometric Shapes'],-1.6,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_86_image_1_test_Electronics_86_1.png"", ""original_path"": ""test_Electronics_86_1.png""}]"
+test_Electronics_87,Find $i_1$ in the circuit shown in <image 1>.,"['-3 + 0.800 cos(250t - 57.7^{\\circ})A', '-5 + 0.890 cos(250t - 57.7^{\\circ})A', '-3 + 0.746 cos(250t - 57.7^{\\circ})A', '-3 + 0.890 cos(250t - 57.7^{\\circ})A']",,['Sketches and Drafts'],D,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_87_image_1_test_Electronics_87_1.png"", ""original_path"": ""test_Electronics_87_1.png""}]"
+test_Electronics_88," In the monostable multivibrator circuit of <image 1>, $V_{SS} = 10 V$, $V_T = 5 V$, $C = 0.01 \mu F$, $R = 10 k \Omega$, $R_{o1} = 500 \Omega$, and assume that R' is a `resistor' and let $R' = 1 k\Omega$. The equivalent circuit for determining charging and discharging times is shown in <image 2>, and the circuit waveforms in <image 3>. Find the time T (in terms of $\mu $s) of the quasi-stable state.",[],"The capacitor time constant when charging (S' open, S closed) is
+
+                                                 \tau1 = (R + Ro1)C
+
+                        The capacitor voltage is then given by
+
+                                                VC = VSS (1 - e -t/(\tau)1)
+
+                        and solving for t gives
+
+                                                   t = \tau1 ln {(VSS) / (VSS - VC)}
+
+                        The quasi - stable state ends when VC = VT. Then
+
+                                                  T = (R + Ro1)C ln {(VSS) / (VSS - VT)}
+
+                                                     = (10 * 0.5) * 103 * 0.01 * 10-6 ln (10 / 5)
+
+                                                     = 72 \mus",['Diagrams'],72,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_88_image_1_test_Electronics_88_1.png"", ""original_path"": ""test_Electronics_88_1.png""}, {""column"": ""image_2"", ""path"": ""images/test_Electronics_88_image_2_test_Electronics_88_2.png"", ""original_path"": ""test_Electronics_88_2.png""}, {""column"": ""image_3"", ""path"": ""images/test_Electronics_88_image_3_test_Electronics_88_3.png"", ""original_path"": ""test_Electronics_88_3.png""}]"
+test_Electronics_89,"In the network of <image 1>, find the instantaneous power at the terminals ab.","['112 cos t cos(t - 66.4^{\\circ}) W', '112 cos t cos(t - 63.4^{\\circ}) W', '124 cos t cos(t - 32.4^{\\circ}) W', '112 cos t cos(t - 45.4^{\\circ}) W']",,['Diagrams'],B,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_89_image_1_test_Electronics_89_1.png"", ""original_path"": ""test_Electronics_89_1.png""}]"
+test_Electronics_90,"Write an expression for $V_C(t)$ in <image 1> using the unit ramp function, defined as $Au_1(t - T) = At$ when (t - T) >= 0; and $Au_1(t - T) = 0$ when (t - T) < 0. ","['(I / C) (t - T)u(t - T)', '(I / 2C) (t - T)u(t - T)', '(I / C) (t + T)u(t - T)', '(I / C) (t + T)u(t + T)']",,['Diagrams'],A,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_90_image_1_test_Electronics_90_1.png"", ""original_path"": ""test_Electronics_90_1.png""}]"
+test_Electronics_91,Determine the Laplace transform of the functions of time depicted in Fig (b) of <image 1>.,"['[{1.5e^{-s} (2 - e^{-2s})} / s^2]', '[{1.5e^{-s} (1 - e^{-2s})} / s]', '[{2.0e^{-s} (1 - e^{-2s})} / s^2]', '[{1.5e^{-s} (1 - e^{-2s})} / s^2]']",,['Plots and Charts'],D,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_91_image_1_test_Electronics_91_1.png"", ""original_path"": ""test_Electronics_91_1.png""}]"
+test_Electronics_92,"Find I1, I2 in the circuit below. (Assume ideal transformer in <image 1>). What is I1 - I2 in terms of A rms?",[],,['Diagrams'],-1.25,Medium,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_92_image_1_test_Electronics_92_1.png"", ""original_path"": ""test_Electronics_92_1.png""}]"
+test_Electronics_93,Find the current i(t) in the circuit of <image 1> below for the input shown.,"['[(V_m / 3) {t sin t + cost t}] u(t).', '[(V_m / 1) {t sin t + cost t}] u(t).', '[(V_m / 1) {t cos t + sin t}] u(t).', '[(V_m / 2) {t cos t + sin t}] u(t)']",,['Diagrams'],D,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_93_image_1_test_Electronics_93_1.png"", ""original_path"": ""test_Electronics_93_1.png""}]"
+test_Electronics_94,"A balanced set of three-phase voltages is connected to an unbalanced set of Y-connected impedances as shown in <image 1>. The following values are known: $V_{ab} = 212 \phase{90}$ V, $Z_{an} = 10 + j0$ ohm, $V_{bc} = 212 \phase{-150}$ V, $Z_{bn} = 10 + j10$ ohm, $V_{ca} = 212\phase{-30}$ V, $Z_{cn} = 0 - j20$ ohm, Find the magnitude of the line current $I_{a'a}$.",[],,['Diagrams'],11.96,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_94_image_1_test_Electronics_94_1.png"", ""original_path"": ""test_Electronics_94_1.png""}]"
+test_Electronics_95,"In the circuit shown in <image 1>, determine the average power (in terms of mW) dissipated.",[],,['Diagrams'],347,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_95_image_1_test_Electronics_95_1.png"", ""original_path"": ""test_Electronics_95_1.png""}]"
+test_Electronics_96,"The free-running MV (Multivibrator) circuit shown in <image 1> is built with $R_1 = R_2 = 50 k\Omega$, $R_3 = R_4 = 100 k\Omega$, $C_1 = 0.01 \mu F$, and $C_2 = 0.02 \mu F$. What is the ratio of $T_2$ to $T_1$, and what is the frequency of oscillation?",[],,['Technical Blueprints'],1143,Medium,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_96_image_1_test_Electronics_96_1.png"", ""original_path"": ""test_Electronics_96_1.png""}]"
+test_Electronics_97,Find the Fourier series of the half-wave rectified sinusoid as shown in <image 1>.,"['$(1 / \\pi) + (1 / 3) sin t + (1 / \\pi) \\sum_{n \\in 2,4,6...} {1 / (1 - n^2)} cos nt$', '$(1 / \\pi) + (1 / 3) sin t + (2 / \\pi) \\sum_{n \\in 2,4,6...} {1 / (1 - n^2)} cos nt$', '$(1 / \\pi) + (1 / 2) sin t + (2 / \\pi) \\sum_{n \\in 2,4,6...} {1 / (1 - n^2)} cos nt$', '$(1 / \\pi) + (1 / 3) sin t + (2 / \\pi) \\sum_{n \\in 1,3,5...} {1 / (1 - n^2)} cos nt$']",,"['Plots and Charts', 'Diagrams']",C,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_97_image_1_test_Electronics_97_1.png"", ""original_path"": ""test_Electronics_97_1.png""}]"
+test_Electronics_98, Use Laplace transform techniques to calculate the voltage response $v_C(t)$ for the network shown in <image 1>. Assume zero initial conditions.,"['(8 / 3) [1 - e^{-(3 / 2)t} cos (\\sqrt{3} / 3)t];', '(8 / 3) [1 - e^{-(3 / 2)t} sin (\\sqrt{3} / 2)t];', '(8 / 3) [1 - e^{-(3 / 2)t} cos (\\sqrt{3} / 2)t];', '(4 / 3) [1 - e^{-(3 / 2)t} cos (\\sqrt{3} / 2)t];']",,['Diagrams'],C,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_98_image_1_test_Electronics_98_1.png"", ""original_path"": ""test_Electronics_98_1.png""}]"
+test_Electronics_99,"For the FET amplifier shown in <image 1>, determine $C_s$ (in terms of $\mu F$) to set the break frequency at 10 Hz. $r_{ds} = 50 k\Omega$  $g_m = 5 * 10^{-3} \mho$.",[],"CS is chosen to fix the 10-Hz break frequency, The break frequency
+
+                        is given by
+
+                                    fL = [1 / {2\piCsRs[{rds + (Rd || RL)} / {(\mu + 1)Rs + rds + (Rd || RL)}]}]
+
+                                       \approx [1 / {2\piCsRs[(rds + Rd) / {(\mu + 1)Rs + rds + Rd}]}]                       (1)
+
+                        where \mu = gmrds .
+
+                        Solving for Cs, we have
+
+                                    Cs = [1 / {2\pi(10)(500)[(5 * 104 + 5 * 103)",['Diagrams'],110,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_99_image_1_test_Electronics_99_1.png"", ""original_path"": ""test_Electronics_99_1.png""}]"
+test_Electronics_100,"The voltage ratio $(V_2/ V_1)$ for the circuit shown in <image 1> has a pole at -100 + j700. If R = 500-ohm, find L in terms of H.",[],,['Diagrams'],2.5,Medium,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_100_image_1_test_Electronics_100_1.png"", ""original_path"": ""test_Electronics_100_1.png""}]"
+test_Electronics_101," In the circuit of <image 1>, $v(t) = V_m cos(\omega t)$ V and, in the steady state, $v_{ab}(t) = (V_{ab})_m cos(\omega t - \theta)$ V. Find the transform network function that relates $v_{ab}$ to v.","['(1/6) [{s + (1/2)} / {s + (1 / 6}]', '(1/6) [{s + (1/2)} / {s + (1 / 12}]', '(1/3) [{s + (1/2)} / {s + (1 / 12}]', '(1/6) [{s + (1/4)} / {s + (1 / 12}]']",,['Diagrams'],B,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_101_image_1_test_Electronics_101_1.png"", ""original_path"": ""test_Electronics_101_1.png""}]"
+test_Electronics_102,"In the network of <image 1>, find the average power (in terms of W) at the terminals ab.",[],,['Diagrams'],25,Easy,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_102_image_1_test_Electronics_102_1.png"", ""original_path"": ""test_Electronics_102_1.png""}]"
+test_Electronics_103,"In the circuit in <image 1>, use mesh analysis to find $i_B$ (in terms of mA)",[],,['Diagrams'],-2.667,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_103_image_1_test_Electronics_103_1.png"", ""original_path"": ""test_Electronics_103_1.png""}]"
+test_Electronics_104,The left switch in the circuit of <image 1> closed at t = 0. The right switch is then closed at = 0.1s . Find $i_L(t)$ for t > 0.1s.,"['$.378e^{-10(t - 0.1)}$', '$.512e^{-10(t - 0.1)}$', '$.378e^{-5(t - 0.1)}$', '$.118e^{-4(t - 0.1)}$']",,['Diagrams'],A,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_104_image_1_test_Electronics_104_1.png"", ""original_path"": ""test_Electronics_104_1.png""}]"
+test_Electronics_105,Use the time-shift theorem to obtain the Laplace transform of the non-periodic sawtooth function shown in Fig (b) of <image 1>,"['(4 / s2) (1 - e^{-8s}) - (10 / s)e^{-2s} (1 + e^{-2s} + e^{-4s} + e^{-6s})', '(5 / s2) (1 - e^{-8s}) - (5 / s)e^{-2s} (1 + e^{-2s} + e^{-4s} + e^{-6s})', '(5 / s2) (1 - e^{-8s}) - (10 / s)e^{-2s} (1 + e^{-2s} + e^{-4s} + e^{-6s})', '(5 / s2) (1 - e^{-8s}) - (4 / s)e^{-2s} (1 + e^{-2s} + e^{-4s} + e^{-6s})']",,['Plots and Charts'],C,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_105_image_1_test_Electronics_105_1.png"", ""original_path"": ""test_Electronics_105_1.png""}]"
+test_Electronics_106,Write a recursion equation for the discrete system shown in <image 1>.,"['x [n] = a_0 y[n] + a_1 y[n-1]', 'x [n] = a_0/a_1 y[n] + a_1 y[n-1]', 'x [n] = a_0 y[n] - a_1 y[n-1]', 'x [n] = a_0 y[n] - a_1 / a_0 y[n-1]']",,['Diagrams'],A,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_106_image_1_test_Electronics_106_1.png"", ""original_path"": ""test_Electronics_106_1.png""}]"
+test_Electronics_107,"For the circuit shown in <image 1>, find: $i_L$.","['$(1 - e^{-2t}) u(t) A$', '$4(1 - e^{-t}) u(t) A$', '$(1 - e^{-t}) u(t) A$', '$2(1 - e^{-t}) u(t) A$']",,['Diagrams'],D,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_107_image_1_test_Electronics_107_1.png"", ""original_path"": ""test_Electronics_107_1.png""}]"
+test_Electronics_108,Calculate the voltage drops $V_1$ (in terms of volts) in <image 1>. The impressed voltage will be taken along the reference axis,"['14.2 + j5.92', '12.2 + j5.72', '11.2 + j5.92', '14.2 + j5.44']",,['Diagrams'],A,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_108_image_1_test_Electronics_108_1.png"", ""original_path"": ""test_Electronics_108_1.png""}]"
+test_Electronics_109,"A rectangular voltage pulse, $v(t) = 10k[u(t) - u{t - (1 / k)}]$ V (in <image 1>), is applied in series with a 100-uF capacitor and a 20-k-ohm resistor. Find the capacitor voltage (in terms of V) at t = 1 if k = 10",[],,['Mathematical Notations'],3.11,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_109_image_1_test_Electronics_109_1.png"", ""original_path"": ""test_Electronics_109_1.png""}]"
+test_Electronics_110,Use the time-shift theorem to obtain the Laplace transform of the non-periodic staircase function shown in Fig (a) of <image 1>,"['(5 / s) [e^{-2s} + 2e^{-4s} + e^{-6s} - 3e^{-8s}]', '(3 / s) [e^{-2s} + e^{-4s} + e^{-6s} - 3e^{-8s}]', '(5 / s) [e^{-2s} + e^{-4s} + 2e^{-6s} - 3e^{-8s}]', '(5 / s) [e^{-2s} + e^{-4s} + e^{-6s} - 3e^{-8s}]']",,['Plots and Charts'],D,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_110_image_1_test_Electronics_110_1.png"", ""original_path"": ""test_Electronics_110_1.png""}]"
+test_Electronics_111,"<image 1> An amplifier has $Z_{in}$ = 700 $\Omega$, ZO = 1000 $\Omega$, and an $A_V$ of 20 with no output load connected. A signal generator having a source impedance of 300 $\Omega$ is set to produce a 10-mV p-p output when no load is connected. Find the amplifier output voltage if the signal generator is used to drive the amplifier and a 500-$\Omega$ load resistance is connected to the amplifier output.
+Round to 1 decimal.",[],"When connected to the amplifier, the 10-mV output of the
+
+                        generator will be loaded down. Voltage division of 10 mV across 300 \Omega in
+
+                        series with 700 \Omega gives the resultant input voltage:
+
+                                    Vin = Vs * [Zin / (Zs + Zin)] = 10 mV [(700) / (300 + 700)] = 7 mV p-p
+
+                                    The amplifier then delivers 20 * 7= 140 mV p - p if no load is
+
+                        connected to the output. With the 500-\Omega load connected, the output will
+
+                        drop according to voltage division of 1 K in series with 500 \Omega:
+
+                        VO = AvVin * [RL / (ZO + RL)] = 140 [500 / (1000 + 500)] = 46.8 mv",['Diagrams'],46.8,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_111_image_1_test_Electronics_111_1.png"", ""original_path"": ""test_Electronics_111_1.png""}]"
+test_Electronics_112,Each circuit shown in <image 1> has been in the condition shown for an extremely long time. Determine i(0) in the (b) circuit.,[],,['Diagrams'],2.5,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_112_image_1_test_Electronics_112_1.png"", ""original_path"": ""test_Electronics_112_1.png""}]"
+test_Electronics_113,"A rectangular voltage pulse, $v(t) = 10k[u(t) - u{t - (1 / k)}]$ V (in <image 1>), is applied in series with a 100-uF capacitor and a 20-k-ohm resistor. Find the capacitor voltage (in terms of V) at t = 1 if k = infinity",[],,['Diagrams'],3.033,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_113_image_1_test_Electronics_113_1.png"", ""original_path"": ""test_Electronics_113_1.png""}]"
+test_Electronics_114,Write the Fourier series for the three voltage waveforms in (b) of <image 1>.,"['$(4 / \\pi) [sin\\pi t - (1 / 3) sin 3 \\pi t + (1 / 5) sin 5 \\pi t + ....]$', '$(4 / \\pi) [sin\\pi t - (1 / 2) sin 3 \\pi t + (1 / 4) sin 5 \\pi t + ....]$', '$(4 / \\pi) [cos\\pi t - (1 / 3) cos 3 \\pi t + (1 / 5) cos 5 \\pi t + ....]$', '$(4 / \\pi) [cos\\pi t - (1 / 2) cos 3 \\pi t + (1 / 4) cos 5 \\pi t + ....]$']",,"['Diagrams', 'Mathematical Notations']",C,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_114_image_1_test_Electronics_114_1.png"", ""original_path"": ""test_Electronics_114_1.png""}]"
+test_Electronics_115,"With $V_C(t)$ as the desired response, find the sinusoidal steady-state transfer function H(jw) for the circuit of <image 1>.","['4 / (4 - w2 + jw)', '4 / (8 - w2 + jw)', '4 / (8 - w2 - jw)', '4 / (8 + w2 - jw)']",,['Diagrams'],A,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_115_image_1_test_Electronics_115_1.png"", ""original_path"": ""test_Electronics_115_1.png""}]"
+test_Electronics_116,"For the circuit in <image 1>, calculate the total impedance $Z_{ab}$ in terms of ohm. Provide your answer as a complex number (like 0.2 + j0.4).","['442 - j190', '435 - j190', '442 - j180', '412 - j130']",,['Diagrams'],A,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_116_image_1_test_Electronics_116_1.png"", ""original_path"": ""test_Electronics_116_1.png""}]"
+test_Electronics_117,Use superposition to determine the magnitude (in terms of A) of the current in the 4-ohm resistor of <image 1>.,[],,['Diagrams'],2,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_117_image_1_test_Electronics_117_1.png"", ""original_path"": ""test_Electronics_117_1.png""}]"
+test_Electronics_118,Each circuit shown in <image 1> has been in the condition shown for an extremely long time. Determine i(0) in each circuit.,"['2A 2A -2A', '2A 2.5A -2A', '2A 3A -2A', '-2A 1A -2A']","Since the current through an inductor cannot change
+
+                        instantaneously, the current through each inductor in Fig. 1 is the same for
+
+                        t = 0- as for t = 0. (a) An inductor behaves as a short circuit in the D.C.
+
+                        steady state condition.
+Redrawing the circuit in Fig. 1(a) gives the D.C. steady state circuit of
+
+                        Fig. 2
+
+                                                1= [(12v) / (6\Omega)] = 2A
+
+                                                i(0) = 2A
+
+                        b) The D.C. steady state circuit is shown in Fig. 3.
+
+                        Using the voltage division concept, obtain the voltage across the 4-\Omega
+
+                        resistor, so that the current i is found.
+
+                                    i = (v / R) = {[{100 (20 || 4)} / {30 + (20 || 4}] / 4}
+
+                                    i = {[100 {20 (4) / (20 + 4)}] / [30 + {20 (4) / (20 + 4)}]4}
+
+                                      = [{100 (3.33)} / {33.33) 4}] = 2.5A
+
+                        c) Again the D.C. steady state circuit is shown in Fig. 4. Using the current
+
+                        division concept yields
+
+                                                i = - [{5 (20)} / {20 + 30}] = - 2A
+
+                                                i(0) = - 2A.",['Diagrams'],B,Hard,multiple-choice,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_118_image_1_test_Electronics_118_1.png"", ""original_path"": ""test_Electronics_118_1.png""}]"
+test_Electronics_119,Determine the resonant frequency (in terems of MHz) of the circuit in <image 1>.,[],,['Diagrams'],1.125,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_119_image_1_test_Electronics_119_1.png"", ""original_path"": ""test_Electronics_119_1.png""}]"
+test_Electronics_120,Both switches in the circuit of <image 1> are closed at t = 0. Find $i_1(t)$ for t > 0.,"['5 e^{-10t} mA', '15 e^{-10t} mA', '10 e^{-10t} mA', '15 e^{-20t} mA']",,['Diagrams'],B,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_120_image_1_test_Electronics_120_1.png"", ""original_path"": ""test_Electronics_120_1.png""}]"
+test_Electronics_121,"In <image 1>. A parallel circuit is comprised of the elements; L = 10H, R = 320-ohm, C = (125 / 8) \muF. The initial capacitor voltage is $v_C(0^+) = - 160 V$. The initial value of the capacitor current is $i_C (0^+) = 0.7 A$, where $i_C$ and $v_C$ are related by the passive sign convention. Find the initial energy storage in the inductor in terms of J.",[],,['Diagrams'],0.2,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_121_image_1_test_Electronics_121_1.png"", ""original_path"": ""test_Electronics_121_1.png""}]"
+test_Electronics_122,The voltage shown in Fig. 1 of <image 1> is applied to the RC circuit shown in Fig. 2 of <image 1>. Find the capacitor voltage $v_C(t)$.,"['[t - (1 /2) + (1 /2) e^{-3t}] u(t) V', '[t - (1 /2) + (1 /2) e^{-2t}] u(t) V', '[t - (1 /2) + (1) e^{-2t}] u(t) V', '[t - (1 /2) + (1 /3) e^{-2t}] u(t) V']",,['Diagrams'],B,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_122_image_1_test_Electronics_122_1.png"", ""original_path"": ""test_Electronics_122_1.png""}]"
+test_Electronics_123,"In the circuit of  <image 1>, $v_C(0^+) = 10$. find $v_{ab}$ for all $t \ge 0^+$ .","['$(25 / 21)e^{-(t / 36)} V$', '$(36 / 25)e^{-(t / 36)} V$', '$(25 / 20)e^{-(t / 36)} V$', '$(25 / 24)e^{-(t / 36)} V$']",,['Diagrams'],D,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_123_image_1_test_Electronics_123_1.png"", ""original_path"": ""test_Electronics_123_1.png""}]"
+test_Electronics_124,A diode can be modeled in the forward-direct ion by <image 1> and in the reverse-direction by <image 2>. A $20-V_{p-p}$. 100-kHz square wave input gives rise to a storage time of 50 $\mu s$. Calculate the sume of turn-ON and the turn-OFF times in terms of $\mu s$.,[],"When E1 = + 10 V the diode is forward-biased, and the circuit of
+
+    Fig. 1 applies. Note that Cj had an initial charge of 10 V when the input
+    
+    was - 10 V. Writing the discharge equation
+    
+                            V(C)j = V1 - (V1 + VDO) e-[{(t)ON} / \tau]
+    
+                            0 = 10 - (10 + 10) e-[{(t)ON} / \tau]
+    
+    or
+    
+                            e-[{(t)ON} / \tau] = (10 / 20)
+    
+                            e-[{(t)ON} / \tau] = 0.5
+    
+    then,
+    
+                            [{t_ON} / \tau] = 0.693
+    
+    Cj charges and discharges through a 56-k-ohm resistor.
+    
+          \tau  = RCj
+    
+    or,                                = (56 * 103) * (5 * 10-12)
+    
+    or,                                = 0.28 \mus
+    
+       t_ON  = 0.693 * (0.28 * 10-6)
+    
+    or,                                = 0.194 \mus
+    
+    When E1 = - 10 V, the diode is reverse biased, and the circuit of Fig. 2
+    
+    applies.
+    
+    tOFF  = ts  + 5\tau          (ts = storage time = 50 \mus)
+
+    = 50 \mus + 5 * 0.28 \mus
+    
+    = 51.4 \mus
+    
+    Note that neither Rf nor Rr of the diode is involved in the above
+    
+    calculations!",['Diagrams'],51.59,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_124_image_1_test_Electronics_124_1.png"", ""original_path"": ""test_Electronics_124_1.png""}, {""column"": ""image_2"", ""path"": ""images/test_Electronics_124_image_2_test_Electronics_124_2.png"", ""original_path"": ""test_Electronics_124_2.png""}]"
+test_Electronics_125,Find the voltage source necessary to produce the response in <image 1>.,"['2005 \\phase{103.3} V', '3905 \\phase{92.3} V', '3000 \\phase{103.3} V', '3905 \\phase{103.3} V']",,['Technical Blueprints'],D,Easy,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_125_image_1_test_Electronics_125_1.png"", ""original_path"": ""test_Electronics_125_1.png""}]"
+test_Electronics_126,Find $i_o(t)$ the circuit shown in <image 1> using Fourier transform methods if $v_i(t) == \delta(t)$ V,"['-(2 / 9) e^{-t} u(t)', '-(1 / 9) e^{-2t} u(t)', '-(2 / 9) e^{-2t} u(t)', '(2 / 9) e^{-2t} u(t)']",,['Diagrams'],C,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_126_image_1_test_Electronics_126_1.png"", ""original_path"": ""test_Electronics_126_1.png""}]"
+test_Electronics_127,"For the currents $I_1$ in <image 1> and $I_2$ in <image 2>, what is their difference?",[],,['Diagrams'],0,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_127_image_1_test_Electronics_127_1.png"", ""original_path"": ""test_Electronics_127_1.png""}, {""column"": ""image_2"", ""path"": ""images/test_Electronics_127_image_2_test_Electronics_127_2.png"", ""original_path"": ""test_Electronics_127_2.png""}]"
+test_Electronics_128,"In <image 1>. A current source, $8u(t)$A, a 5-ohm resistor, and a 20 mH inductor are in parallel. At t = 3ms, find the power absorbed by the inductor.",[],,['Diagrams'],79.76,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_128_image_1_test_Electronics_128_1.png"", ""original_path"": ""test_Electronics_128_1.png""}]"
+test_Electronics_129,"With reference to the circuit of <image 1>, what should be the value of RL to absorb a maximum power? Find the value of this maximum power in terms of mW.",[],,['Diagrams'],62.5,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_129_image_1_test_Electronics_129_1.png"", ""original_path"": ""test_Electronics_129_1.png""}]"
+test_Electronics_130,A 2N5457 FET is used in the common source amplifier shown in <image 1>. Find the circuit voltage gain.,[],"Fig. 2 shows the AC equivalent circuit. Its output impedance is rd,
+
+                        and
+
+                                    ID = - gm Vi 
+
+                        so that
+
+                                    triangleID = - gm \DeltaVi
+
+                        Now, |Yos| is the output admittance, and |Yfs| is the forward transfer
+
+                        admittance, so
+
+                                    rd = {(1) / (|Yos|)} = {(1) / (10 * 10-6)} = 100k\Omega
+
+                                    gm = |Yfs| = 300 \muS
+
+                        From Fig. 2,
+
+                                    Vo = ID (rd || RL)
+
+                        and
+
+                                    ID = - gm Vi
+
+                        so
+
+                        Av = {Vo / Vi}
+
+                        Av = {(- gm rd RL) / (rd + RL)}
+
+                             = [{- 3000 * 10-6 * 100 * 103 * 10 * 103} / {(100 * 103) + (10 * 103)}]
+
+                             = - 27.3
+
+                        If rd >> RL then rd || RL \approx RL, so an approximation is
+
+                                    Av \approx - gm RL = - 3000 * 10-6 * 10 * 103 = - 30",['Diagrams'],-30,Medium,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_130_image_1_test_Electronics_130_1.png"", ""original_path"": ""test_Electronics_130_1.png""}]"
+test_Electronics_131,"Find the rms value of the waveform of <image 1> over the time interval (-1, 3).",[],,['Plots and Charts'],3.84,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_131_image_1_test_Electronics_131_1.png"", ""original_path"": ""test_Electronics_131_1.png""}]"
+test_Electronics_132," For the circuit of <image 1>. Find the maximum symmetrical collector current swing (in terms of mA). $V_{CC}$ = 15 V, $R_L$ = 1 k$\Omega$, and $R_e$ = 500 $\Omega$.",[],"When iC = 0, VCE = VCC = 15 V. For VCE = 0,
+
+                        iC = [VCC / (RL + Re)] = 10 mA. The dc load line is plotted in Fig. 2. In order
+
+                        to obtain the maximum symmetrical swing, choose the quiescent collector
+
+                        current in the center of the load line. Thus
+
+                                                ICQ = 5mA
+
+                        and
+
+                                                VCEQ = 7.5 V
+
+                        The peak-to-peak collector current can reach 10 mA",['Diagrams'],10,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_132_image_1_test_Electronics_132_1.png"", ""original_path"": ""test_Electronics_132_1.png""}]"
+test_Electronics_133,"The R-L circuit shown in <image 1> has been connected to a sinusoidal source $v(t) = V_m cos(wt + \phi) V$ for a sufficiently long time so that the steady state is reached. At t = 0 the circuit is deenergized, solve for i(t) for all t >= 0+.","['$[(V_m / Z)sin(\\phi - \\theta)] e^{-t/\\tau}$', '$[(V_m / Z)cos(\\phi - \\theta)] e^{-t/\\tau}$', '$[(V_m / Z)cos(\\phi - \\theta)] e^{-t/2\\tau}$', '$[(V_m / Z)cos(\\phi - 2\\theta)] e^{-t/\\tau}$']",,['Diagrams'],B,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_133_image_1_test_Electronics_133_1.png"", ""original_path"": ""test_Electronics_133_1.png""}]"
+test_Electronics_134,Calculate the amplitude of voltage $v_c(t)$ in the circuit shown in <image 1>.,[],,['Geometric Shapes'],1.5,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_134_image_1_test_Electronics_134_1.png"", ""original_path"": ""test_Electronics_134_1.png""}]"
+test_Electronics_135,Find vc(t) steady state in the circuit of <image 1>.,"['1.029 cos[(4 / \\sqrt{2})t + 133.3^{\\circ}] V', '1.029 cos[(3 / \\sqrt{2})t + 133.3^{\\circ}] V', '1.029 cos[(3 / \\sqrt{3})t + 133.3^{\\circ}] V', '1.029 cos[(3 / \\sqrt{2})t + 156.3^{\\circ}] V']",,['Diagrams'],B,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_135_image_1_test_Electronics_135_1.png"", ""original_path"": ""test_Electronics_135_1.png""}]"
+test_Electronics_136,Determine the resonance frequency of the circuit in <image 1>.,[],,['Diagrams'],2.25,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_136_image_1_test_Electronics_136_1.png"", ""original_path"": ""test_Electronics_136_1.png""}]"
+test_Electronics_137,Use nodal analysis on the circuit shown in  <image 1> to evaluate the phasor voltage $V_2$. Return the answer (in terms of V) in the complex number form like 2 + j3.,"['90 + j120', '30 + j120', '90 + j140', '90 + j190']",,"['Diagrams', 'Sketches and Drafts']",A,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_137_image_1_test_Electronics_137_1.png"", ""original_path"": ""test_Electronics_137_1.png""}]"
+test_Electronics_138,"Find the voltage gain, [$E_{out}$ / $E_{in}$], under steady-state conditions for the equivalent circuit of the Field-effect Transistor amplifier in <image 1>. The constant $g_m$ for the dependent current source is $200 \times 10^{-5} \mho$, also $E_{in} = \sqrt{2}sin(3770t) V$, and $R_g = R_1$.","['9.09 \\phase{-145}', '9.09 \\phase{-155}', '12.09 \\phase{-155}', '8.09 \\phase{-155}']",,['Diagrams'],C,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_138_image_1_test_Electronics_138_1.png"", ""original_path"": ""test_Electronics_138_1.png""}]"
+test_Electronics_139,Find the value of $R_K$ (in terms of $\Omega$) needed to properly bias the tube in the circuit of <image 1>.,[],"Fig. 2 shows the (Vgc / Ip) graph of the tube. The point on the curve about midway between saturation and cutoff is Vgc = - 6Vdc, Ip = 5 mA. Because the dc drop across Rg is negligible, we can say RK = {Vgc / Ip} = {(6 V dc) / (5 mA)} = 1200\Omega",['Diagrams'],1200,Medium,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_139_image_1_test_Electronics_139_1.png"", ""original_path"": ""test_Electronics_139_1.png""}]"
+test_Electronics_140,Calculate the total impedance of the circuit in <image 1>. Please answer it in complex number form (like 5/2 + j7/5). ,"['7/5 + j14/5', '7/5 + j15/5', '3/5 + j17/5', '1/5 + j14/5']",,['Diagrams'],A,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_140_image_1_test_Electronics_140_1.png"", ""original_path"": ""test_Electronics_140_1.png""}]"
+test_Electronics_141,"The circuit shown in Fig 1 of <image 1> is in the steady state at t = 0- with the switch in position 1. At t = 0, the switch is thrown to position 2. Use Laplace transforms to formulate an expression for $v_C(s)$ for any source $v_x(s)$.","['[{3s + 15 + 3 V_x(s)} / (s^2 + 6s + 8)]', '[{3s + 18 + 3 V_x(s)} / (s^2 + 6s + 8)]', '[{3s + 18 + 3 V_x(s)} / (s^2 + 4s + 8)]', '[{3s + 18 + 3 V_x(s)} / (s^2 + 4s + 4)]']",,['Geometric Shapes'],B,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_141_image_1_test_Electronics_141_1.png"", ""original_path"": ""test_Electronics_141_1.png""}]"
+test_Electronics_142,Find the $V_{CE}$ for the circuit shown in <image 1>. Neglect $V_{BE}$.,[],"1. Find IE
+
+                                    IE = [(VEE) / (RE)] = [(5 V) / (4 k-ohm)] = 1.25 mA
+
+                        2. Find VCE  
+
+                                    VCE = VCC - IERL = 10 V - (1.25 mA) 5 k-ohm
+
+                                    VCE = 10 V - 6.25 V = 3.75 V",['Diagrams'],3.75,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_142_image_1_test_Electronics_142_1.png"", ""original_path"": ""test_Electronics_142_1.png""}]"
+test_Electronics_143,"For the circuit shown in <image 1>, find the phase of $I_{bB}$. Answer the angular degree in numerical form.",[],,['Diagrams'],0,Medium,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_143_image_1_test_Electronics_143_1.png"", ""original_path"": ""test_Electronics_143_1.png""}]"
+test_Electronics_144," In the circuit of <image 1>, $v(t) = V_m cos(\omega t)$ V and, in the steady state, $v_{ab}(t) = (V_{ab})_m cos(\omega t - \theta)$ V. Find \theta as a function of \omega.","['tan^{-1} [(4\\omega) / 1]', 'tan^{-1} [(2\\omega) / 1] - tan^{-1} [(10\\omega) / 1]', 'tan^{-1} [(2\\omega) / 1]', 'tan^{-1} [(2\\omega) / 1] - tan^{-1} [(12\\omega) / 1]']",,['Diagrams'],D,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_144_image_1_test_Electronics_144_1.png"", ""original_path"": ""test_Electronics_144_1.png""}]"
+test_Electronics_145,"Find the voltage across an inductor, shown in <image 1>, whose inductance is given by $L(t) = te^{-t} + 1$ and the current through it is given by i(t) = sin wt. ","['$wsin w (1 + te^-t) + e^-t cos wt (1 - t)$', '$wcos w (1 + te^-t) + e^-t sin wt (1 - t)$', '$wsin w (1 - te^-t) + e^-t cos wt (1 - t)$', '$wsin w (1 - te^-t) + e^-t cos wt (1 + t)$']",,['Diagrams'],B,Easy,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_145_image_1_test_Electronics_145_1.png"", ""original_path"": ""test_Electronics_145_1.png""}]"
+test_Electronics_146,"Assume an ideal transformer, find $a = {(V_2) / (V_1)} = {(I_1) / (I_2)}$ for the conditions shown in <image 1>.",[],,['Diagrams'],0.5,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_146_image_1_test_Electronics_146_1.png"", ""original_path"": ""test_Electronics_146_1.png""}]"
+test_Electronics_147,Calculate the voltages $v_1$ in <image 1>.,"['100 sin(t) V', '50 cos(2t) V', '50 sin(2t) V', '100 cos(t) V']",,['Diagrams'],D,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_147_image_1_test_Electronics_147_1.png"", ""original_path"": ""test_Electronics_147_1.png""}]"
+test_Electronics_148,Find $G_{eq}$ (in terms of $m\mho$) for the network of <image 1>.,[],"Start combining conductances at the right of the circuit. Note that the conductances are in parallel Simply add, [(15 * 10) / (15 + 10)] = 6 m$\mho$. $G_{eq}$ = [(24 * 8) / (24 + 8)] = 6 m$\mho$.",['Diagrams'],6,Medium,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_148_image_1_test_Electronics_148_1.png"", ""original_path"": ""test_Electronics_148_1.png""}]"
+test_Electronics_149,Calculate i(t) for the network in <image 1> if $V_1(s) = (1 / s)$ and initial conditions are zero.,"['(6 / 11) e^{-(8 / 11)t} u(t).', '(5 / 11) e^{-(8 / 11)t} u(t).', '(6 / 13) e^{-(8 / 11)t} u(t).', '(6 / 11) e^{-(7 / 11)t} u(t).']",,['Diagrams'],A,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_149_image_1_test_Electronics_149_1.png"", ""original_path"": ""test_Electronics_149_1.png""}]"
+test_Electronics_150,Evaluate the rms value of the periodic waveform of <image 1>. Assume T = 1.,[],,['Plots and Charts'],0.57735,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_150_image_1_test_Electronics_150_1.png"", ""original_path"": ""test_Electronics_150_1.png""}]"
+test_Electronics_151,"The amplifier in <image 1> is to have a low 3-dB frequency of less than 10 Hz. If $R_s = h_{ie} = 1 k\Omega$ and $h_{fe}$ = 100, what minimum value of $C_b$ (in terms of $\mu F$) is required, assuming that $C_z = C_b$?",[],"The model of the amplifier is shown in Fig. 2. Cz reflected back
+
+                        into the base becomes [Cz / (hfe + 1)]. C1 is the series combination of Cb
+
+                        and the reflected Cz . That is,
+
+                                                (1 / C1) = (1 / Cb) + [(1 + hfe) / Cz]                                        (1)
+
+                        The 3-dB frequency is given by
+
+                                                fL = [1 / (2\piRC)] = [1 / {2\pi(Rs + hie)C1}]                              (2)
+
+                        so
+
+                                    C1 = [1 / {2\pifL(Rs + hie)}] = [(106) / (2\pi10 * 2,000)] \mu F = 7.96 \mu F
+
+                        If Cz = Cb, then from Eq. 1,
+
+                                    (1 / Cb) + (101 / Cb) = (1 / 7.96)       Cb = 812 \mu F = Cz",['Diagrams'],812,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_151_image_1_test_Electronics_151_1.png"", ""original_path"": ""test_Electronics_151_1.png""}]"
+test_Electronics_152,"Find $v_C(t)$ for $t \ge 0$ in <image 1>, assume $v_C(0) = i_L(0) = 0$.","['1.048e^{-0.45t} - 0.048e^{-8.63t} v', '1.048e^{-0.87t} - 0.048e^{-4.32t} v', '1.048e^{-0.87t} - 0.048e^{-8.63t} v', '2.048e^{-0.87t} - 0.048e^{-8.63t} v']",,['Diagrams'],C,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_152_image_1_test_Electronics_152_1.png"", ""original_path"": ""test_Electronics_152_1.png""}]"
+test_Electronics_153,Find the voltage across R2 due to the two sources in <image 1>.,"['$4.5 cos(340t + 37^{\\circ})V$', '$7.5 cos(377t + 37^{\\circ})V$', '$4.5 cos(377t + 37^{\\circ})V$', '$4.5 cos(377t + 55^{\\circ})V$']",,['Diagrams'],C,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_153_image_1_test_Electronics_153_1.png"", ""original_path"": ""test_Electronics_153_1.png""}]"
+test_Electronics_154,Show that the recursion equation for the discrete system shown in <image 1>. ,"['y[n] - a_1 y[n-1] = b_0 x[n] + b_1 x[n-1]', 'y[n] - a_1 y[n-1] = b_0 x[n] - b_1 x[n-1]', 'y[n] - a_1 y[n-1] = b_0 x[n] - (b_1 + a_1) x[n-1]', 'y[n] + a_1 y[n-1] = b_0 x[n] + b_1 x[n-1]']",,['Diagrams'],D,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_154_image_1_test_Electronics_154_1.png"", ""original_path"": ""test_Electronics_154_1.png""}]"
+test_Electronics_155,"  After t = 0, each of the circuits in Figure (a) of <image 1> is source-free. Find expression for v in each case for t > 0","['-6e^{-2t} V', '-8e^{-t} V', '-8e^{-2t} V', '-8e^{-4t} V']",,['Diagrams'],C,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_155_image_1_test_Electronics_155_1.png"", ""original_path"": ""test_Electronics_155_1.png""}]"
+test_Electronics_156,Determine the coefficient ck in the complex Fourier series for the waveforms shown in Fig (c) of <image 1>. ,"['- {(2) / (k^2 \\pi^2)} sin (k\\pi / 3)', '- {(2) / (k^2 \\pi^2)} sin (k\\pi / 2)', '- {(4) / (k^2 \\pi^2)} sin (k\\pi / 2)', '- j{(4) / (k^2 \\pi^2)} sin (k\\pi / 2)']",,['Diagrams'],D,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_156_image_1_test_Electronics_156_1.png"", ""original_path"": ""test_Electronics_156_1.png""}]"
+test_Electronics_157,"For the amplifier of <image 1>, assume that gfs = $1 m\mho (10^{-3} \mho)$ and $r_d = 100 k\Omega$. Find the voltage gain with the source resistor unbypassed.",[],"A small-signal voltage source model with the source resistor
+
+                        unbypassed is shown in Fig. 2. The value of
+
+                                    \mu = gfs rd = 10-3 * 105 = 100.
+
+                        The gate-source voltage for the signal, vgs, is
+
+                                    vgs = vg - 1(id) = vs - id
+
+                        The signal drain current, id, is
+
+                                    id = {(100vgs) / (100 + 10 + 1)}
+
+                                       = {(100vs - 100id) / (111)}
+
+                        Solving for id,
+
+                                    id = {(100v) / (211)}
+
+                        Output voltage, vo, is
+
+                                    vo = - 10id = - {(1000vs) / (211)}
+
+                        Hence,
+
+                                    Av = {Vo / Vs} = - 4.75",['Diagrams'],-4.75,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_157_image_1_test_Electronics_157_1.png"", ""original_path"": ""test_Electronics_157_1.png""}]"
+test_Electronics_158,"In the circuit in <image 1>, use mesh analysis to find $i_C$ (in terms of mA)",[],,['Diagrams'],1.667,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_158_image_1_test_Electronics_158_1.png"", ""original_path"": ""test_Electronics_158_1.png""}]"
+test_Electronics_159,Determine the coefficient ck in the complex Fourier series for the waveforms shown in Fig (a) of <image 1>. ,"['$- j(1 / k \\pi) (1 + cos k \\pi)$', '$- j(1 / k \\pi) (1 - sin k \\pi)$', '$- j(1 / k \\pi) (1 + sin k \\pi)$', '$- j(1 / k \\pi) (1 - cos k \\pi)$']",,"['Diagrams', 'Mathematical Notations']",D,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_159_image_1_test_Electronics_159_1.png"", ""original_path"": ""test_Electronics_159_1.png""}]"
+test_Electronics_160,Use phasor techniques to find $V_L(t)$ in the circuit in <image 1>.,"['$1.89 cos(t + 45^{\\circ})) V$', '$1.89 cos(t + 30^{\\circ})) V$', '$1.89 cos(t + 60^{\\circ})) V$', '$1.89 cos(t + 90^{\\circ})) V$']",,['Diagrams'],D,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_160_image_1_test_Electronics_160_1.png"", ""original_path"": ""test_Electronics_160_1.png""}]"
+test_Electronics_161,Use superposition to find v (in terms of voltage) in each of the circuits shown in Figure (a) of <image 1>.,[],,['Diagrams'],6,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_161_image_1_test_Electronics_161_1.png"", ""original_path"": ""test_Electronics_161_1.png""}]"
+test_Electronics_162," At the instant just after the switches are thrown in the circuits of <image 1>, find v in (a) figure.",[],,['Diagrams'],-8,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_162_image_1_test_Electronics_162_1.png"", ""original_path"": ""test_Electronics_162_1.png""}]"
+test_Electronics_163,"The RL - circuit as show in <image 1>.  The above circuit has a constant impressed voltage E, a resistor of resistance R, and a coil of impedance L. Find what the current i = i(t) converge to","['E/R', '2*E/R', 'E^2/R', 'E*R']","The differential equation governing this circuit is derived from
+
+                        setting the sum of the voltage drops around the circuit equal to the
+
+                        impressed voltage. Thus,
+
+                                                L (di / dt) + Ri = E,                                                                 (a)
+
+                        where L (di / dt) is the voltage drop across the coil, and Ri is the voltage
+
+                        drop across the resistor. We may solve equation (a) by the use of an
+
+                        integrating factor. Divide (a) by L:
+
+                                                (di / dt) + (R / L) i = (E / L),
+
+                        and let \phi (t) be the function such that
+
+                                                \phi (di / dt) + (R / L) \phii = (d / dt) (\phii)                                       (b)
+
+                        Expanding the right-hand side of (b):
+
+                                                \phi (di / dt) + (R / L) \phii = \phi (di / dt) + i (d\phi /dt)
+
+                        Subtract cp \phi (di / dt):
+
+                                                (R / L) \phii = i (d\phi /dt,)
+
+                        and divide by i to obtain
+
+                                                (d\phi / dt) = (R / L)\phi
+
+                        This equation may be solved for \phi by separation of variables:
+
+                                                =  (d\phi / \phi) = (R / L) dt.          
+
+                        Integrating both sides,
+
+                                                \int (d\phi / \phi) = (R / L) \int dt,
+
+                        or                     ln \phi = (R / L) t.
+
+                        Exponentiating both sides,
+
+                                                \phi = e(R/L)t
+
+                        This function \phi is the integrating factor which will allow us to write (a) as
+
+                                                e(R/L)t (di / dt) + e(R/L)t (R / L) i = (E / L) e(R/L)t,
+
+                        or, using (b),
+
+                                                (d / dt) (e(R/L)t i) = (E / L) e(R/L)t.
+
+                        We integrate both sides to obtain
+
+                                                \int  (d / dt) (e(R/L)t i) dt = (E / L) \int e(R/L)t dt + c,                          (c)
+
+                        where C is the constant of integration. Evaluating (c) we have
+
+                                                e(R/L)t i = (E / L) (L / R) e(R/L)t + c.
+
+                        Multiplication by (- R / eL)t gives
+
+                                                 i =  (E / R) + Ce-(R/L)t.                                                            (d)
+
+                        To evaluate the constant of integration, we assume that the switch S is
+
+                        closed at time t = 0, and the initial current is thus i(0) = 0. Using this
+
+                        information and (d) we have
+
+                                                i(0) =(E / R) + Ce0
+
+                                                   0 = (E / R) + C,
+
+                                                    C =  (-E / R).
+
+                         Our final solution is therefore,
+
+                                                i(t) = (E / R) - (E / R) e-(R/L)t
+
+                        i(t) = (E / R) (1 - e-(R/L)t)                                                         (e)
+
+We see that
+
+                                                limt->inf i(t) =  (E / R)  - (E / R) limt->inf e-(R/L)t
+
+                                                = (E / R) - (E / R) (0)
+
+                                                = (E / R).",['Diagrams'],A,Medium,multiple-choice,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_163_image_1_test_Electronics_163_1.png"", ""original_path"": ""test_Electronics_163_1.png""}]"
+test_Electronics_164,Find the Fourier series for the sawtooth waveform of <image 1>.,"['(3 / 4) - (1 / pi) [cos (2pi / 3) t + (1 / 2) cos (4pi / 3) t + (1 / 3) cos (6pi / 3) + ...]', '(3 / 2) - (3 / pi) [sin (2pi / 3) t + (1 / 2) sin (4pi / 3) t + (1 / 3) sin (6pi / 3) + ...]', '(3 / 4) - (3 / pi) [sin (2pi / 3) t + (1 / 2) sin (4pi / 3) t + (1 / 3) sin (6pi / 3) + ...]', '(3 / 4) - (1 / pi) [sin (2pi / 3) t + (1 / 2) sin (4pi / 3) t + (1 / 3) sin (6pi / 3) + ...]']",,['Plots and Charts'],B,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_164_image_1_test_Electronics_164_1.png"", ""original_path"": ""test_Electronics_164_1.png""}]"
+test_Electronics_165, Calculate the steady-state voltage response of the network shown in <image 1>.,"['$(1 / \\sqrt(3)) sin[t + (\\pi/4)] V$', '$(1 / \\sqrt(3)) cos[t + (\\pi/4)] V$', '$(1 / sqrt(2)) cos[t + (\\pi/8)] V$', '$(1 / sqrt(2)) cos[t + (\\pi/4)] V$']",,['Diagrams'],C,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_165_image_1_test_Electronics_165_1.png"", ""original_path"": ""test_Electronics_165_1.png""}]"
+test_Electronics_166,The switch in the circuit shown in <image 1> is closed at t = 0. Find v at t = 5*pi/3 ms.,[],,['Diagrams'],0.493,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_166_image_1_test_Electronics_166_1.png"", ""original_path"": ""test_Electronics_166_1.png""}]"
+test_Electronics_167, Please find $v_x$ in the circuit of <image 1> by using the super-position principle.,[],,['Diagrams'],2.8,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_167_image_1_test_Electronics_167_1.png"", ""original_path"": ""test_Electronics_167_1.png""}]"
+test_Electronics_168,Find the current $i_x$ (in terms of A) in <image 1> by changing the two practical voltage sources to practical current sources and then using nodal analysis.,[],,['Diagrams'],0.5,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_168_image_1_test_Electronics_168_1.png"", ""original_path"": ""test_Electronics_168_1.png""}]"
+test_Electronics_169," In the circuit of <image 1>, derive the network function relating $v_1$ to v by voltage division.","['[R_L / {s^2 (R_C L C) + s (R_L R_C C) + R_L R_C}]', '[R_L / {s^2 (R_C L C) + s (R_L R_C C + L) + R_L R_C}]', '[R_C / {s^2 (R_C L C) + s (R_L R_C C + L) + R_L R_C}]', '[R_L / {s^2 (R_C L C) + s (R_L R_C C + L) + R_L}]']",,['Diagrams'],C,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_169_image_1_test_Electronics_169_1.png"", ""original_path"": ""test_Electronics_169_1.png""}]"
+test_Electronics_170,"In <image 1>. A parallel circuit is comprised of the elements; L = 10H, R = 320-ohm, C = (125 / 8) \muF. The initial capacitor voltage is $v_C(0^+) = - 160 V$. The initial value of the capacitor current is $i_C (0^+) = 0.7 A$, where $i_C$ and $v_C$ are related by the passive sign convention. At what value (in terms of ms) of t is $v_C$ = 0?.",[],,['Diagrams'],5.78,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_170_image_1_test_Electronics_170_1.png"", ""original_path"": ""test_Electronics_170_1.png""}]"
+test_Electronics_171,Find $V_0$ in <image 1> if \omega = 5 Mrad/s.,"['9.5 \\phase{35.9} V', '10.5 \\phase{25.9} V', '9.5 \\phase{25.9} V', '9.5 \\phase{37.9} V']",,['Diagrams'],B,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_171_image_1_test_Electronics_171_1.png"", ""original_path"": ""test_Electronics_171_1.png""}]"
+test_Electronics_172,Find the Fourier transforms for the waveforms illustrated in Fig. (a) of <image 1>.,"['$(V_o / b) [(b / - j\\omega) e^{-j\\omega t} - (1 / \\omega^2) e^{-j\\omega t}]$', '$(V_o / b) [(b / - j\\omega) e^{-j\\omega t} + (1 / \\omega^2) e^{-j\\omega t} + (1 / \\omega^2)]$', '$(V_o / b) [(b / - j\\omega) e^{-j\\omega t} + (1 / \\omega^2) e^{-j\\omega t} - (1 / \\omega^2)]$', '$(V_o / 2b) [(b / - j\\omega) e^{-j\\omega t} + (1 / \\omega^2) e^{-j\\omega t} - (1 / \\omega^2)]$']",,['Plots and Charts'],C,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_172_image_1_test_Electronics_172_1.png"", ""original_path"": ""test_Electronics_172_1.png""}]"
+test_Electronics_173,Determine the power (in terms of W) being dissipated in the circuit shown in <image 1>,[],,['Diagrams'],63.7,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_173_image_1_test_Electronics_173_1.png"", ""original_path"": ""test_Electronics_173_1.png""}]"
+test_Electronics_174,In <image 1>. Use Laplace transforms to find $v_2(t)$ if $v_s(t)$ = 12 e^{-t} u(t).,"['(- 12e^{-t/2} + 16^{-t}) u(t) V', '(- 12e^{-t/2} + 16^{-2t}) u(t) V', '(- 12e^{-t/2} + 8^{-t}) u(t) V', '(- 10e^{-t/2} + 16^{-t}) u(t) V']",,['Diagrams'],A,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_174_image_1_test_Electronics_174_1.png"", ""original_path"": ""test_Electronics_174_1.png""}]"
+test_Electronics_175,"The admittance and impedance of the network shown in <image 1>, are equal at every frequency. Find R in terms of ohm.",[],,['Diagrams'],1,Medium,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_175_image_1_test_Electronics_175_1.png"", ""original_path"": ""test_Electronics_175_1.png""}]"
+test_Electronics_176," For the circuit shown in <image 1>, calculate i(t). The source voltage $v(t)$ is given as $v(t) = 156 cos(377t)$ V. The element values are R = 100-ohm , L = 0.20 H, C = 20 uF.","['$1.6 cos(377t - 30^{\\circ})$', '$1.8 cos(277t - 20^{\\circ})$', '$1.8 cos(300t - 30^{\\circ})$', '$1.8 cos(377t - 30^{\\circ})$']",,['Diagrams'],D,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_176_image_1_test_Electronics_176_1.png"", ""original_path"": ""test_Electronics_176_1.png""}]"
+test_Electronics_177,The circuit in <image 1> is excited by v(t). Find the  mean square value of the steady - state output voltage in terms of V.,[],,['Diagrams'],0.142,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_177_image_1_test_Electronics_177_1.png"", ""original_path"": ""test_Electronics_177_1.png""}]"
+test_Electronics_178,Calculate the voltage drops $V_1$ (in terms of volts) in <image 1>. The impressed voltage will be taken along the reference axis,"['66.2 - j39.04', '65.2 - j38.04', '66.4 - j39.97', '64.2 - j33.04', '64.2 - j33.09']",,['Diagrams'],A,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_178_image_1_test_Electronics_178_1.png"", ""original_path"": ""test_Electronics_178_1.png""}]"
+test_Electronics_179,"For the circuit shown in <image 1>, find: $v_L$.","['$4 e^{-2t u(t)} V$', '$2 e^{-t u(t)} V$', '$4 e^{-t u(t)} V$', '$8 e^{-t u(t)} V$']",,['Diagrams'],D,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_179_image_1_test_Electronics_179_1.png"", ""original_path"": ""test_Electronics_179_1.png""}]"
+test_Electronics_180,"A 1000-pF capacitor, a 1-mH inductor, and a current source of 2 cos 106t mA are in series like <image 1>. The capacitor voltage is zero at t = 0. Find the energy stored at t = 0","['2 x 10^-8', '3 x 10^-9', '1 x 10^-9', '2 x 10^-9']",,['Diagrams'],D,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_180_image_1_test_Electronics_180_1.png"", ""original_path"": ""test_Electronics_180_1.png""}]"
+test_Electronics_181,Find $|I_2| / |I_s|$ in the circuit shown in <image 1> if \omega = 200;,[],,['Diagrams'],0.0101,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_181_image_1_test_Electronics_181_1.png"", ""original_path"": ""test_Electronics_181_1.png""}]"
+test_Electronics_182,"Consider the network of <image 1>. Use Laplace transform techniques to find the output voltage $v_C(t)$ when the input applied is $v(t) = sin t, 0 < t < \pi$ and, $v(t) = 0$ for all other time intervals.","['$[(e^{-t} - cos t + sin t)u(t) + (e^{-(t-\\pi)} - cos(t - \\pi) + sin(t - \\pi))u(t - \\pi)]$', '$(1/2)[(e^{-t} - cos t + sin t)u(t) + (e^{-(t-\\pi)} - cos(t - \\pi) + sin(t - \\pi))u(t - \\pi)]$', '$(1/2)[(e^{-t} + cos t + sin t)u(t) + (e^{-(t-\\pi)} - cos(t - \\pi) + sin(t - \\pi))u(t - \\pi)]$', '$(1/2)[(e^{-t} + cos t + sin t)u(t) + (e^{-(t-\\pi)} - cos(t - 2\\pi) + sin(t - \\pi))u(t - \\pi)]$']",,['Diagrams'],C,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_182_image_1_test_Electronics_182_1.png"", ""original_path"": ""test_Electronics_182_1.png""}]"
+test_Electronics_183,The switch in the circuit shown in <image 1> is closed at t = 0. Find v at t = 2.5 ms.,[],,['Diagrams'],1.81,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_183_image_1_test_Electronics_183_1.png"", ""original_path"": ""test_Electronics_183_1.png""}]"
+test_Electronics_184,"In the circuit of <image 1>, the switch is thrown from position d to position a' at t = 0. It is known that at $t = 0^-$, $v_C = 12.5$ V and $i(0^-) = - 0.6 A$. Solve for $v_C(t)$ for t >= 0+.","['10.5e^{-3t} cos 4t + 5.5e^{-3t} sin 4t', '12.5e^{-3t} cos 4t + 7.5e^{-3t} sin 4t', '10.5e^{-3t} cos 4t + 7.5e^{-3t} sin 4t', '12.5e^{-3t} cos 4t + 4.5e^{-3t} sin 4t']",,['Diagrams'],B,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_184_image_1_test_Electronics_184_1.png"", ""original_path"": ""test_Electronics_184_1.png""}]"
+test_Electronics_185,Use the superposition theorem to find the current through R2 in <image 1>. Both sources are of the same frequency.,"['17.1 \\phase{90.7} mA.', '17.1 \\phase{99.7} mA.', '15.2 \\phase{99.7} mA.', '14.2 \\phase{80.7} mA.']",,['Diagrams'],B,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_185_image_1_test_Electronics_185_1.png"", ""original_path"": ""test_Electronics_185_1.png""}]"
+test_Electronics_186,"In the network of <image 1>, find the reactive power (in terms of vars) at the terminals ab.",[],,['Diagrams'],50,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_186_image_1_test_Electronics_186_1.png"", ""original_path"": ""test_Electronics_186_1.png""}]"
+test_Electronics_187,Find the amplitude of the voltage $V_0$ resulting from the action of source $E_1$ in <image 1>.,[],,['Diagrams'],28.6,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_187_image_1_test_Electronics_187_1.png"", ""original_path"": ""test_Electronics_187_1.png""}]"
+test_Electronics_188,Calculate the steady-state current response of the network shown in <image 1>.,"['(3/5)sin 5t A', '(2/5)sin 5t A', '(1/5)sin 10t A', '(2/5)sin 10t A']",,['Diagrams'],D,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_188_image_1_test_Electronics_188_1.png"", ""original_path"": ""test_Electronics_188_1.png""}]"
+test_Electronics_189,Use superposition to find v (in terms of voltage) in each of the circuits shown in Figure (c) of <image 1>.,[],,['Diagrams'],-3,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_189_image_1_test_Electronics_189_1.png"", ""original_path"": ""test_Electronics_189_1.png""}]"
+test_Electronics_190,"Determine $e_{out}$ (in terms of lmV p-p) for the amplifier shown in <image 1> for $R_S$ = 150$\Omega$, $R_L$ = 5k$\Omega$ and $e_S$ = lmV p-p.",[],"es divides across RS and the amplifier's input impedance. The input
+
+                        impedance is Zin = hib || RE \approx hib, so
+
+                                    ein = {(Zin) / (RS + Zin)} * eS
+
+                                         = {(50\Omega) / (150\Omega + 50\Omega)} * 1mV
+
+                                         = 0.25mV p-p
+
+                        The output impedance is given by
+
+                                    Zout = rob || Rc \approx Rc
+
+                        The voltage gain is
+
+                                    Av = {(\alphaRc) / (hib)} = 0.99{(10.000) / (50)} = 198
+
+                        The voltage Avein divides between Zout and RL, so
+
+                                    eout = {(RL) / (RL + Zout)} * Av ein
+
+                                           = {(5k\Omega) / (5k\Omega + 10k\Omega)} * 198 * 0.25mV
+
+                                           = 16.5mV p-p
+
+                                    Gv = {(eout) / (eS)} = {(16.5) / 1} = 16.5
+
+                        Note that the overall voltage gain, Gv, is much less than the amplifier's
+
+                        gain, Av, due to the voltage divider action at the input and at the output.",['Screenshots'],16.5,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_190_image_1_test_Electronics_190_1.png"", ""original_path"": ""test_Electronics_190_1.png""}]"
+test_Electronics_191, Find $i_L(t)$ by solving a differential equation for $i_L(t)$ in <image 1>.,"['(167 / 183)e^{-(6/5)}t + (1/3)u(t) + (18/61)sin t - (15/61)cot t', '(162 / 183)e^{-(6/5)}t + (1/3)u(t) + (18/61)sin t - (15/61)cot t', '(167 / 183)e^{-(6/5)}t + (1/2)u(t) + (18/61)sin t - (15/61)cot t', '(167 / 183)e^{-(6/5)}t + (1/3)u(t) + (18/63)sin t - (15/61)cot t']",,['Diagrams'],A,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_191_image_1_test_Electronics_191_1.png"", ""original_path"": ""test_Electronics_191_1.png""}]"
+test_Electronics_192,Determine the coefficient ck in the complex Fourier series for the waveforms shown in Fig (b) of <image 1>. ,"['(1 / k\\pi) cos (k\\pi / 2)', '(1 / k\\pi) sin (k\\pi / 3)', '(2 / k\\pi) sin (k\\pi / 2)', '(1 / k\\pi) sin (k\\pi / 2)']",,['Diagrams'],C,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_192_image_1_test_Electronics_192_1.png"", ""original_path"": ""test_Electronics_192_1.png""}]"
+test_Electronics_193,Find the total power in terms of watt in the delta-connected load shown in <image 1>.,[],,['Diagrams'],8736,Medium,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_193_image_1_test_Electronics_193_1.png"", ""original_path"": ""test_Electronics_193_1.png""}]"
+test_Electronics_194,Find the average power delivered to a 12-ohm resistor by each of the three periodic current waveforms displayed in Figure (a) of <image 1>.,[],,['Mathematical Notations'],96,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_194_image_1_test_Electronics_194_1.png"", ""original_path"": ""test_Electronics_194_1.png""}]"
+test_Electronics_195,Use nodal analysis on the circuit shown in  <image 1> to evaluate the phasor voltage $V_1$. Return the answer (in terms of V) in the complex number form like 2 + j3.,"['-105 - j15', '-15 - j15', '-105 - j10', '-115 - j11']",,['Diagrams'],A,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_195_image_1_test_Electronics_195_1.png"", ""original_path"": ""test_Electronics_195_1.png""}]"
+test_Electronics_196,Find $i_1(0^+)$ (in terms of A) in the circuit shown in <image 1> if $i_s$ = 3 A,[],,['Geometric Shapes'],6,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_196_image_1_test_Electronics_196_1.png"", ""original_path"": ""test_Electronics_196_1.png""}]"
+test_Electronics_197,Consider a nonlinear capacitor which is defined by $q = v + (1/3) v^3. Let the voltage across this capacitor be v(t) = sin t. Find the current through this capacitor (see  <image 1>),"['1.25 cos t - .5 cos 3t', '1.25 cos t - .25 cos 3t', '2.5 cos t - .25 cos 3t', '1.25 sin t - .25 cos 3t']",,['Diagrams'],B,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_197_image_1_test_Electronics_197_1.png"", ""original_path"": ""test_Electronics_197_1.png""}]"
+test_Electronics_198,Find the average power delivered to a 12-ohm resistor by each of the three periodic current waveforms displayed in Figure (b) of <image 1>.,[],,['Plots and Charts'],216,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_198_image_1_test_Electronics_198_1.png"", ""original_path"": ""test_Electronics_198_1.png""}]"
+test_Electronics_199,"In the network of <image 1>, What is the energy (in terms of joules) delivered to the network over a time interval of 5s.",[],,['Diagrams'],164,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_199_image_1_test_Electronics_199_1.png"", ""original_path"": ""test_Electronics_199_1.png""}]"
+test_Electronics_200,Find $i_o(t)$ the circuit shown in <image 1>  using Fourier transform methods if $v_i(t) == e^{-t} u(t)$ V,"['[(1 / 5) e^{-2t} + (1 / 5) e^{-t}] u(t)', '[(1 / 9) e^{-2t} + (1 / 9) e^{-t}] u(t)', '[(1 / 9) e^{-2t} - (1 / 9) e^{-t}] u(t)', '[(2 / 9) e^{-2t} - (1 / 9) e^{-t}] u(t)']",,['Diagrams'],D,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_200_image_1_test_Electronics_200_1.png"", ""original_path"": ""test_Electronics_200_1.png""}]"
+test_Electronics_201,"Reduce the circuit of <image 1> to the form shown in <image 2>, showing values of $R_{in}$, $R_{out}$ and $A$. Evaluate the overall gain, assuming that $\beta $ = 100, $r_{bb'}$ = 200$\Omega$, and $r_d$ = 30$\Omega$. Assume that the capacitors are short circuits for ac signals.",[],"The small-signal equivalent circuit for this stage is shown in Fig.
+
+                        3. Note that both biasing resistors connect to ac ground, since the dc
+
+                        supply is a short circuit for ac signals.
+
+                                    The input impedance to the amplifier will consist of the combination
+
+                        of the three resistances connected from point b to ground:
+
+                                                Rin = (100k\Omega) || (10k\Omega) || rin,
+
+                        where rin is equal to rbb' + (\beta + 1) (rd + RE) = 53.7k\Omega. The value of Rin is
+
+                        found to be 7.77 k\Omega \approx 7.8k\Omega.
+The ideal gain A can be found by assuming RS is a short circuit and
+
+                        RL is removed. Then from Fig. 3,
+
+                                                ib = [{ein} / {rbb' + (\beta + 1)(RE + rd)}]
+
+                        and
+
+                                                eout = - \betaRCib
+
+                        so
+
+                                                A = [{- \betaRC} / {rbb' + (\beta + 1)(RE + rd)}] = - 11.2
+
+                                    To find Rout, we short the input voltage source and replace RL with a
+
+                        voltage source. With ein = 0, ib = 0 so that the controlled current  source is
+
+                        0. Therefore the vol\xadtage source at the output sees only Rc, so that
+
+                                                Rout = Rc = 6k\Omega
+
+                                    We want to find the overall gain of the stage (eout / ein); thus, we
+
+                        relate eb to ein and eout to eao, giving (see Fig. 2)
+
+                                                (eb / ein) = (eai / ein) = [(Rin) / (Rin + RS)]
+
+                                    and
+
+                                                (eout / eao) = [RL / (RC + RL)]
+
+                        We have used the fact here that RC = Rout. The overall gain is
+
+                             AO  = (eai / ein)(eao / eai)(eout / eao)
+
+                                    = - [ \betaRC / {rbb' + (\beta + 1)(RE + rd)}] [RL / (RC + RL)] [Rin / (Rin + RS)].
+
+                        Using the values given, we determine a gain of
+
+                              AO = - [(100 * 6000) / (200 * 101 * 530)][(8000) / (6000 + 8000)]
+
+                                                                                                [(7800) / (7800 + 2000)]
+
+                                    = - 5.1.",['Diagrams'],-5.1,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_201_image_1_test_Electronics_201_1.png"", ""original_path"": ""test_Electronics_201_1.png""}, {""column"": ""image_2"", ""path"": ""images/test_Electronics_201_image_2_test_Electronics_201_2.png"", ""original_path"": ""test_Electronics_201_2.png""}]"
+test_Electronics_202,"A balanced set of three-phase voltages is connected to an unbalanced set of Y-connected impedances as shown in <image 1>. The following values are known: $V_{ab} = 212 \phase{90}$ V, $Z_{an} = 10 + j0$ ohm, $V_{bc} = 212 \phase{-150}$ V, $Z_{bn} = 10 + j10$ ohm, $V_{ca} = 212\phase{-30}$ V, $Z_{cn} = 0 - j20$ ohm, Find the magnitude of the line current $I_{b'b}$.",[],,['Diagrams'],14.54,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_202_image_1_test_Electronics_202_1.png"", ""original_path"": ""test_Electronics_202_1.png""}]"
+test_Electronics_203,Calculate the response $v_C(t)$ of <image 1> for t > 1,"['e^{-(t - 2)} + e^{-t} V', 'e^{-(t - 1)} + e^{-t} V', 'e^{-(t - 1)} + e^{-t - 2} V', 'e^{-(t - 1)} + 2e^{-t} V']",,['Diagrams'],B,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_203_image_1_test_Electronics_203_1.png"", ""original_path"": ""test_Electronics_203_1.png""}]"
+test_Electronics_204,In <image 1>. Use Laplace transforms to find $v_2(t)$ if $v_s(t)$ = 12 cos t u(t);,"['(- 4.4e^{-t/2} + 6.4 cos t - 3.2 sin t) u(t) V', '(- 2.4e^{-t/2} + 6.4 cos t - 3.2 sin t) u(t) V', '(- 2.4e^{-t/2} + 5.4 cos t - 3.2 sin t) u(t) V', '(- 1.6e^{-t/2} + 6.4 sin t - 3.2 sin t) u(t) V']",,['Diagrams'],B,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_204_image_1_test_Electronics_204_1.png"", ""original_path"": ""test_Electronics_204_1.png""}]"
+test_Electronics_205,Calculate $i_L(t)$ for the circuit in <image 1> using differential equations.,"['(1/3) + 2.04e^{-(5/4)t} cos (1.2t - 65.0^{\\circ})', '(2/3) + 2.04e^{-(5/4)t} cos (1.2t - 65.0^{\\circ})', '(1/3) + 2.04e^{-(5/4)t} cos (1.2t - 80.6^{\\circ})', '(2/3) + 2.04e^{-(5/4)t} cos (1.2t - 80.6^{\\circ})']",,['Diagrams'],D,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_205_image_1_test_Electronics_205_1.png"", ""original_path"": ""test_Electronics_205_1.png""}]"
+test_Electronics_206,"As depicted in <image 1>. A current source of 0.2 u(t) A, a 100-ohm resistor, and a 0.4-H inductor are in parallel. Find the magnitude of the inductor current as t -> 4 ms.",[],,['Diagrams'],0.126,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_206_image_1_test_Electronics_206_1.png"", ""original_path"": ""test_Electronics_206_1.png""}]"
+test_Electronics_207,Find the output y[n] of the system shown in <image 1> if x[n] = u[n].,"['(4n + 3) \\delta[n]', '(4n + 1) u[n]', '(2n + 3) u[n]', '(4n + 3) u[n]']",,['Diagrams'],D,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_207_image_1_test_Electronics_207_1.png"", ""original_path"": ""test_Electronics_207_1.png""}]"
+test_Electronics_208,The independent source in the circuit of <image 1> is 140V for t<0 and 0 for t>0. What is $i(0)$?,[],"In order to find the current i(t) and voltage v0(t), first find the voltage
+
+                        across the capacitor. Since the voltage across a capacitor cannot change
+
+                        instantaneously, we can find it at t = 0-. Fig. 2 shows the circuit in Fig. 1 at
+
+                        t = 0-.
+
+                        Note that the voltage vC is the voltage across the 420-\Omega resistor. By
+
+                        voltage division,
+
+                                                vC = [{140(420)} / {420 + 70}] = 120V.
+The circuit in Fig. 3 is at t = 0+ In order to find i(t) V0(t) further reduce the
+
+                        above circuit. In Fig.4, find the voltage drop across each of the resistors.
+
+                                                v60-\Omega resistor = [{120 (60)} / 100] = 72V
+
+                                                v80-\Omega resistor = [{120 (40)} / 100] = 48V.
+
+                        Now, one can find
+
+                                                i(0+) = (72V / 420\Omega) = .1714A",['Diagrams'],0.1714,Medium,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_208_image_1_test_Electronics_208_1.png"", ""original_path"": ""test_Electronics_208_1.png""}]"
+test_Electronics_209,Find the rms value of the waveform of <image 1>.,[],,['Geometric Shapes'],1.15,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_209_image_1_test_Electronics_209_1.png"", ""original_path"": ""test_Electronics_209_1.png""}]"
+test_Electronics_210,The independent source in the circuit of <image 1> is 140V for t < 0 and 0 for t > 0 . Find $v_0(t)$ for t > 0,"['36e^{-500,000t}', '38e^{-500,000t}', '42e^{-500,000t}', '36e^{-400,000t}']",,['Diagrams'],A,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_210_image_1_test_Electronics_210_1.png"", ""original_path"": ""test_Electronics_210_1.png""}]"
+test_Electronics_211,A half-wave rectifier and smoothing circuit is to be able to supply 20 V to a $500 \Omega$ load. The ripple amplitude cannot exceed 10% of the average output voltage. The frequency of the input source is 60 Hz. Calculate the reservoir capacity ($\mu F$) of this circuit.<image 1>,[],"Ripple voltage amplitude = Vr = 10% of Eo(dc) = 0.1 * 20 V = 2 V.
+
+                        Therefore,
+
+                                                Eo(min) = 20 V - 1 V = 19 V
+
+                                                Eo(max) = 20 V + 1 V = 21 V
+
+                        Using
+
+                                                sin \theta1 = [{Eo(min)} / {Eo(max)}]
+
+                                                sin \theta1 = (19 / 21) = 0.905                 or         \theta1 = 65°
+
+                                    The period of the input wave is the reciprocal of the frequency,
+
+                                                T = (1 / 60) = 16.6 ms.
+
+                                    This T is the time for a complete cycle or 360°.
+
+                                                time for 180° = (1 / 2) (time for 360°) = 8.3 ms
+
+                                                  time for 90° = (1 / 4) (time for 360°) = 4.16 ms
+
+                                          time for \theta\xad1 = 65° = (65 / 360) (time for 360°) = 3 ms
+
+                        The time between input current pulses is
+
+                                                t1 = (time for 90°) + (time for 180°) + (time for \theta1°)
+
+                                                t1 = 4.16 + 8.3 + 3 ms = 15.5 ms
+
+                        The load current can be calculated:
+
+                                                IL = [(Eo) / (RL)] = [(20 V) / (500 \Omega)] = 40 mA
+
+                        Finally,
+
+                                                capacity = C = [(IL * t1) / (Vr)]
+
+                                                C = [(40 mA * 15.5 ms) / (2 V)] = 310 \mu F",['Diagrams'],310,Medium,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_211_image_1_test_Electronics_211_1.png"", ""original_path"": ""test_Electronics_211_1.png""}]"
+test_Electronics_212,Find the turns ratio for the ideal transformer in <image 1> required to match the 200-ohm source impedance to the 8-ohm load.,[],,['Diagrams'],5,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_212_image_1_test_Electronics_212_1.png"", ""original_path"": ""test_Electronics_212_1.png""}]"
+test_Electronics_213,Find $i_o(t)$ the circuit shown in <image 1> using Fourier transform methods if $v_i(t) == u(t)$ V,"['(1 / 9) [e^{-t} - e^{-2t}] u(t)', '(1 / 9) e^{-t} u(t)', '(1 / 9) e^{-2t} u(t)', '(2 / 9) e^{-2t} u(t)']",,"['Diagrams', 'Mathematical Notations']",C,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_213_image_1_test_Electronics_213_1.png"", ""original_path"": ""test_Electronics_213_1.png""}]"
+test_Electronics_214,"In the circuit shown in <image 1>, determine the average power dissipated in each resistance.","['181 88 78', '141 88 78', '181 48 78', '181 88 48']",,['Diagrams'],A,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_214_image_1_test_Electronics_214_1.png"", ""original_path"": ""test_Electronics_214_1.png""}]"
+test_Electronics_215,"In the circuit shown in <image 1>, the following magnitudes are known: $|V_{ab}| = 100 V$, $|V_{a'b}| = 200 V$,  $|I| = 20 A$. In addition, it is known that $X_L$ = 2R. Solve for $V_{aa'}->$","['80 + j120 V', '60 + j100 V', '40 + j120 V', '60 + j120 V']",,['Diagrams'],D,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_215_image_1_test_Electronics_215_1.png"", ""original_path"": ""test_Electronics_215_1.png""}]"
+test_Electronics_216,"In the figure shown in <image 1>, an amplifier with an input resistance of 400 $\Omega$ is connected to a signal source with an internal resistance of 600 $\Omega$. The open-circuit voltage of the signal source, Eg , is 1 mV, and the amplifier develops 100 mV across an 8-k$\Omega$ load. Find Av.",[],"The input voltage to the amplifier is
+
+                                                Vi = Eg [Ri (Rg + Ri)] = [(10-3 * 400) / (600 + 400)] = 0.4 mV
+
+                        The input current is
+
+                                                Ii = [Eg / (Rg + Ri)] = [(10-3) / (1,000)] = 1 \muA
+
+                        The output current is
+
+                                                IO = (VO / RL) = [(0.1) / (8,000)] = 12.5 \muA
+
+                        The voltage amplification is
+
+                                                Av = (VO / Vi) = [(0.1) / (4 * 10-4)] = 250
+
+                        The current amplification is
+
+                                                Ai = (IO / Ii) = [(12.5 * 10-6) / (10-6)] = 12.5",['Diagrams'],250,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_216_image_1_test_Electronics_216_1.png"", ""original_path"": ""test_Electronics_216_1.png""}]"
+test_Electronics_217,Determine the resonance frequency (in terms of kHz) of the circuit in <image 1>.,[],,['Diagrams'],41.1,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_217_image_1_test_Electronics_217_1.png"", ""original_path"": ""test_Electronics_217_1.png""}]"
+test_Electronics_218,"Referring to <image 1>, What is the voltage $V_O$ (V) when the switch S is thrown up into position 1?",[],"
+When the switch is thrown to position 1, the source E1, the diode, the
+
+    resistor R, and the source E2 are placed in series through ground. The two
+    
+    sources buck each other. The 20-V E1 dominates and reverse biases the
+    
+    diode, which thus acts like an open switch. With the diode acting like an
+    
+    open switch, no current flows in R and there is no voltage drop across it.
+    
+    Therefore the source E2 voltage is read across x and ground. That is,
+    
+    walking from x to ground up through R and E2, we walk through only
+    
+    one voltage E2 because zero voltage is across R, thus VO = + 12 V.
+",['Diagrams'],12,Medium,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_218_image_1_test_Electronics_218_1.png"", ""original_path"": ""test_Electronics_218_1.png""}]"
+test_Electronics_219,"Use Laplace transform techniques to solve for $i_1(t)$ in the circuit of <image 1>. Assume the initial conditions $v_C(0) = 1$, $i_1(0) = 0$ and $i_2(0) = 0$.","['$(1 / 8) - (1 / 8)e^{-2t} - (1 / 2)te^{-4t}$', '$(1 / 4) - (1 / 4)e^{-4t} - (1 / 2)te^{-2t}$', '$(1 / 8) - (1 / 8)e^{-4t} - (1 / 2)te^{-2t}$', '$(1 / 8) - (1 / 8)e^{-4t} - (1 / 4)te^{-2t}$']",,['Diagrams'],C,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_219_image_1_test_Electronics_219_1.png"", ""original_path"": ""test_Electronics_219_1.png""}]"
+test_Electronics_220, In the circuit of Fig. 1 of <image 1> $v_C(0-) = 10V$. The source voltage is given in Fig. 2 of <image 1>. Use Laplace transform techniques to obtain the response $v_R(t)$.,"['5e^{-t} u(t) - 20e^{-(t - 1)} u(t - 2)', '10e^{-t} u(t) - 20e^{-(t - 1)} u(t - 1)', '10e^{-t} u(t) - 10e^{-(t - 1)} u(t - 1)', '10e^{-t} u(t) - 20e^{-(t - 1)} u(t - 2)']",,['Diagrams'],B,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_220_image_1_test_Electronics_220_1.png"", ""original_path"": ""test_Electronics_220_1.png""}]"
+test_Electronics_221,"In the circuit shown in <image 1>, $V_I$ = - 15 V. Find VO. Assume $v_{BE}$ = 0.7 V and $\beta_O$ = 50.",[],"We can write the emitter in terms of the base current as
+
+                                                 iE = IE = (\betaO + 1)IB = (\betaO + 1) [(VI - VB) / RB]
+
+                                                            = (51 / 5) (VI - VB)                                                     (1)
+
+                        From the emitter circuit a second expression for IE can be obtained:
+
+                                                  IE = [(VE + 25) / RE]  = [(VB - VBE + 25) / RE]
+
+                                                                                    = [(VB - 0.7 + 25) / (0.5)]                   (2)
+Note that the input is a dc voltage and thus we have used only dc currents
+
+                        and voltages in our equations and the dc current gain \betaO.
+
+                        Solving (1) and (2) for VB in terms of VI gives     
+
+                                                            VB = 0.836VI - 4
+
+                        which with VI = - 15 V requires VB = - 16.54 V, and so (2) yields
+
+                        IE = 15.52 mA. The output voltage is simply
+
+                                                            VO = 25 - IC
+
+                        Substitution of IE = 15.52 mA into IC = [(\betaOIE) / (1 + \betaO)] gives IC = 15.2 mA,
+
+                        and so VO = 9.8 V.",['Diagrams'],9.8,Medium,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_221_image_1_test_Electronics_221_1.png"", ""original_path"": ""test_Electronics_221_1.png""}]"
+test_Electronics_222,"In the circuit in <image 1>, use mesh analysis to find $i_A$ (in terms of mA)",[],,['Diagrams'],1.667,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_222_image_1_test_Electronics_222_1.png"", ""original_path"": ""test_Electronics_222_1.png""}]"
+test_Electronics_223,Use Laplace transform techniques to find $H(s) = [{V_Q(s)} / {V(s)}]$ in the circuit shown in <image 1>. ,"['[{s + 2} / {2s^4 + 10s^3 + 15s^2 + 9s + 2}]', '[{2s + 2} / {2s^4 + 10s^3 + 15s^2 + 9s + 2}]', '[{2s + 2} / {2s^4 + 5s^3 + 15s^2 + 9s + 2}]', '[{2s + 2} / {4s^4 + 10s^3 + 15s^2 + 9s + 2}]']",,['Diagrams'],B,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_223_image_1_test_Electronics_223_1.png"", ""original_path"": ""test_Electronics_223_1.png""}]"
+test_Electronics_224,Calculate the magnitude of a line current in the circuit shown in <image 1>.,[],,['Diagrams'],13.85,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_224_image_1_test_Electronics_224_1.png"", ""original_path"": ""test_Electronics_224_1.png""}]"
+test_Electronics_225,Determine the Laplace transform of the functions of time depicted in Fig (a) of <image 1>.,"['[{1.5(1 - e^{-2s})} / s]', '[{1.5(1 + e^{-2s})} / s^2]', '[{1.0(1 - e^{-2s})} / s^2]', '[{1.5(1 - e^{-2s})} / s^2]']",,['Plots and Charts'],D,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_225_image_1_test_Electronics_225_1.png"", ""original_path"": ""test_Electronics_225_1.png""}]"
+test_Electronics_226,"In the circuit of <image 1>, $v(0^+)$ = 10 solve for $i(t)$ directly without finding $v(t)$.","['$-(2 / 3) e^ {-t / 3} A$', '$-(1 / 3) e^ {-t / 3} A$', '$-(1 / 3) e^ {-t / 2} A$', '$-(1 / 2) e^ {-t / 3} A$']",,['Diagrams'],B,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_226_image_1_test_Electronics_226_1.png"", ""original_path"": ""test_Electronics_226_1.png""}]"
+test_Electronics_227, Estimate the midfrequency voltage amplification (in decibels) in the circuit of <image 1>,[],"The midfrequency Av is determined by treating all capacitors as
+
+                        short circuits; this is done in Fig. 2. Note that Vi = Vgs. The voltage
+
+                        amplification is therefore (RL' = RL || RD)
+Av = [{(- 2 * 10-3) (200 * 103) (5 * 103)} / (205 * 103)] = - 9.75
+
+                        and
+
+                                                20 log |AV| = 19.8 dB",['Diagrams'],19.8,Easy,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_227_image_1_test_Electronics_227_1.png"", ""original_path"": ""test_Electronics_227_1.png""}]"
+test_Electronics_228,"In <image 1>, $V_S$ = 5V, Determine IF (mA) for RL = 100 -ohm. Return the numerical value",[],"
+By KVL,
+
+    VS = IFRL + VF
+    
+    When IF = 0,
+    
+    VS = 0 + VF
+    
+    Therefore, the diode voltage is
+    
+    VF = VS = 5 V
+    
+    We plot point A on the diode characteristics at IF = 0 and VF = 5 V. When
+    
+    VF = 0.
+    
+    VS = IFRL + 0
+    
+    IF = (VS / RL) = (5V / 100-ohm) = 50 mA
+    
+    We plot point B on the diode characteristic at IF = 50 mA and VF = 0. Now
+    
+    we draw the dc load line through points A and B. The dc load line
+    
+    intersects the diode characteristics at point Q, where IF = 40 mA.
+",['Diagrams'],40,Medium,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_228_image_1_test_Electronics_228_1.png"", ""original_path"": ""test_Electronics_228_1.png""}]"
+test_Electronics_229,"For the circuit shown in <image 1>, find the phase of $I_{aA}$. Answer the angular degree in numerical form.",[],,['Diagrams'],120,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_229_image_1_test_Electronics_229_1.png"", ""original_path"": ""test_Electronics_229_1.png""}]"
+test_Electronics_230,"  After t = 0, each of the circuits in Figure (c) of <image 1> is source-free. Find expression for v in each case for t > 0","['20e^{-t} V', '20e^{-3t} V', '20e^{-5t} V', '10e^{-5t} V']",,['Technical Blueprints'],C,Easy,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_230_image_1_test_Electronics_230_1.png"", ""original_path"": ""test_Electronics_230_1.png""}]"
+test_Electronics_231,Find $i_1(0^+)$ (in terms of A) in the circuit shown in <image 1> if $i_s$ = 0 A,[],,['Diagrams'],6,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_231_image_1_test_Electronics_231_1.png"", ""original_path"": ""test_Electronics_231_1.png""}]"
+test_Electronics_232,"In order to indicate that active elements may be used to increase the Q of resonant circuits, find $Q_o$ for the circuit shown in <image 1> by an inspection of the input admittance presented to the independent source if k = 0",[],,['Diagrams'],50,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_232_image_1_test_Electronics_232_1.png"", ""original_path"": ""test_Electronics_232_1.png""}]"
+test_Electronics_233," For the circuit shown in <image 1>, find $i_c (t)$ if $i_s$ = 25u(t) mA","['4 e^{-20t}  u(t) mA', '5 e^{-20t}  u(t) mA', '6 e^{-20t}  u(t) mA', '8 e^{-20t}  u(t) mA']",,['Diagrams'],C,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_233_image_1_test_Electronics_233_1.png"", ""original_path"": ""test_Electronics_233_1.png""}]"
+test_Electronics_234," In the circuit shown in <image 1>, ignore the $v_{BE}$ drop and assume $\beta$ to be large. What is the minimum power rating (mW) the device must have? Note that the input $V_1$ is dc.",[],"With a dc input we use \betaO; with \betaO>>1, IC \approx IE and the output
+
+                        loop equation is
+
+                                                VCE = 50 - 1.5IC                                                                     (1)
+
+                        The power dissipation of the transistor is
+
+                                                Pd = ICVCE = 50IC - 1.5IC2                                                     (2)  
+
+                        where VCE from (1) has been substituted into (2).
+
+                        Setting the derivative Pd' of (2) equal to zero,
+
+                                                Pd' = 50 - 3IC = 0                                                                   (3)
+
+                        and thus the value of IC that maximizes Pd is IC = 50/3 mA. Putting
+
+                        this IC value into (1) yields the corresponding VCE value at maximum
+
+                        Pd, VCE = 25 V. Then Pd,max = 25(50 / 3) = 417 mW, and so a device
+
+                        with a rated Pd \geq 417 mW is needed",['Diagrams'],417,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_234_image_1_test_Electronics_234_1.png"", ""original_path"": ""test_Electronics_234_1.png""}]"
+test_Electronics_235,Find the first derivative of the function f(t) shown in <image 1>.,"['10t[u(t) - u(t - 2)] - 50 \\delta(t - 5) + 15[u(t - 5) - u(t - 6)]', '10t[u(t) - u(t - 1)] - 50 \\delta(t - 5) + 15[u(t - 5) - u(t - 7)]', '10t[u(t) - u(t - 2)] - 50 \\delta(t - 5) + 15[u(t - 5) - u(t - 7)]', '10t[u(t) - u(t - 1)] - 50 \\delta(t - 4) + 15[u(t - 5) - u(t - 7)]']",,['Plots and Charts'],C,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_235_image_1_test_Electronics_235_1.png"", ""original_path"": ""test_Electronics_235_1.png""}]"
+test_Electronics_236," The amplifier circuit in <image 1> uses an npn silicon transistor with the following maximum ratings: $P_{C,max}$ = 2.5 W (after derating) $BV_{CEO}$ = 80 V $V_{CE,sat}$ = 2 V.  Calculae the maximum power dissipated by the load, $R_L$.",[],"The amplifier circuit and the vi characteristic are shown in Fig. 2.
+
+                        Maximum power is dissipated by the load when the collector-current swing
+
+                        is a maximum. The ac-load-line equation is
+
+                                                RL(ic -- ICQ) = - (VCE - VCEQ)                                                 (1)
+
+                                    When ic is a maximum, ic = 2ICQ and VCE = VCE,sat.
+
+                        Then
+
+                                                RLICQ = VCEQ - VCE,sat                                                             (2)
+
+                        To avoid exceeding the maximum average collector dissipation, we set
+
+                                                ICQVCEQ = PC,max                                                                     (3)
+
+                        Combining (2) and (3) and solving the resulting equation for ICQ and VCEQ
+
+                        yields
+
+                        ICQ = -[(VCE,sat) / (2RL)] + \sqrt [{(PC,max) / (RL)} + {(VCE,sat) / (2RL)}2]            (4)
+
+                        and
+
+                        VCEQ = [(VCE,sat) / 2] + \sqrt [PC,maxRL + {(VCE,sat) / 2}2]                                     (5)
+
+                        The quiescent point can, of course, also be obtained graphically from the
+
+                        intersection of (2) and (3), as shown in Fig. 2.
+
+                                    The Q point is found to be
+
+                                                ICQ = 0.41 A
+
+                        and
+
+                                                VCEQ = 6.1 V
+
+                        Thus the collector supply voltage VCC is 6.1 V.
+
+                                    Note that the ac load line crosses the maximum power hyperbola.
+
+                        This does not mean that the average power dissipated in the collector
+
+                        circuit exceeds PC,max. Since maximum collector dissipation occurs when
+
+                        there is no signal, and under this condition the collector dissipation is
+
+                        Pc,max [Eq. (3)], maximum collector dissipation is not exceeded.
+
+                                     The maximum peak ac collector current is 0.41 A, and the
+
+                        maximum average power dissipated by the load resistor is
+
+                                    PL,max = 1/2 ICQ2RL = (1/2) (0.41)2 (10) = 0.84 W",['Diagrams'],0.84,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_236_image_1_test_Electronics_236_1.png"", ""original_path"": ""test_Electronics_236_1.png""}]"
+test_Electronics_237,Write the Fourier series for the three voltage waveforms in (c) of <image 1>.,"['(8 / \\pi^2) (sin \\pi t - (1 / 9) sin 3\\pit + (1 / 25) sin 5\\pit - ....)', '(8 / \\pi^2) (sin \\pi t - (1 / 4) sin 3\\pit + (1 / 16) sin 5\\pit - ....)', '(8 / \\pi^2) (sin \\pi t - (1 / 10) sin 3\\pit + (1 / 20) sin 5\\pit - ....)', '(8 / \\pi^2) (sin \\pi t - (1 / 4) sin 3\\pit + (1 / 9) sin 5\\pit - ....)']",,['Diagrams'],A,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_237_image_1_test_Electronics_237_1.png"", ""original_path"": ""test_Electronics_237_1.png""}]"
+test_Electronics_238,The independent source in the circuit of <image 1> is 140V for t < 0 and 0 for t > 0 . Find i(t) for t > 0,"['.0478e^{-500,000t}', '.1714e^{-500,000t}', '.2658^{-500,000t}', '.1714e^{-400,000t}']",,['Diagrams'],B,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_238_image_1_test_Electronics_238_1.png"", ""original_path"": ""test_Electronics_238_1.png""}]"
+test_Electronics_239,Find the effective (rms) value (in terms of A) of the three periodic current waveforms shown in Figure (c) of <image 1>.,[],,['Diagrams'],3.46,Easy,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_239_image_1_test_Electronics_239_1.png"", ""original_path"": ""test_Electronics_239_1.png""}]"
+test_Electronics_240," At the instant just after the switches are thrown in the circuits of <image 1>, find v in (b) figure.",[],,['Diagrams'],-10,Hard,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_240_image_1_test_Electronics_240_1.png"", ""original_path"": ""test_Electronics_240_1.png""}]"
+test_Electronics_241,Find the current i(t) when a step input u(t) is applied to the RL network shown in <image 1>. Use the convolution integral and then compare with Laplace transform techniques.,"['1 - 1e^{-t} A', '1 - 2e^{-t} A', '1 - 2e^{-2t} A', '1 - 2e^{-t} A']",,['Sketches and Drafts'],A,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_241_image_1_test_Electronics_241_1.png"", ""original_path"": ""test_Electronics_241_1.png""}]"
+test_Electronics_242, Calculate the admittance Y(s) = [{I_1(s)} / {V_1(s)}] for the network shown in <image 1>.,"['{(3s) / (11s + 8)}', '{(6s) / (10s + 8)}', '{(4s) / (11s + 8)}', '{(6s) / (11s + 8)}']",,['Diagrams'],D,Medium,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_242_image_1_test_Electronics_242_1.png"", ""original_path"": ""test_Electronics_242_1.png""}]"
+test_Electronics_243,Represent the triangular waveform shown in <image 1> as a Fourier series.,"['$\\sum_{n \\in {even}} {(8V) / (n^2 \\pi^2)} cos (n\\omega t)$', '$\\sum_{n \\in {odd}} {(8V) / (n^2 \\pi^2)} cos (n\\omega t)$', '$\\sum_{n} {(8V) / (n^2 \\pi^2)} cos (n\\omega t)$', '$\\sum_{n} {(4V) / (n^2 \\pi^2)} cos (n\\omega t)$']",,['Mathematical Notations'],B,Easy,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_243_image_1_test_Electronics_243_1.png"", ""original_path"": ""test_Electronics_243_1.png""}]"
+test_Electronics_244,Determine the Fourier transform $F(j\omega)$ of the waveform shown in <image 1>.,"['(2 / \\omega) (sin(3\\omega) - sin(2\\omega))', '(1 / \\omega) (sin(2\\omega) - sin(\\omega))', '(2 / \\omega) (cos(2\\omega) - cos(\\omega))', '(2 / \\omega) (sin(2\\omega) - sin(\\omega))']",,['Diagrams'],D,Easy,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_244_image_1_test_Electronics_244_1.png"", ""original_path"": ""test_Electronics_244_1.png""}]"
+test_Electronics_245,In <image 1>. Use Laplace transforms to find $v_2(t)$ if $v_s(t)$ = 12 u(t);,"['4e^{-t/2} u(t) V', '4e^{-t/1} u(t) V', '6e^{-t/2} u(t) V', '4e^{-t/3} u(t) V']",,['Diagrams'],A,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_245_image_1_test_Electronics_245_1.png"", ""original_path"": ""test_Electronics_245_1.png""}]"
+test_Electronics_246,"By beginning with the practical current source at the right of <image 1>, make repeated source transformation and resistance combinations to find the power supplied by the 24-V . Return the power in terms of W.",[],,['Diagrams'],48,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_246_image_1_test_Electronics_246_1.png"", ""original_path"": ""test_Electronics_246_1.png""}]"
+test_Electronics_247,Find the Fourier transforms for the waveforms illustrated in Fig. (b) of <image 1>.,"['V_o [- {2 / (b\\omega^2)}e^{-j\\omega b} + {1 / (b\\omega^2)} - {1 / j\\omega}].', 'V_o [- {1 / (b\\omega)}e^{-j\\omega b} + {1 / (b\\omega^2)} - {1 / j\\omega}].', 'V_o [- {1 / (b\\omega^2)}e^{-j\\omega b} + {1 / (b\\omega^2)} - {1 / j\\omega}].', 'V_o [- {1 / (b\\omega^2)}e^{-j\\omega b} - {1 / (b\\omega^2)} - {1 / j\\omega}].']",,"['Geometric Shapes', 'Mathematical Notations']",C,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_247_image_1_test_Electronics_247_1.png"", ""original_path"": ""test_Electronics_247_1.png""}]"
+test_Electronics_248,"Write the single equation required to describe the circuit of <image 1>, using $i_C$ as the variable. Find $i_C(t)$ for t > 0.","['e^{-2000t} (3 cos 1000t - 15 sin 1000t) mA', 'e^{-2000t} (5 cos 1000t - 15 sin 1000t) mA', 'e^{-3000t} (5 cos 1000t - 15 sin 1000t) mA', 'e^{-3000t} (4 cos 1000t - 15 sin 1000t) mA']",,['Diagrams'],C,Medium,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_248_image_1_test_Electronics_248_1.png"", ""original_path"": ""test_Electronics_248_1.png""}]"
+test_Electronics_249,Solve for the steady-state current $i_L(t)$ in the circuit shown in <image 1>.,"['$3\\sqrt(5) cos(t - 75.97^{\\circ}) A$', '$1\\sqrt(5) cos(t - 100.23^{\\circ}) A$', '$2\\sqrt(5) cos(t - 86.00^{\\circ}) A$', '$2\\sqrt(5) cos(t - 108.43^{\\circ}) A$']",,['Diagrams'],D,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_249_image_1_test_Electronics_249_1.png"", ""original_path"": ""test_Electronics_249_1.png""}]"
+test_Electronics_250,Find the effective (rms) value (in terms of A) of the three periodic current waveforms shown in Figure (b) of <image 1>.,[],,['Plots and Charts'],4.24,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_250_image_1_test_Electronics_250_1.png"", ""original_path"": ""test_Electronics_250_1.png""}]"
+test_Electronics_251,"A rectangular voltage pulse $v(t) = 10k[u(t) - u{t - (1 / k)}]$ V (in <image 1>), is applied in series with a 100-uF capacitor and a 20-k-ohm resistor. Find the capacitor voltage (in terms of V) at t = 1 if k = 1",[],,['Geometric Shapes'],3.93,Hard,open,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_251_image_1_test_Electronics_251_1.png"", ""original_path"": ""test_Electronics_251_1.png""}]"
+test_Electronics_252,Use nodal analysis on the circuit shown in  <image 1> to evaluate the phasor voltage $V_3$. Return the answer (in terms of V) in the complex number form like 2 + j3.,"['15 - j105', '11 - j105', '15 - j115', '11 - j115']",,['Diagrams'],A,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_252_image_1_test_Electronics_252_1.png"", ""original_path"": ""test_Electronics_252_1.png""}]"
+test_Electronics_253,"For the circuit in <image 1>, calculate the current in $I_2$ in terms of A. Provide your answer as a complex number (like 0.2 + j0.4).","['0.066 - j0.248', '0.016 - j0.248', '0.066 - j0.298', '0.166 - j1.248']",,['Diagrams'],A,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_253_image_1_test_Electronics_253_1.png"", ""original_path"": ""test_Electronics_253_1.png""}]"
+test_Electronics_254,Find the simplest sum of products form for the logic expression represented by the circuit shown in <image 1>.,"['not B ^ not A + A ^ not B', 'B ^ not A + not A ^ not B', 'B ^ not A + A ^ not B', 'B ^ A + A ^ not B']",,['Diagrams'],C,Medium,multiple-choice,Digital electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_254_image_1_test_Electronics_254_1.png"", ""original_path"": ""test_Electronics_254_1.png""}]"
+test_Electronics_255,The given figure <image 1> shows the model of a CE amplifier. Find the current gain if hre = 10-4 and hoe = 10-4 mho.,[],"Referring to the output circuit, using current division,
+
+                                                iL = (- 50)[(2.75) / (2.75 + 1)]ib = -36.7ib                            (1)
+
+                                    Note that
+
+                                                vce = iL * 1k\Omega
+
+                        or
+
+                                                vce = - 36.7 * 103ib                                                               (2)
+
+                        Turning to the input circuit and applying KVL,
+
+                                                vb = (0.83k\Omega)ib - 10-4Vce
+
+                   Using eq. 2 to substitute for Vce, we get
+
+                                           vb  = 830ib - (10-4)(36.7 * 103)ib
+
+                                                = (830 - 3.67)ib \approx 830ib
+
+                        The effect of hre is therefore negligible in this (and most) examples.
+
+                                    The current gain is
+
+                                                Ai = (iL / ii) (ib / vb) (vb / ii)
+
+                        where
+
+                                                (iL / ib) = - 36.7          (ib / vb) = (1 / 830)
+
+                        and using KCL at the base,
+
+                                            ii   = vb[(1 / 10k\Omega) + {1 / (8.3kk\Omega)}] + ib
+
+                                                \approx vb[(1 / 10k\Omega) + {1 / (8.3k\Omega)} + {1 / (830\Omega)}]
+
+                                                = (vb / 700)
+
+                        Thus
+
+                                                Ai \approx (- 36.7)(1 / 830)(700) = - 31
+
+                        The effect of hoe is to reduce the gain. This small reduction in gain is
+
+                        usually insignificant.",['Diagrams'],-31,Medium,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_255_image_1_test_Electronics_255_1.png"", ""original_path"": ""test_Electronics_255_1.png""}]"
+test_Electronics_256,"With reference to <image 1>, let the lower node be the reference, how much power is delivered by the dependent source?",[],,['Technical Blueprints'],7.8,Medium,open,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/test_Electronics_256_image_1_test_Electronics_256_1.png"", ""original_path"": ""test_Electronics_256_1.png""}]"

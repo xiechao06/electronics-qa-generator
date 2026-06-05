@@ -1,0 +1,26 @@
+[
+  {
+    "split": "dev",
+    "rows": 5,
+    "images": 5,
+    "jsonl": "mmmu_electronics_unpacked/dev/dev.jsonl",
+    "csv": "mmmu_electronics_unpacked/dev/dev.csv",
+    "image_dir": "mmmu_electronics_unpacked/dev/images"
+  },
+  {
+    "split": "test",
+    "rows": 256,
+    "images": 261,
+    "jsonl": "mmmu_electronics_unpacked/test/test.jsonl",
+    "csv": "mmmu_electronics_unpacked/test/test.csv",
+    "image_dir": "mmmu_electronics_unpacked/test/images"
+  },
+  {
+    "split": "validation",
+    "rows": 30,
+    "images": 30,
+    "jsonl": "mmmu_electronics_unpacked/validation/validation.jsonl",
+    "csv": "mmmu_electronics_unpacked/validation/validation.csv",
+    "image_dir": "mmmu_electronics_unpacked/validation/images"
+  }
+]

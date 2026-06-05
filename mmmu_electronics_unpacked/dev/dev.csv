@@ -1,0 +1,30 @@
+id,question,options,explanation,img_type,answer,topic_difficulty,question_type,subfield,images_json
+dev_Electronics_1,"For the INVERTER shown in <image 1>. Find the value of $C_s$ for full compensation.  For the transistor, $h_{FE(min)}$ = 60 $r_{b'e}$ = 1200$\Omega$, $C_i$ = 100pF, $V_{BE(ON)}$ = 0.7V, $V_{sat}$ = 0.2V. $V_i$ = 6V when on.",[],,['Diagrams'],120,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/dev_Electronics_1_image_1_dev_Electronics_1_1.png"", ""original_path"": ""dev_Electronics_1_1.png""}]"
+dev_Electronics_2,The circuit in <image 1> consists of a general inverter connected to a load. Suppose the range of logical 1 is defined to be 4 to 5V. Determine the minimum $R_L$ in order that the output be 1 when the input voltage v1 is zero.,[],"When the input is low, the transistor is cut off, and acts as an open
+
+                        circuit between the collector and emitter. Then the output voltage is simply
+
+                        given by voltage division:
+
+                                    V0 = VCC {RL / (RL +RC)} = [5RL / (RL + 5)] = 5 - {25 / (RL + 5)}
+
+                        Now, we must have V0 \geq 4, so RL + 5 \geq 25, or RL \geq 20k\Omega. Thus, the load
+
+                        must be at least 20k\Omega for the output to be correct.",['Diagrams'],20,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/dev_Electronics_2_image_1_dev_Electronics_2_1.png"", ""original_path"": ""dev_Electronics_2_1.png""}]"
+dev_Electronics_3, In <image 1>. $v_c = sin 2 \pi T$. Find an expression for i and calculate i at the instants t = 1/2s.,"['$3 \\pi x 10^-5 A$', '$0 \\pi x 10^-5 A$', '$1 \\pi x 10^-5 A$', '$-2 \\pi x 10^-5 A$']",,['Diagrams'],D,Hard,multiple-choice,Electrical Circuit,"[{""column"": ""image_1"", ""path"": ""images/dev_Electronics_3_image_1_dev_Electronics_3_1.png"", ""original_path"": ""dev_Electronics_3_1.png""}]"
+dev_Electronics_4,Find the $A_v$ of the following circuit in <image 1> and $R_{EU}$ is 100$\Omega$.,[],"Co and CB are shorts for ac, and Vcc is a short to ground. RL and
+
+                        rac can be combined in parallel to yield
+
+                                            rL = [{RL(rac)} / (RL + rac)]
+
+                                                = [{6k\Omega(3k\Omega)} / (6k\Omega + 3k\Omega)]
+
+                                                = (18M\Omega / 9k\Omega)
+
+                                            rL = 2k\Omega
+
+                        Because Ic = IE, the voltage across rac is the voltage across the equivalent
+
+                        resistor rL, and the voltage across REU = vg(VBE << Vcc), we can say",['Diagrams'],20,Hard,open,Analog Electronics,"[{""column"": ""image_1"", ""path"": ""images/dev_Electronics_4_image_1_dev_Electronics_4_1.png"", ""original_path"": ""dev_Electronics_4_1.png""}]"
+dev_Electronics_5,"Using superposition and Laplace transform techniques, calculate the voltage $v_2(t)$ in <image 1>.","['$[2 - 2.4e^{-(1 / 2)t} - (1 / \\sqrt{5}) cos (t - 63.44^{\\circ})] u(t)$', '$[2 - 2.4e^{-(1 / 2)t} - (1 / \\sqrt{3}) sin (t - 63.44^{\\circ})] u(t)$', '$[2 - 2.1e^{-(1 / 2)t} - (1 / \\sqrt{5}) sin (t - 63.44^{\\circ})] u(t)$', '$[2 - 2.4e^{-(1 / 2)t} - (1 / \\sqrt{5}) sin (t - 63.44^{\\circ})] u(t)$']",,['Plots and Charts'],D,Hard,multiple-choice,Signal Processing,"[{""column"": ""image_1"", ""path"": ""images/dev_Electronics_5_image_1_dev_Electronics_5_1.png"", ""original_path"": ""dev_Electronics_5_1.png""}]"
