@@ -15,6 +15,7 @@ from .format import format_component_label
 from .symbols import (
     FONT_SIZE_LABEL,
     FONT_SIZE_NODE,
+    LEAD_LENGTH,
     LINE_WIDTH,
     SYMBOL_LENGTH,
     draw_capacitor,
@@ -178,12 +179,20 @@ def _render_matplotlib(
                 "k-",
                 lw=LINE_WIDTH,
             )
+            # Vertical wire from top rail down to symbol top
+            ax.plot(
+                [comp_x, comp_x],
+                [_TOP_Y, (_TOP_Y + _BOTTOM_Y) / 2 - SYMBOL_LENGTH / 2],
+                "k-",
+                lw=LINE_WIDTH,
+            )
             draw_symbol = _SYMBOL_DRAWERS.get(comp.kind)
             if draw_symbol:
                 draw_symbol(ax, comp_x, (_TOP_Y + _BOTTOM_Y) / 2, angle=90)
+            # Vertical wire from symbol bottom to bottom rail
             ax.plot(
                 [comp_x, comp_x],
-                [(_TOP_Y + _BOTTOM_Y) / 2 + SYMBOL_LENGTH / 2 + 10, _BOTTOM_Y],
+                [(_TOP_Y + _BOTTOM_Y) / 2 + SYMBOL_LENGTH / 2, _BOTTOM_Y],
                 "k-",
                 lw=LINE_WIDTH,
             )
@@ -200,8 +209,15 @@ def _render_matplotlib(
 
     # ---- Connecting wires ----
     if sources:
-        src_top_y = mid_point + 30
-        ax.plot([_LEFT_X, _LEFT_X], [_BOTTOM_Y, src_top_y], "k-", lw=LINE_WIDTH)
+        # Wire from source top lead to top rail
+        src_top_lead_y = mid_point - LEAD_LENGTH
+        ax.plot([_LEFT_X, _LEFT_X], [src_top_lead_y, _TOP_Y], "k-", lw=LINE_WIDTH)
+        # Wire from source bottom to bottom rail
+        src_bottom_lead_y = mid_point + LEAD_LENGTH
+        ax.plot([_LEFT_X, _LEFT_X], [src_bottom_lead_y, _BOTTOM_Y], "k-", lw=LINE_WIDTH)
+        # Horizontal wire from source x to first component area on top rail
+        wire_start_x = _LEFT_X + _COMP_SPACING - SYMBOL_LENGTH / 2
+        ax.plot([_LEFT_X, wire_start_x], [_TOP_Y, _TOP_Y], "k-", lw=LINE_WIDTH)
     if passives:
         wire_start_x = _LEFT_X + _COMP_SPACING - SYMBOL_LENGTH / 2
         if n > 1:

@@ -104,7 +104,9 @@ def run_validate(args) -> None:
 
             llm_cache = LLMCheckCache(cache_dir=cache_dir / "llm_checks" if cache_dir else None)
     if getattr(args, "visual", False):
-        vision_provider = True
+        from ..llm.provider import complete_vision
+
+        vision_provider = complete_vision
         from .visual_checks import VisualCheckCache
 
         vision_cache = VisualCheckCache(

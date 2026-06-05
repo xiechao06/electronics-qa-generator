@@ -53,9 +53,9 @@ def _build_rlc_bandpass() -> CircuitGraph:
         header_comment="* RLC band-pass filter",
     )
     g.add_voltage_source("Vin", "in", "0", ac=1)
-    g.add_resistor("R1", "in", "n1", 47)
-    g.add_inductor("L1", "n1", "out", 0.01)
-    g.add_capacitor("C1", "out", "0", 1e-6)
+    g.add_inductor("L1", "in", "mid", 0.01)
+    g.add_capacitor("C1", "mid", "out", 1e-6)
+    g.add_resistor("R1", "out", "0", 47)
     return g
 
 

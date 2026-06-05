@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
+from typing import Callable
 
 from .checks import BATCH_CHECKS, ITEM_CHECKS
 from .models import CheckResult, Verdict
@@ -85,9 +86,9 @@ class ValidationReport:
         facts: dict[str, object],
         params: dict[str, object],
         *,
-        provider: object = None,
+        provider: Callable[..., str] | None = None,
         llm_cache: object = None,
-        vision_provider: object = None,
+        vision_provider: Callable[..., str] | None = None,
         vision_cache: object = None,
         schematic_path: str | None = None,
     ) -> ValidationReport:

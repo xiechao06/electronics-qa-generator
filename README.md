@@ -135,3 +135,43 @@ eq questions voltage_divider --seed 42 --humanize
 When no key is configured (or the API is unreachable), `--humanize` falls back
 silently to the original templated questions. Tests use a fake provider and
 never touch the network.
+
+## Visual checks (optional)
+
+The `eqa validate` command accepts an opt-in `--visual` flag that runs
+vision-model quality checks on rendered schematic images (topology
+verification, label readability). These checks use a locally-running
+Ollama instance with the `deepseek-vl2-tiny` model — **no cloud API key
+required**.
+
+### Setup
+
+```bash
+# 1. Install Ollama
+brew install ollama       # macOS
+# or download from https://ollama.com
+
+# 2. Start the service (runs on localhost:11434)
+ollama serve
+
+# 3. Pull the vision model (~4 GB, one-time)
+ollama pull deepseek-vl2-tiny
+```
+
+Configuration (in `.env`, defaults shown):
+
+```env
+VISION_BASE_URL=http://localhost:11434/v1
+VISION_MODEL=deepseek-vl2-tiny
+```
+
+### Usage
+
+```bash
+# Run validation with vision checks
+eq validate voltage_divider --seed 42 --visual
+```
+
+When Ollama is not running (or the model is not pulled), vision checks
+return PASS silently — they are advisory (WARN), never blocking. Results
+are cached by image content hash to avoid repeated VLM calls.

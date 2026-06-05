@@ -12,13 +12,13 @@
 
   <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold">RC High-Pass Filter</text>
 
-  <!-- Top rail -->
-  <line class="wire" x1="180" y1="120" x2="340" y2="120"/>
+  <!-- Top rail (gap for C1 capacitor) -->
+  <line class="wire" x1="180" y1="120" x2="320" y2="120"/>
   <line class="wire" x1="420" y1="120" x2="580" y2="120"/>
   <!-- Bottom rail -->
   <line class="wire" x1="180" y1="280" x2="580" y2="280"/>
-  <!-- Vertical Vin wire -->
-  <line class="wire" x1="180" y1="120" x2="180" y2="190"/>
+  <!-- Vertical Vin wire (stops at circle top) -->
+  <line class="wire" x1="180" y1="120" x2="180" y2="170"/>
 
   <!-- Vin voltage source (vertical, AC) -->
   <circle class="sym-filled" cx="180" cy="190" r="20"/>
@@ -31,13 +31,13 @@
   <text id="slot-Vin" class="label" x="195" y="192" text-anchor="start">Vin 1V AC</text>
 
   <!-- C1 (horizontal capacitor on top rail) -->
-  <line class="wire" x1="340" y1="120" x2="350" y2="120"/>
-  <line class="wire" x1="340" y1="110" x2="340" y2="130"/>
-  <line class="wire" x1="348" y1="110" x2="348" y2="130"/>
-  <!-- Gap marks -->
-  <line class="wire" x1="338" y1="113" x2="338" y2="127" stroke-width="1"/>
-  <line class="wire" x1="350" y1="113" x2="350" y2="127" stroke-width="1"/>
-  <line class="wire" x1="360" y1="120" x2="420" y2="120"/>
+  <!-- Left lead (touches plate 1) -->
+  <line class="wire" x1="320" y1="120" x2="340" y2="120"/>
+  <!-- Capacitor plates -->
+  <line class="wire" x1="340" y1="108" x2="340" y2="132"/>
+  <line class="wire" x1="352" y1="108" x2="352" y2="132"/>
+  <!-- Right lead (touches plate 2) -->
+  <line class="wire" x1="352" y1="120" x2="420" y2="120"/>
   <text id="slot-C1" class="label" x="380" y="105" text-anchor="middle">C1 100nF</text>
 
   <!-- R1 (vertical resistor, dropping to bottom rail) -->
@@ -46,8 +46,8 @@
   <line class="wire" x1="580" y1="235" x2="580" y2="280"/>
   <text id="slot-R1" class="label" x="598" y="190" text-anchor="start">R1 1kΩ</text>
 
-  <!-- Ground -->
-  <line class="wire" x1="180" y1="220" x2="180" y2="280"/>
+  <!-- Ground (wire connects from circle bottom) -->
+  <line class="wire" x1="180" y1="210" x2="180" y2="280"/>
   <line class="wire" x1="150" y1="280" x2="210" y2="280"/>
   <line class="wire" x1="158" y1="288" x2="202" y2="288"/>
   <line class="wire" x1="166" y1="296" x2="194" y2="296"/>

@@ -36,7 +36,7 @@ def _rot(dx: float, dy: float, angle_deg: float) -> tuple[float, float]:
 
 
 # ---------------------------------------------------------------------------
-# Resistor — zigzag
+# Resistor - zigzag
 # ---------------------------------------------------------------------------
 
 
@@ -58,7 +58,7 @@ def draw_resistor(ax: Axes, x: float, y: float, angle: float = 0) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Capacitor — two parallel plates
+# Capacitor - two parallel plates
 # ---------------------------------------------------------------------------
 
 
@@ -84,7 +84,7 @@ def draw_capacitor(ax: Axes, x: float, y: float, angle: float = 0) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Inductor — coil (semicircles)
+# Inductor - coil (semicircles)
 # ---------------------------------------------------------------------------
 
 
@@ -111,7 +111,7 @@ def draw_inductor(ax: Axes, x: float, y: float, angle: float = 0) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Diode — triangle + bar
+# Diode - triangle + bar
 # ---------------------------------------------------------------------------
 
 
@@ -156,28 +156,43 @@ def _rot_offset(x: float, y: float, dx: float, dy: float, angle: float) -> tuple
 
 
 # ---------------------------------------------------------------------------
-# Voltage source — circle with +/−
+# Voltage source - circle with +/-
 # ---------------------------------------------------------------------------
 
 
 def draw_voltage_source(ax: Axes, x: float, y: float, angle: float = 0) -> None:
-    """Draw a voltage source as a circle with + and − signs."""
+    """Draw a voltage source as a circle with + and - signs.
+    
+    Leads rotate with ``angle`` so that when ``angle=90`` the top lead
+    exits upward and the bottom lead downward, matching the connecting
+    wire layout in the schematic renderer.
+    """
     r = SYMBOL_HEIGHT / 2
     circ = mpatches.Circle((x, y), r, fill=False, edgecolor="black", lw=LINE_WIDTH)
     ax.add_patch(circ)
-    # + and − signs inside
+    # + and - signs inside
     fs = FONT_SIZE_LABEL
     ax.text(x, y + r * 0.35, "+", ha="center", va="center", fontsize=fs, fontweight="bold")
     ax.text(x, y - r * 0.35, "\u2212", ha="center", va="center", fontsize=fs, fontweight="bold")
-    # Leads
-    lead_dx, lead_dy = _rot(-LEAD_LENGTH, 0, angle)
-    ax.plot([x + lead_dx, x - r], [y + lead_dy, y], "k-", lw=LINE_WIDTH)
-    end_dx, end_dy = _rot(LEAD_LENGTH, 0, angle)
-    ax.plot([x + r, x + r + end_dx], [y, y + end_dy], "k-", lw=LINE_WIDTH)
+    # Leads — rotate both the direction and the connection point on the circle
+    lead1_start_dx, lead1_start_dy = _rot(-LEAD_LENGTH, 0, angle)
+    lead1_end_dx, lead1_end_dy = _rot(-r, 0, angle)  # left side → rotated
+    ax.plot(
+        [x + lead1_start_dx, x + lead1_end_dx],
+        [y + lead1_start_dy, y + lead1_end_dy],
+        "k-", lw=LINE_WIDTH,
+    )
+    lead2_start_dx, lead2_start_dy = _rot(r, 0, angle)  # right side → rotated
+    lead2_end_dx, lead2_end_dy = _rot(LEAD_LENGTH, 0, angle)
+    ax.plot(
+        [x + lead2_start_dx, x + lead2_end_dx],
+        [y + lead2_start_dy, y + lead2_end_dy],
+        "k-", lw=LINE_WIDTH,
+    )
 
 
 # ---------------------------------------------------------------------------
-# Ground — three descending horizontal lines
+# Ground - three descending horizontal lines
 # ---------------------------------------------------------------------------
 
 
