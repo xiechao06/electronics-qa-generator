@@ -22,6 +22,7 @@ for a total of 25 across 5 topologies.
 from __future__ import annotations
 
 from . import programs as P
+from .future_templates import FUTURE_QUESTION_TEMPLATES
 
 # ---------------------------------------------------------------------------
 # Registry
@@ -397,3 +398,6 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
         },
     ],
 }
+
+# Merge future templates into the active registry
+QUESTION_TEMPLATES.update(FUTURE_QUESTION_TEMPLATES)

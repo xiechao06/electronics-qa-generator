@@ -95,11 +95,25 @@ def _emit_vsource(c) -> str:
         phase = s.get("phase", 0)
         offset = s.get("offset", 0)
         parts.append(f"SIN({offset} {amp} {freq_str} {phase} 0)")
+    if "pwl" in p:
+        parts.append(f"PWL{p['pwl']}")
     return " ".join(parts)
 
 
 def _emit_diode(c) -> str:
     return f"{c.name} {c.pos} {c.neg} {c.params['model']}"
+
+
+def _emit_bjt(c) -> str:
+    """Emit a BJT: Qname collector base emitter model"""
+    emitter = c.params.get("emitter", c.neg)
+    return f"{c.name} {c.pos} {c.neg} {emitter} {c.params['model']}"
+
+
+def _emit_mosfet(c) -> str:
+    """Emit a MOSFET: Mname drain gate source model"""
+    source = c.params.get("source", c.neg)
+    return f"{c.name} {c.pos} {c.neg} {source} {c.params['model']}"
 
 
 _COMPONENT_EMITTERS = {
@@ -108,6 +122,8 @@ _COMPONENT_EMITTERS = {
     "inductor": _emit_inductor,
     "vsource": _emit_vsource,
     "diode": _emit_diode,
+    "bjt": _emit_bjt,
+    "mosfet": _emit_mosfet,
 }
 
 

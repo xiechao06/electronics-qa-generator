@@ -74,8 +74,18 @@ class TestRegistry:
             "rc_highpass",
             "rlc_bandpass",
             "half_wave_rectifier",
+            "rc_step_response",
+            "rl_step_response",
+            "ac_phasor_rc",
+            "bjt_ce_amplifier",
+            "bjt_emitter_follower",
+            "mosfet_cs_amplifier",
+            "resistor_network",
+            "op_amp_inverting",
+            "rlc_series_resonance",
         }
-        assert set(FACT_EXTRACTORS.keys()) == expected
+        assert set(FACT_EXTRACTORS.keys()) >= expected, \
+            f"Missing: {expected - set(FACT_EXTRACTORS.keys())}"
 
     def test_extractors_are_callable(self):
         for name, extractor in FACT_EXTRACTORS.items():

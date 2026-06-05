@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <style>
+    text { font-family: sans-serif; font-size: 16px; fill: black; }
+    .label { font-size: 13px; }
+    .node { font-size: 11px; fill: #333; }
+    .wire { stroke: black; stroke-width: 2; fill: none; }
+    .sym { stroke: black; stroke-width: 2; fill: none; }
+    .sym-filled { stroke: black; stroke-width: 2; fill: white; }
+  </style>
+
+  <rect width="800" height="400" fill="white"/>
+
+  <text x="400" y="22" text-anchor="middle" font-size="16" font-weight="bold">BJT Common-Emitter Amplifier</text>
+
+  <!-- VCC rail (top) -->
+  <line class="wire" x1="380" y1="70" x2="620" y2="70"/>
+  <!-- VCC wire from left -->
+  <line class="wire" x1="180" y1="70" x2="380" y2="70"/>
+
+  <!-- Vin (bottom-left, AC) -->
+  <line class="wire" x1="180" y1="300" x2="180" y2="270"/>
+  <circle class="sym-filled" cx="180" cy="320" r="16"/>
+  <line class="wire" x1="180" y1="304" x2="180" y2="308"/>
+  <line class="wire" x1="180" y1="332" x2="180" y2="336"/>
+  <line class="wire" x1="176" y1="306" x2="184" y2="310"/>
+  <line class="wire" x1="176" y1="310" x2="184" y2="306"/>
+  <line class="wire" x1="176" y1="334" x2="184" y2="330"/>
+  <line class="wire" x1="176" y1="330" x2="184" y2="334"/>
+  <text id="slot-Vin" class="label" x="195" y="322" text-anchor="start">Vin 1V AC</text>
+
+  <!-- Ground bottom rail -->
+  <line class="wire" x1="160" y1="350" x2="620" y2="350"/>
+  <line class="wire" x1="180" y1="336" x2="180" y2="350"/>
+  <line class="wire" x1="160" y1="350" x2="200" y2="350"/>
+  <line class="wire" x1="165" y1="356" x2="195" y2="356"/>
+  <line class="wire" x1="170" y1="362" x2="190" y2="362"/>
+
+  <!-- Cin (horizontal, left of base) -->
+  <line class="wire" x1="230" y1="120" x2="240" y2="120"/>
+  <line class="wire" x1="230" y1="108" x2="230" y2="132"/>
+  <line class="wire" x1="240" y1="108" x2="240" y2="132"/>
+  <line class="wire" x1="248" y1="120" x2="300" y2="120"/>
+  <text class="label" x="240" y="148" text-anchor="middle" font-size="11">Cin</text>
+
+  <!-- Wire from Vin through Cin to base -->
+  <line class="wire" x1="180" y1="120" x2="230" y2="120"/>
+
+  <!-- R1 (from VCC to base, vertical) -->
+  <line class="wire" x1="300" y1="70" x2="300" y2="95"/>
+  <polyline class="wire" points="300,95 285,110 315,130 285,150 315,170 300,185"/>
+  <line class="wire" x1="300" y1="185" x2="300" y2="200"/>
+  <line class="wire" x1="300" y1="200" x2="300" y2="250"/>
+  <line class="wire" x1="300" y1="250" x2="300" y2="350"/>
+  <text class="label" x="316" y="160" text-anchor="start" font-size="13">R1</text>
+
+  <!-- R2 (base to ground, vertical) -->
+  <line class="wire" x1="340" y1="120" x2="340" y2="350"/>
+  <polyline class="wire" points="340,250 325,265 355,285 325,305 355,325 340,340"/>
+  <text class="label" x="356" y="200" text-anchor="start" font-size="13">R2</text>
+
+  <!-- RC (VCC to collector, vertical) -->
+  <line class="wire" x1="500" y1="70" x2="500" y2="95"/>
+  <polyline class="wire" points="500,95 485,110 515,130 485,150 515,170 500,185"/>
+  <line class="wire" x1="500" y1="185" x2="500" y2="200"/>
+  <text class="label" x="516" y="140" text-anchor="start" font-size="13">RC</text>
+
+  <!-- RE (emitter to ground, vertical) -->
+  <line class="wire" x1="600" y1="200" x2="600" y2="225"/>
+  <polyline class="wire" points="600,225 585,240 615,260 585,280 615,300 600,315"/>
+  <line class="wire" x1="600" y1="315" x2="600" y2="350"/>
+  <text class="label" x="616" y="270" text-anchor="start" font-size="13">RE</text>
+
+  <!-- BJT symbol (collector=500,200 base=340,120 emitter=600,200) -->
+  <line class="wire" x1="340" y1="120" x2="400" y2="200"/>
+  <line class="wire" x1="500" y1="200" x2="450" y2="200"/>
+  <line class="wire" x1="450" y1="200" x2="600" y2="200"/>
+  <line class="wire" x1="450" y1="200" x2="400" y2="200"/>
+  <circle class="sym-filled" cx="450" cy="200" r="14"/>
+  <!-- Emitter arrow -->
+  <line class="wire" x1="460" y1="214" x2="475" y2="230"/>
+  <line class="wire" x1="475" y1="230" x2="470" y2="225"/>
+  <line class="wire" x1="475" y1="230" x2="480" y2="225"/>
+  <text id="slot-Q1" class="label" x="425" y="185" text-anchor="end">Q1</text>
+
+  <!-- Cout (collector to out, horizontal) -->
+  <line class="wire" x1="550" y1="200" x2="560" y2="200"/>
+  <line class="wire" x1="550" y1="188" x2="550" y2="212"/>
+  <line class="wire" x1="560" y1="188" x2="560" y2="212"/>
+  <line class="wire" x1="568" y1="200" x2="620" y2="200"/>
+  <text class="label" x="560" y="230" text-anchor="middle" font-size="11">Cout</text>
+
+  <!-- VCC source label -->
+  <text id="slot-VCC" class="label" x="140" y="75" text-anchor="end">VCC V</text>
+  <line class="wire" x1="140" y1="80" x2="130" y2="80"/>
+  <circle class="sym-filled" cx="120" cy="80" r="10"/>
+  <line class="wire" x1="110" y1="80" x2="70" y2="80"/>
+  <line class="wire" x1="70" y1="80" x2="70" y2="350"/>
+  <line class="wire" x1="60" y1="350" x2="80" y2="350"/>
+
+  <!-- Node labels -->
+  <text id="slot-node-in" class="node" x="155" y="115" text-anchor="end">in</text>
+  <text id="slot-node-out" class="node" x="640" y="195" text-anchor="start">out</text>
+</svg>

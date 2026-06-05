@@ -18,6 +18,13 @@ from .netlist_helpers import format_netlist
 from .parameter import Choice, LogUniform, Uniform
 from .passive import RCLowPass, RCHighPass, RLCBandPass, VoltageDivider
 from .rectifier import HalfWaveRectifier
+from .transient import RCStepResponse, RLStepResponse
+from .ac_phasor import ACPhasorRC
+from .bjt import BJTCEAmplifier, BJTEFollower
+from .mosfet import MOSFETCSAmplifier
+from .network import ResistorNetwork
+from .op_amp import OpAmpInverting
+from .rlc_resonance import RLCSeriesResonance
 
 ALL_TEMPLATES: list[CircuitTemplate] = [
     VoltageDivider(),
@@ -25,6 +32,15 @@ ALL_TEMPLATES: list[CircuitTemplate] = [
     RCHighPass(),
     RLCBandPass(),
     HalfWaveRectifier(),
+    RCStepResponse(),
+    RLStepResponse(),
+    ACPhasorRC(),
+    BJTCEAmplifier(),
+    BJTEFollower(),
+    MOSFETCSAmplifier(),
+    ResistorNetwork(),
+    OpAmpInverting(),
+    RLCSeriesResonance(),
 ]
 """Registry of all concrete template instances.
 

@@ -256,6 +256,95 @@ def _extract_half_wave_rectifier(
 
 
 # ---------------------------------------------------------------------------
+# Transient extractors
+# ---------------------------------------------------------------------------
+
+
+def _extract_rc_step_response(
+    parsed: dict,
+    params: dict,
+) -> dict[str, Any]:
+    """Extract RC step response facts from .tran results."""
+    probe_key = "V(OUT)"
+    data = parsed.get(probe_key, [])
+
+    tau = params.get("tau_s", 0.0)
+    v_step = params.get("V_step", 0.0)
+
+    if not data:
+        return {
+            "tau_s": tau,
+            "v_C_initial": 0.0,
+            "v_C_final": v_step,
+            "v_C_at_1tau": 0.0,
+        }
+
+    times = [t for t, _ in data]
+    values = [v for _, v in data]
+
+    # Initial: first data point after t=0
+    v_initial = values[0] if values else 0.0
+
+    # Final: last data point
+    v_final = values[-1] if values else v_step
+
+    # v_C at t = 1τ — find nearest time point
+    v_at_1tau = 0.0
+    if tau > 0:
+        best_idx = min(range(len(times)), key=lambda i: abs(times[i] - tau))
+        v_at_1tau = values[best_idx]
+
+    return {
+        "tau_s": tau,
+        "v_C_initial": v_initial,
+        "v_C_final": v_final,
+        "v_C_at_1tau": v_at_1tau,
+    }
+
+
+def _extract_rl_step_response(
+    parsed: dict,
+    params: dict,
+) -> dict[str, Any]:
+    """Extract RL step response facts from .tran results."""
+    probe_key = "I(L1)"
+    data = parsed.get(probe_key, [])
+
+    tau = params.get("tau_s", 0.0)
+    r_load = params.get("R_ohm", 0.0)
+    v_step = params.get("V_step", 0.0)
+
+    if not data:
+        i_final = v_step / r_load if r_load > 0 else 0.0
+        return {
+            "tau_s": tau,
+            "i_L_initial": 0.0,
+            "i_L_final": i_final,
+            "i_L_at_1tau": 0.0,
+            "R_load_ohm": r_load,
+        }
+
+    times = [t for t, _ in data]
+    values = [v for _, v in data]
+
+    i_initial = values[0] if values else 0.0
+    i_final = values[-1] if values else (v_step / r_load if r_load > 0 else 0.0)
+
+    i_at_1tau = 0.0
+    if tau > 0:
+        best_idx = min(range(len(times)), key=lambda i: abs(times[i] - tau))
+        i_at_1tau = values[best_idx]
+
+    return {
+        "tau_s": tau,
+        "i_L_initial": i_initial,
+        "i_L_final": i_final,
+        "i_L_at_1tau": i_at_1tau,
+        "R_load_ohm": r_load,
+    }
+
+
+# ---------------------------------------------------------------------------
 # Registry
 # ---------------------------------------------------------------------------
 
@@ -266,6 +355,15 @@ FACT_EXTRACTORS: dict[str, Callable] = {
     "rc_highpass": _extract_rc_highpass,
     "rlc_bandpass": _extract_rlc_bandpass,
     "half_wave_rectifier": _extract_half_wave_rectifier,
+    "rc_step_response": _extract_rc_step_response,
+    "rl_step_response": _extract_rl_step_response,
+    "ac_phasor_rc": _extract_rc_lowpass,  # same extraction pattern (series RC, V out)
+    "bjt_ce_amplifier": _extract_rc_lowpass,  # placeholder — gain from .ac
+    "bjt_emitter_follower": _extract_rc_lowpass,  # placeholder
+    "mosfet_cs_amplifier": _extract_rc_lowpass,  # placeholder
+    "resistor_network": _extract_voltage_divider,  # .op output voltage
+    "op_amp_inverting": _extract_rc_lowpass,  # .ac gain
+    "rlc_series_resonance": _extract_rlc_bandpass,  # resonance from .ac
 }
 """Registry mapping topology name → fact extractor function.
 

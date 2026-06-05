@@ -256,6 +256,15 @@ def _register_defaults() -> None:
     registry.register("passive", "rc_highpass", "rc_highpass.svg")
     registry.register("passive", "rlc_bandpass", "rlc_bandpass.svg")
     registry.register("diode", "half_wave_rectifier", "half_wave_rectifier.svg")
+    registry.register("passive", "rc_step_response", "rc_step_response.svg")
+    registry.register("passive", "rl_step_response", "rl_step_response.svg")
+    registry.register("passive", "ac_phasor_rc", "ac_phasor_rc.svg")
+    registry.register("transistor", "bjt_ce_amplifier", "bjt_ce_amplifier.svg")
+    registry.register("transistor", "bjt_emitter_follower", "bjt_emitter_follower.svg")
+    registry.register("transistor", "mosfet_cs_amplifier", "mosfet_cs_amplifier.svg")
+    registry.register("passive", "resistor_network", "resistor_network.svg")
+    registry.register("opamp", "op_amp_inverting", "op_amp_inverting.svg")
+    registry.register("passive", "rlc_series_resonance", "rlc_series_resonance.svg")
 
 
 _register_defaults()

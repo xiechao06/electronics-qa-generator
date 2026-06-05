@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <style>
+    text { font-family: sans-serif; font-size: 16px; fill: black; }
+    .label { font-size: 14px; }
+    .node { font-size: 12px; fill: #333; }
+    .wire { stroke: black; stroke-width: 2; fill: none; }
+    .sym { stroke: black; stroke-width: 2; fill: none; }
+    .sym-filled { stroke: black; stroke-width: 2; fill: white; }
+  </style>
+
+  <rect width="800" height="400" fill="white"/>
+  <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold">MOSFET Common-Source Amplifier</text>
+
+  <!-- VDD top rail -->
+  <line class="wire" x1="180" y1="60" x2="580" y2="60"/>
+  <line class="wire" x1="120" y1="60" x2="180" y2="60"/>
+  <circle class="sym-filled" cx="100" cy="60" r="12"/>
+  <line class="wire" x1="88" y1="60" x2="93" y2="60"/>
+  <line class="wire" x1="107" y1="60" x2="112" y2="60"/>
+  <line class="wire" x1="96" y1="56" x2="104" y2="64"/>
+  <line class="wire" x1="96" y1="64" x2="104" y2="56"/>
+  <text id="slot-VDD" class="label" x="130" y="55" text-anchor="start">VDD V</text>
+
+  <!-- Bottom ground rail -->
+  <line class="wire" x1="120" y1="340" x2="620" y2="340"/>
+  <line class="wire" x1="120" y1="340" x2="150" y2="340"/>
+  <line class="wire" x1="125" y1="346" x2="145" y2="346"/>
+  <line class="wire" x1="130" y1="352" x2="140" y2="352"/>
+  <!-- VDD to ground -->
+  <line class="wire" x1="100" y1="72" x2="100" y2="340"/>
+
+  <!-- Vin (AC) -->
+  <circle class="sym-filled" cx="180" cy="300" r="14"/>
+  <line class="wire" x1="180" y1="286" x2="180" y2="291"/>
+  <line class="wire" x1="180" y1="309" x2="180" y2="314"/>
+  <line class="wire" x1="176" y1="288" x2="184" y2="293"/>
+  <line class="wire" x1="176" y1="311" x2="184" y2="306"/>
+  <line class="wire" x1="180" y1="314" x2="180" y2="340"/>
+  <text id="slot-Vin" class="label" x="195" y="303" text-anchor="start">Vin 1V AC</text>
+
+  <!-- Top rail -->
+  <line class="wire" x1="240" y1="140" x2="340" y2="140"/>
+  <line class="wire" x1="420" y1="140" x2="580" y2="140"/>
+
+  <!-- Cin -->
+  <line class="wire" x1="180" y1="140" x2="190" y2="140"/>
+  <line class="wire" x1="180" y1="128" x2="180" y2="152"/>
+  <line class="wire" x1="190" y1="128" x2="190" y2="152"/>
+  <line class="wire" x1="198" y1="140" x2="240" y2="140"/>
+  <line class="wire" x1="180" y1="140" x2="180" y2="286"/>
+
+  <!-- RG (gate to ground) -->
+  <line class="wire" x1="340" y1="140" x2="340" y2="340"/>
+  <polyline class="wire" points="340,210 325,225 355,245 325,265 355,285 340,300"/>
+  <text class="label" x="352" y="270" text-anchor="start" font-size="13">RG</text>
+
+  <!-- RD (VDD to drain) -->
+  <line class="wire" x1="500" y1="60" x2="500" y2="85"/>
+  <polyline class="wire" points="500,85 485,100 515,120 485,140 515,160 500,175"/>
+  <line class="wire" x1="500" y1="175" x2="500" y2="200"/>
+  <text class="label" x="516" y="130" text-anchor="start" font-size="13">RD</text>
+
+  <!-- MOSFET symbol -->
+  <line class="wire" x1="420" y1="200" x2="480" y2="200"/>
+  <line class="wire" x1="500" y1="200" x2="450" y2="200"/>
+  <circle class="sym-filled" cx="450" cy="200" r="14"/>
+  <line class="wire" x1="450" y1="214" x2="450" y2="250"/>
+  <!-- Gate vertical from RG -->
+  <line class="wire" x1="340" y1="140" x2="340" y2="190"/>
+  <line class="wire" x1="340" y1="190" x2="450" y2="200"/>
+  <line class="wire" x1="436" y1="200" x2="443" y2="193"/>
+  <text id="slot-M1" class="label" x="425" y="185" text-anchor="end">M1</text>
+
+  <!-- RS (source to ground) -->
+  <line class="wire" x1="510" y1="250" x2="510" y2="265"/>
+  <polyline class="wire" points="510,265 495,280 525,300 495,320 525,340"/>
+  <text class="label" x="526" y="310" text-anchor="start" font-size="13">RS</text>
+
+  <!-- Cout -->
+  <line class="wire" x1="550" y1="200" x2="560" y2="200"/>
+  <line class="wire" x1="550" y1="188" x2="550" y2="212"/>
+  <line class="wire" x1="560" y1="188" x2="560" y2="212"/>
+  <line class="wire" x1="568" y1="200" x2="620" y2="200"/>
+
+  <!-- Rload -->
+  <line class="wire" x1="620" y1="200" x2="620" y2="340"/>
+  <polyline class="wire" points="620,240 605,255 635,275 605,295 635,315 620,330"/>
+  <text class="label" x="636" y="280" text-anchor="start" font-size="13">Rload</text>
+
+  <text id="slot-node-in" class="node" x="155" y="135" text-anchor="end">in</text>
+  <text id="slot-node-out" class="node" x="640" y="195" text-anchor="start">out</text>
+</svg>

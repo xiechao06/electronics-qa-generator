@@ -6,14 +6,24 @@ from electronics_qa_generator.questions.templates import QUESTION_TEMPLATES
 
 
 class TestRegistry:
-    def test_all_five_topologies(self):
-        assert set(QUESTION_TEMPLATES.keys()) == {
+    def test_all_topologies_present(self):
+        expected = {
             "voltage_divider",
             "rc_lowpass",
             "rc_highpass",
             "rlc_bandpass",
             "half_wave_rectifier",
+            "rc_step_response",
+            "rl_step_response",
+            "ac_phasor_rc",
+            "bjt_ce_amplifier",
+            "bjt_emitter_follower",
+            "mosfet_cs_amplifier",
+            "resistor_network",
+            "op_amp_inverting",
+            "rlc_series_resonance",
         }
+        assert set(QUESTION_TEMPLATES.keys()) == expected
 
     def test_each_topology_has_at_least_two(self):
         for name, templates in QUESTION_TEMPLATES.items():
@@ -21,7 +31,7 @@ class TestRegistry:
 
     def test_total_template_count(self):
         total = sum(len(t) for t in QUESTION_TEMPLATES.values())
-        assert total == 25
+        assert total == 63
 
 
 class TestTemplateStructure:

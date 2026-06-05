@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <style>
+    text { font-family: sans-serif; font-size: 16px; fill: black; }
+    .label { font-size: 14px; }
+    .node { font-size: 12px; fill: #333; }
+    .wire { stroke: black; stroke-width: 2; fill: none; }
+    .sym { stroke: black; stroke-width: 2; fill: none; }
+    .sym-filled { stroke: black; stroke-width: 2; fill: white; }
+  </style>
+
+  <rect width="800" height="400" fill="white"/>
+  <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold">BJT Emitter Follower</text>
+
+  <!-- VCC top rail -->
+  <line class="wire" x1="180" y1="70" x2="340" y2="70"/>
+  <!-- VCC wire -->
+  <line class="wire" x1="180" y1="50" x2="180" y2="70"/>
+  <circle class="sym-filled" cx="180" cy="40" r="14"/>
+  <line class="wire" x1="180" y1="26" x2="180" y2="31"/>
+  <line class="wire" x1="180" y1="49" x2="180" y2="54"/>
+  <line class="wire" x1="176" y1="28" x2="184" y2="33"/>
+  <line class="wire" x1="176" y1="51" x2="184" y2="46"/>
+  <text id="slot-VCC" class="label" x="195" y="43" text-anchor="start">VCC V</text>
+  <!-- VCC to ground -->
+  <line class="wire" x1="70" y1="40" x2="180" y2="40"/>
+  <line class="wire" x1="70" y1="40" x2="70" y2="330"/>
+
+  <!-- Bottom ground rail -->
+  <line class="wire" x1="60" y1="330" x2="620" y2="330"/>
+  <line class="wire" x1="60" y1="330" x2="100" y2="330"/>
+  <line class="wire" x1="65" y1="336" x2="95" y2="336"/>
+  <line class="wire" x1="70" y1="342" x2="90" y2="342"/>
+
+  <!-- Vin (bottom-left) -->
+  <circle class="sym-filled" cx="180" cy="300" r="14"/>
+  <line class="wire" x1="180" y1="286" x2="180" y2="291"/>
+  <line class="wire" x1="180" y1="309" x2="180" y2="314"/>
+  <line class="wire" x1="176" y1="288" x2="184" y2="293"/>
+  <line class="wire" x1="176" y1="311" x2="184" y2="306"/>
+  <line class="wire" x1="180" y1="314" x2="180" y2="330"/>
+  <text id="slot-Vin" class="label" x="195" y="303" text-anchor="start">Vin 1V AC</text>
+
+  <!-- Top rail -->
+  <line class="wire" x1="180" y1="130" x2="340" y2="130"/>
+  <line class="wire" x1="420" y1="130" x2="620" y2="130"/>
+  <!-- Vin to Cin -->
+  <line class="wire" x1="180" y1="130" x2="180" y2="286"/>
+
+  <!-- Cin -->
+  <line class="wire" x1="180" y1="170" x2="190" y2="170"/>
+  <line class="wire" x1="180" y1="158" x2="180" y2="182"/>
+  <line class="wire" x1="190" y1="158" x2="190" y2="182"/>
+  <line class="wire" x1="198" y1="170" x2="250" y2="170"/>
+
+  <!-- R1 (VCC to base) -->
+  <line class="wire" x1="340" y1="70" x2="340" y2="95"/>
+  <polyline class="wire" points="340,95 325,110 355,130 325,150 355,170"/>
+  <line class="wire" x1="340" y1="170" x2="250" y2="170"/>
+
+  <!-- R2 (base to ground) -->
+  <line class="wire" x1="250" y1="170" x2="250" y2="330"/>
+  <polyline class="wire" points="250,220 235,235 265,255 235,275 265,295 250,310"/>
+
+  <!-- BJT -->
+  <line class="wire" x1="340" y1="170" x2="380" y2="230"/>
+  <line class="wire" x1="340" y1="70" x2="420" y2="230"/>
+  <circle class="sym-filled" cx="420" cy="240" r="16"/>
+  <line class="wire" x1="416" y1="224" x2="430" y2="240"/>
+  <line class="wire" x1="416" y1="240" x2="430" y2="256"/>
+  <line class="wire" x1="436" y1="240" x2="500" y2="240"/>
+
+  <!-- RE (emitter to ground) -->
+  <line class="wire" x1="500" y1="240" x2="500" y2="260"/>
+  <polyline class="wire" points="500,260 485,275 515,295 485,315 515,335 500,350"/>
+  <line class="wire" x1="500" y1="350" x2="500" y2="360"/>
+  <line class="wire" x1="500" y1="360" x2="550" y2="360"/>
+
+  <!-- Cout -->
+  <line class="wire" x1="550" y1="360" x2="560" y2="360"/>
+  <line class="wire" x1="550" y1="348" x2="550" y2="372"/>
+  <line class="wire" x1="560" y1="348" x2="560" y2="372"/>
+  <line class="wire" x1="568" y1="360" x2="620" y2="360"/>
+
+  <text class="label" x="356" y="130" text-anchor="start" font-size="13">R1</text>
+  <text class="label" x="262" y="280" text-anchor="start" font-size="13">R2</text>
+  <text class="label" x="516" y="310" text-anchor="start" font-size="13">RE</text>
+  <text id="slot-Q1" class="label" x="440" y="230" text-anchor="start">Q1</text>
+
+  <text id="slot-node-in" class="node" x="155" y="125" text-anchor="end">in</text>
+  <text id="slot-node-out" class="node" x="640" y="355" text-anchor="start">out</text>
+</svg>

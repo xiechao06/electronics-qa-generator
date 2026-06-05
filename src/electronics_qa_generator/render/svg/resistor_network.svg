@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <style>
+    text { font-family: sans-serif; font-size: 16px; fill: black; }
+    .label { font-size: 14px; }
+    .node { font-size: 12px; fill: #333; }
+    .wire { stroke: black; stroke-width: 2; fill: none; }
+    .sym { stroke: black; stroke-width: 2; fill: none; }
+    .sym-filled { stroke: black; stroke-width: 2; fill: white; }
+  </style>
+  <rect width="800" height="400" fill="white"/>
+  <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold">Resistor Network</text>
+
+  <!-- Top rail -->
+  <line class="wire" x1="180" y1="100" x2="280" y2="100"/>
+  <line class="wire" x1="360" y1="100" x2="460" y2="100"/>
+  <line class="wire" x1="540" y1="100" x2="620" y2="100"/>
+
+  <!-- Vin (DC) -->
+  <circle class="sym-filled" cx="180" cy="200" r="16"/>
+  <line class="wire" x1="180" y1="184" x2="180" y2="189"/>
+  <line class="wire" x1="180" y1="211" x2="180" y2="216"/>
+  <line class="wire" x1="176" y1="186" x2="184" y2="191"/>
+  <line class="wire" x1="176" y1="213" x2="184" y2="208"/>
+  <line class="wire" x1="180" y1="100" x2="180" y2="184"/>
+  <text id="slot-Vs" class="label" x="195" y="203" text-anchor="start">Vs V</text>
+
+  <!-- Ground rail -->
+  <line class="wire" x1="150" y1="340" x2="620" y2="340"/>
+  <line class="wire" x1="180" y1="216" x2="180" y2="340"/>
+  <line class="wire" x1="150" y1="340" x2="190" y2="340"/>
+  <line class="wire" x1="155" y1="346" x2="185" y2="346"/>
+  <line class="wire" x1="160" y1="352" x2="180" y2="352"/>
+
+  <!-- Ra (top rail, horizontal) -->
+  <line class="wire" x1="280" y1="100" x2="295" y2="100"/>
+  <polyline class="wire" points="295,100 305,90 315,110 325,90 335,110 345,100"/>
+  <line class="wire" x1="345" y1="100" x2="360" y2="100"/>
+  <text id="slot-Ra" class="label" x="320" y="85" text-anchor="middle">Ra</text>
+
+  <!-- Rb (top rail to out, horizontal) -->
+  <line class="wire" x1="460" y1="100" x2="475" y2="100"/>
+  <polyline class="wire" points="475,100 485,90 495,110 505,90 515,110 525,100"/>
+  <line class="wire" x1="525" y1="100" x2="540" y2="100"/>
+  <text id="slot-Rb" class="label" x="500" y="85" text-anchor="middle">Rb</text>
+
+  <!-- Rc (vertical drop from out) -->
+  <line class="wire" x1="620" y1="100" x2="620" y2="140"/>
+  <polyline class="wire" points="620,140 605,160 635,180 605,200 635,220 620,240"/>
+  <line class="wire" x1="620" y1="240" x2="620" y2="260"/>
+  <text id="slot-Rc" class="label" x="636" y="180" text-anchor="start">Rc</text>
+
+  <!-- Rd (horizontal to ground) -->
+  <line class="wire" x1="620" y1="260" x2="620" y2="300"/>
+  <polyline class="wire" points="620,300 610,310 620,320 630,310 640,320 650,310 660,320 670,310"/>
+  <line class="wire" x1="620" y1="340" x2="620" y2="340"/>
+  <line class="wire" x1="620" y1="320" x2="620" y2="340"/>
+  <text id="slot-Rd" class="label" x="570" y="330" text-anchor="start">Rd</text>
+
+  <!-- Rload (out to ground) -->
+  <line class="wire" x1="540" y1="100" x2="540" y2="340"/>
+  <polyline class="wire" points="540,180 525,195 555,215 525,235 555,255 540,270"/>
+  <text id="slot-Rload" class="label" x="556" y="230" text-anchor="start">Rload</text>
+
+  <text id="slot-node-in" class="node" x="155" y="95" text-anchor="end">in</text>
+  <text id="slot-node-out" class="node" x="500" y="95" text-anchor="middle">out</text>
+</svg>

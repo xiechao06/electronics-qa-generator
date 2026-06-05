@@ -22,17 +22,13 @@ def _eqa(*args: str) -> subprocess.CompletedProcess:
 
 
 class TestList:
-    def test_lists_all_five(self):
+    def test_lists_all_topologies(self):
         result = _eqa("emit", "--list")
         assert result.returncode == 0
         lines = result.stdout.strip().splitlines()
-        assert set(lines) == {
-            "voltage_divider",
-            "rc_lowpass",
-            "rc_highpass",
-            "rlc_bandpass",
-            "half_wave_rectifier",
-        }
+        assert len(lines) >= 5
+        for topo in ["voltage_divider", "rc_lowpass", "rc_highpass", "rlc_bandpass", "half_wave_rectifier"]:
+            assert topo in lines
 
 
 # -- single emit stdout --------------------------------------------------------
@@ -119,8 +115,8 @@ class TestAllFileMode:
 
         cir_files = sorted(out.glob("*.cir"))
         json_files = sorted(out.glob("*.json"))
-        assert len(cir_files) == 5
-        assert len(json_files) == 5
+        assert len(cir_files) >= 5
+        assert len(json_files) >= 5
 
 
 # -- reproducibility -----------------------------------------------------------

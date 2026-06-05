@@ -153,6 +153,7 @@ class CircuitGraph:
         dc: float | None = None,
         ac: float | None = None,
         sin: dict | None = None,
+        pwl: str | None = None,
     ) -> None:
         """Add a voltage source.
 
@@ -160,6 +161,7 @@ class CircuitGraph:
             dc: DC voltage (for .op analysis).
             ac: AC magnitude (for .ac analysis, e.g. ac=1 means "AC 1").
             sin: sine wave params, e.g. {"amplitude": 5, "freq": 60}.
+            pwl: piecewise-linear string, e.g. "(0 0 1m 5 2m 5 3m 0)".
         """
         for n in (pos, neg):
             self._register_node(n)
@@ -170,6 +172,8 @@ class CircuitGraph:
             params["ac"] = ac
         if sin is not None:
             params["sin"] = dict(sin)
+        if pwl is not None:
+            params["pwl"] = pwl
         self.components.append(
             Component(name=name, kind="vsource", pos=pos, neg=neg, params=params),
         )
@@ -186,6 +190,48 @@ class CircuitGraph:
             self._register_node(n)
         self.components.append(
             Component(name=name, kind="diode", pos=pos, neg=neg, params={"model": model}),
+        )
+
+    def add_bjt(
+        self,
+        name: str,
+        collector: str,
+        base: str,
+        emitter: str,
+        model: str = "Q2N2222",
+    ) -> None:
+        """Add a BJT transistor. Nodes: collector, base, emitter."""
+        for n in (collector, base, emitter):
+            self._register_node(n)
+        self.components.append(
+            Component(
+                name=name,
+                kind="bjt",
+                pos=collector,
+                neg=base,
+                params={"model": model, "emitter": emitter},
+            ),
+        )
+
+    def add_mosfet(
+        self,
+        name: str,
+        drain: str,
+        gate: str,
+        source: str,
+        model: str = "NMOS1",
+    ) -> None:
+        """Add a MOSFET transistor. Nodes: drain, gate, source."""
+        for n in (drain, gate, source):
+            self._register_node(n)
+        self.components.append(
+            Component(
+                name=name,
+                kind="mosfet",
+                pos=drain,
+                neg=gate,
+                params={"model": model, "source": source},
+            ),
         )
 
     def add_directive(self, line: str) -> None:
