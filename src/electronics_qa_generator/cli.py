@@ -12,6 +12,7 @@ from . import __version__
 from .output.emit import run_emit
 from .questions.cli_handler import run_questions
 from .simulation.cli_handler import run_simulate
+from .validation.cli_handler import run_validate
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -83,6 +84,25 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="render a schematic PNG for each circuit alongside QA items",
     )
+    qa.add_argument(
+        "--verify",
+        action="store_true",
+        help="run static validation checks on generated QA items",
+    )
+
+    # -- validate subcommand ------------------------------------------------
+    val = sub.add_parser("validate", help="run static QA-item checks and print report")
+    val.add_argument(
+        "topology",
+        nargs="?",
+        default=None,
+        help="topology name to validate (use --list to see available)",
+    )
+    val.add_argument("--list", action="store_true", help="list available topologies")
+    val.add_argument("--seed", type=int, default=0, help="random seed for reproducible sampling")
+    val.add_argument("--cache-dir", default=None, help="fact cache directory")
+    val.add_argument("--no-cache", action="store_true", help="skip cache read/write")
+    val.add_argument("--json", action="store_true", help="output report as JSON")
 
     return parser
 
@@ -106,6 +126,10 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "questions":
         run_questions(args)
+        return 0
+
+    if args.command == "validate":
+        run_validate(args)
         return 0
 
     parser.print_help()

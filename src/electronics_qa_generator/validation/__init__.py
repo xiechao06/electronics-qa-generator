@@ -1,7 +1,11 @@
-"""Verifier, quality filters, and split checks.
+"""Validation stage: static QA-item quality checks.
 
-Verifier: question matches stored facts, answer matches computed value, no unit
-mismatch, no ambiguity, no answer leakage, plots visibly support the question.
-Quality filters reject failed/unstable/trivial/duplicate/unreadable samples.
-Split checks guard against leakage across train/val/test (docs/plan.md 7).
+The verifier runs deterministic checks on every generated QA item before it
+enters the dataset. All checks are pure functions — no I/O, no LLM.
 """
+
+from .checks import ALL_CHECKS
+from .models import CheckResult, Verdict
+from .report import ValidationReport
+
+__all__ = ["ALL_CHECKS", "CheckResult", "Verdict", "ValidationReport"]

@@ -120,6 +120,26 @@ def run_questions(args) -> None:
             render_schematic(record.graph, png_path)
             schematic_path = f"render/{name}_{seed_str}.png"
 
+    # Run static verification (opt-in)
+    verified: bool | None = None
+    verification_errors: list[dict] = []
+    if getattr(args, "verify", False):
+        from ..validation.report import ValidationReport
+
+        report = ValidationReport.from_items(items, facts, record.parameters)
+        verified = report.ok
+        for i, item_results in enumerate(report.items):
+            for r in item_results:
+                if r.verdict.value != "pass":
+                    verification_errors.append(
+                        {
+                            "item": i,
+                            "check": r.name,
+                            "verdict": r.verdict.value,
+                            "message": r.message,
+                        }
+                    )
+
     # Print as JSON array or JSONL
     result = [
         {
@@ -133,6 +153,8 @@ def run_questions(args) -> None:
             "program": item.program,
             "explanation": item.explanation,
             "schematic_path": schematic_path,
+            "verified": verified,
+            "verification_errors": verification_errors if verification_errors else None,
         }
         for item in items
     ]
