@@ -1,0 +1,5 @@
+{
+  "cutoff_hz": 0.48361164630590864,
+  "passband_gain_db": 2.1105540942111696e-09,
+  "behavior": "high-pass"
+}

@@ -19,3 +19,5 @@ __pycache__/
 *.log
 .cache/
 output/
+# agent QA verification scratch output
+.verify/

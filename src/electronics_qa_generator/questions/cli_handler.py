@@ -10,6 +10,7 @@ import json
 import sys
 from pathlib import Path
 
+from ..extraction.bias import augment_with_dc_bias
 from ..extraction.facts import FACT_EXTRACTORS
 from ..extraction.parsers import get_parser
 from ..llm.cache import HumanizationCache
@@ -72,6 +73,7 @@ def run_questions(args) -> None:
 
         parser = get_parser(sim_type, name)
         parsed = parser(stdout)
+        parsed = augment_with_dc_bias(parsed, record)
 
         extractor = FACT_EXTRACTORS.get(name)
         if extractor is None:

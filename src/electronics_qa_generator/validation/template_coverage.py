@@ -127,9 +127,9 @@ FACT_INPUTS: dict[str, dict[str, list[str]]] = {
         "A_v": ["R1", "R2", "RE", "VCC"],
     },
     "mosfet_cs_amplifier": {
-        "V_DSQ": ["RD", "RS", "RG", "VDD"],
-        "I_DQ_mA": ["RD", "RS", "RG", "VDD"],
-        "A_v": ["RD", "RS", "RG", "VDD"],
+        "V_DSQ": ["RD", "RS", "RG1", "RG2", "VDD"],
+        "I_DQ_mA": ["RD", "RS", "RG1", "RG2", "VDD"],
+        "A_v": ["RD", "RS", "RG1", "RG2", "VDD"],
     },
     "resistor_network": {
         "R_eq_ohm": ["Ra", "Rb", "Rc", "Rd", "Rload"],

@@ -12,7 +12,7 @@ from __future__ import annotations
 from ..graph.models import CircuitGraph
 from ..models import CircuitRecord, SimulationConfig
 from .base import CircuitTemplate
-from .e_series import E12_VALUES, E6_VALUES, INDUCTOR_VALUES, pick_e_value
+from .e_series import E12_VALUES, E6_VALUES, INDUCTOR_VALUES, pick_e_value, snap_e_value
 
 
 # ---------------------------------------------------------------------------
@@ -175,10 +175,16 @@ class RCHighPass(CircuitTemplate):
 class RLCBandPass(CircuitTemplate):
     """Series RLC band-pass filter with output taken across R.
 
-    R: E12 series,      100 Ω – 10 kΩ (decades 2–4).
-    L: selected values,  1 mH – 100 mH.
-    C: E6 series,        10 nF – 1 μF (decades −8 to −6).
-    Simulation: .ac  sweep 10 Hz – 10 MHz @ 50 pts/dec.
+    The resistor is sized from a target quality factor Q = sqrt(L/C)/R so the
+    filter has a well-defined resonant peak (Q in ~1.5-15). Sampling R, L, C
+    independently produced Q from 0.003 to 30; the very low-Q seeds are
+    overdamped with no real peak, so the simulated centre frequency drifts far
+    from 1/(2*pi*sqrt(LC)) and f0/Q became unanswerable from the schematic.
+
+    L: selected values,  1 mH - 100 mH.
+    C: E6 series,        10 nF - 1 uF (decades -8 to -6).
+    R: from Q target, snapped to E12.
+    Simulation: .ac  sweep 10 Hz - 10 MHz @ 50 pts/dec.
     """
 
     family = "passive"
@@ -187,9 +193,11 @@ class RLCBandPass(CircuitTemplate):
     def sample(self, seed: int | None = None) -> CircuitRecord:
         rng = self._new_rng(seed)
 
-        r1 = pick_e_value(E12_VALUES, decade_min=2, decade_max=4, rng=rng)
         l1 = rng.choice(INDUCTOR_VALUES)
         c1 = pick_e_value(E6_VALUES, decade_min=-8, decade_max=-6, rng=rng)
+        z0 = (l1 / c1) ** 0.5  # characteristic impedance sqrt(L/C)
+        q_target = rng.uniform(1.5, 15.0)
+        r1 = snap_e_value(z0 / q_target, E12_VALUES)
 
         graph = CircuitGraph(
             family=self.family,
@@ -204,7 +212,7 @@ class RLCBandPass(CircuitTemplate):
         sim = SimulationConfig(
             type="ac",
             tool="Xyce",
-            params={"start_hz": 10, "stop_hz": 10_000_000, "points_per_decade": 50},
+            params={"start_hz": 10, "stop_hz": 10_000_000, "points_per_decade": 500},
         )
         netlist = graph.to_spice(sim, print_signals=["V(out)"])
 

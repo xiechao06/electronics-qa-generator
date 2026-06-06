@@ -8,7 +8,7 @@ from __future__ import annotations
 from ..graph.models import CircuitGraph
 from ..models import CircuitRecord, SimulationConfig
 from .base import CircuitTemplate
-from .e_series import E12_VALUES, E6_VALUES, pick_e_value
+from .e_series import E6_VALUES, E12_VALUES, pick_e_value, snap_e_value
 
 # Standard 1N4148 SPICE model (Philips/NXP-style parameters)
 _DIODE_MODEL = ".model D1N4148 D (Is=2.52n Rs=0.568 N=1.752 Cjo=4p M=0.4 tt=20n)"
@@ -31,11 +31,16 @@ class HalfWaveRectifier(CircuitTemplate):
         rng = self._new_rng(seed)
 
         r_load = pick_e_value(E12_VALUES, decade_min=3, decade_max=5, rng=rng)
-        c_filter = pick_e_value(E6_VALUES, decade_min=-6, decade_max=-4, rng=rng)
-        vin_amp = rng.uniform(1.0, 20.0)
+        vin_amp = rng.uniform(3.0, 20.0)
 
         freq = 60.0
         period = 1.0 / freq
+        # Size the filter cap for light loading (small ripple), where
+        # ripple_vpp ≈ Vpk/(f*R*C) is an accurate hand estimate. At larger ripple
+        # the conduction angle and exponential discharge make the linear formula
+        # overestimate, so the value stops being derivable from the schematic.
+        ripple_frac = rng.uniform(0.01, 0.08)
+        c_filter = snap_e_value(period / (ripple_frac * r_load), E6_VALUES, -7, -3)
         stop_time = 20 * period  # 20 periods ≈ 333 ms
         time_step = period / 1000  # ~16.7 μs for 60 Hz
 

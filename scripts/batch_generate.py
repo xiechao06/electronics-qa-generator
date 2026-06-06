@@ -50,6 +50,7 @@ def _generate_one_seed(
 
     os.environ.setdefault("XYCE_QUIET", "1")
 
+    from electronics_qa_generator.extraction.bias import augment_with_dc_bias
     from electronics_qa_generator.extraction.facts import FACT_EXTRACTORS
     from electronics_qa_generator.extraction.parsers import get_parser
     from electronics_qa_generator.questions.generator import generate_questions
@@ -83,6 +84,7 @@ def _generate_one_seed(
                 parsed = parser(stdout)
             except Exception:
                 continue
+            parsed = augment_with_dc_bias(parsed, record)
             extractor = FACT_EXTRACTORS.get(name)
             if extractor is None:
                 continue
@@ -274,14 +276,100 @@ def _write_yaml_summary(
         "output": {
             "jsonl": str(jsonl_path),
             "schematics": str(out_dir / "images"),
-            "summary_yaml": str(out_dir / "summary.yaml"),
+            "summary_yaml": str(out_dir / "qa_items.yaml"),
         },
     }
 
-    yaml_path = out_dir / "summary.yaml"
+    yaml_path = out_dir / "qa_items.yaml"
     with open(yaml_path, "w") as f:
         yaml.dump(summary, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
     print(f"Summary: {yaml_path}")
+
+
+def _generate_prompt_files(jsonl_path: Path, prompts_dir: Path) -> int:
+    """Emit per-schematic prompt and answer Markdown files.
+
+    Reads ``qa_items.jsonl``, groups items by ``(topology, seed)``, and writes
+    two files per group::
+
+        prompts/<topology>_<seed>.md          — image ref + numbered questions
+        prompts/<topology>_<seed>_answers.md   — numbered ground-truth answers
+
+    Returns the number of (prompt + answer) pairs written.
+    """
+    from collections import defaultdict
+
+    items = _read_jsonl(jsonl_path)
+    if not items:
+        return 0
+
+    prompts_dir.mkdir(parents=True, exist_ok=True)
+
+    # Group by (topology, seed)
+    groups: dict[tuple[str, int], list[dict]] = defaultdict(list)
+    for item in items:
+        topo = item.get("topology", "unknown")
+        seed = item.get("seed", 0)
+        groups[(topo, seed)].append(item)
+
+    written = 0
+    for (topo, seed), q_items in sorted(groups.items()):
+        # Derive the image path from the first item that has one.
+        schematic_path = q_items[0].get("schematic_path", "")
+        # Make it relative to prompts_dir (prompts/ and images/ are siblings)
+        rel_image = f"../{schematic_path}" if schematic_path else ""
+
+        # ── Prompt file ──
+        prompt_path = prompts_dir / f"{topo}_{seed:08d}.md"
+        lines = []
+        if rel_image:
+            lines.append(f"![schematic]({rel_image})")
+            lines.append("")
+        lines.append("Answer the following questions based on the schematic above:")
+        lines.append("")
+        for i, qi in enumerate(q_items, start=1):
+            question = qi.get("question", "<no question>")
+            lines.append(f"{i}. {question}")
+            lines.append("")
+        prompt_path.write_text("\n".join(lines), encoding="utf-8")
+
+        # ── Answer file ──
+        answer_path = prompts_dir / f"{topo}_{seed:08d}_answers.md"
+        a_lines = ["# Answers", ""]
+        for i, qi in enumerate(q_items, start=1):
+            answer = qi.get("answer", "")
+            value = qi.get("answer_value")
+            unit = qi.get("unit", "")
+            tol = qi.get("tolerance")
+            parts = [f"{i}. {answer}"]
+            if value is not None and unit is not None:
+                parts.append(f"   ({value} {unit}")
+                if tol is not None:
+                    parts.append(f", tolerance ±{tol}")
+                parts.append(")")
+            a_lines.append("".join(parts))
+            a_lines.append("")
+        # Append SPICE netlist for context
+        netlist = q_items[0].get("netlist", "")
+        if netlist:
+            a_lines.append("## Netlist")
+            a_lines.append("")
+            a_lines.append("```spice")
+            a_lines.append(netlist.strip())
+            a_lines.append("```")
+            a_lines.append("")
+        answer_path.write_text("\n".join(a_lines), encoding="utf-8")
+
+        written += 1
+
+    return written
+
+
+def _generate_and_report(jsonl_path: Path, out_dir: Path) -> None:
+    """Call ``_generate_prompt_files`` and print a one-line summary."""
+    prompts_dir = out_dir / "prompts"
+    count = _generate_prompt_files(jsonl_path, prompts_dir)
+    print(f"Prompts: {count} prompt/answer pairs → {prompts_dir}")
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -318,6 +406,11 @@ def main():
         type=str,
         default="cache/humanize",
         help="Humanization cache directory",
+    )
+    parser.add_argument(
+        "--prompts",
+        action="store_true",
+        help="Emit per-schematic prompt/answer Markdown files for agent verification",
     )
     args = parser.parse_args()
 
@@ -414,6 +507,8 @@ def main():
         total = sum(1 for _ in open(all_output))
         print(f"Final: {total} QA items → {all_output}")
         _write_yaml_summary(all_output, out_dir, topologies, num_seeds, args.start_seed)
+        if args.prompts:
+            _generate_and_report(all_output, out_dir)
         return
 
     print(f"\n── Phase 2: LLM Humanization ({args.humanize_workers} threads) ──")
@@ -423,6 +518,8 @@ def main():
     if not is_available():
         print("  ⚠ DeepSeek API key not found — skipping humanization")
         _write_yaml_summary(all_output, out_dir, topologies, num_seeds, args.start_seed)
+        if args.prompts:
+            _generate_and_report(all_output, out_dir)
         return
 
     items = _read_jsonl(all_output)
@@ -437,6 +534,8 @@ def main():
     if not to_humanize:
         print("  ✓ All items already humanized")
         _write_yaml_summary(all_output, out_dir, topologies, num_seeds, args.start_seed)
+        if args.prompts:
+            _generate_and_report(all_output, out_dir)
         return
 
     from electronics_qa_generator.llm.provider import _read_config
@@ -471,6 +570,8 @@ def main():
     print(f"  ✓ Humanized {done} items in {elapsed:.0f}s ({elapsed/60:.1f}m)")
     print(f"  Output: {humanized_output}")
     _write_yaml_summary(humanized_output, out_dir, topologies, num_seeds, args.start_seed)
+    if args.prompts:
+        _generate_and_report(humanized_output, out_dir)
 
 
 if __name__ == "__main__":

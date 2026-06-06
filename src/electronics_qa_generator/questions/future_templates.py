@@ -57,6 +57,7 @@ RC_STEP_RESPONSE: list[dict] = [
         "id": "rc_step_final_v",
         "question_type": "direct",
         "question_template": (
+            "The input steps from 0 to {V_step} V at t = 0. "
             "After the transient has fully decayed (t → ∞), what is the "
             "steady-state capacitor voltage v_C(∞)? "
             "Report your answer in volts to three decimal places."
@@ -72,6 +73,7 @@ RC_STEP_RESPONSE: list[dict] = [
         "id": "rc_step_v_at_1tau",
         "question_type": "direct",
         "question_template": (
+            "The input steps from 0 to {V_step} V at t = 0. "
             "One time constant after the step (t = τ), what is the "
             "capacitor voltage v_C(τ)? Express your answer in volts "
             "to three decimal places."
@@ -127,6 +129,7 @@ RL_STEP_RESPONSE: list[dict] = [
         "id": "rl_step_final_i",
         "question_type": "direct",
         "question_template": (
+            "The input steps from 0 to {V_step} V at t = 0. "
             "After the transient has fully decayed (t → ∞), what is the "
             "steady-state current through the inductor i_L(∞)? "
             "Report your answer in amperes to three decimal places."
@@ -157,6 +160,7 @@ RL_STEP_RESPONSE: list[dict] = [
         "id": "rl_step_power_at_t",
         "question_type": "derived",
         "question_template": (
+            "The input steps from 0 to {V_step} V at t = 0. "
             "At t = τ (one time constant after the step), compute the "
             "instantaneous power P = i²R absorbed by the resistor. "
             "Express your answer in watts to three decimal places."
@@ -278,7 +282,7 @@ BJT_CE_AMPLIFIER: list[dict] = [
         ),
         "program": [
             P.read_fact("V_CEQ"),
-            P.format_numeric("$0", unit="V", precision=2),
+            P.format_numeric("$0", unit="V", precision=2, min_rel_tol=0.07),
         ],
         "answer_keys": ["V_CEQ"],
         "answer_formatter": "numeric",
@@ -293,7 +297,7 @@ BJT_CE_AMPLIFIER: list[dict] = [
         ),
         "program": [
             P.read_fact("I_CQ_mA"),
-            P.format_numeric("$0", unit="mA", precision=2),
+            P.format_numeric("$0", unit="mA", precision=2, min_rel_tol=0.07),
         ],
         "answer_keys": ["I_CQ_mA"],
         "answer_formatter": "numeric",
@@ -302,13 +306,13 @@ BJT_CE_AMPLIFIER: list[dict] = [
         "id": "bjt_ce_av",
         "question_type": "direct",
         "question_template": (
-            "Determine the small-signal midband voltage gain "
-            "A_v = v_out / v_in for this common-emitter amplifier. "
-            "Report the gain to two decimal places."
+            "This common-emitter stage is an inverting amplifier. Determine "
+            "the magnitude of the small-signal midband voltage gain "
+            "|A_v| = |v_out / v_in|. Report the magnitude to two decimal places."
         ),
         "program": [
             P.read_fact("A_v"),
-            P.format_numeric("$0", unit=None, precision=2),
+            P.format_numeric("$0", unit=None, precision=2, min_rel_tol=0.15),
         ],
         "answer_keys": ["A_v"],
         "answer_formatter": "numeric",
@@ -358,14 +362,14 @@ BJT_EMITTER_FOLLOWER: list[dict] = [
         "id": "bjt_ef_rout",
         "question_type": "direct",
         "question_template": (
-            "For the emitter-follower (common-collector) stage shown, "
-            "determine the small-signal output resistance r_out looking "
-            "into the emitter terminal. Express your answer in ohms "
-            "to one decimal place."
+            "For the emitter-follower (common-collector) stage shown (assume "
+            "β = {beta}, driven from an ideal source), determine the small-signal "
+            "output resistance r_out looking into the emitter terminal. Express "
+            "your answer in ohms to one decimal place."
         ),
         "program": [
             P.read_fact("r_out_ohm"),
-            P.format_numeric("$0", unit="Ω", precision=1),
+            P.format_numeric("$0", unit="Ω", precision=1, min_rel_tol=0.15),
         ],
         "answer_keys": ["r_out_ohm"],
         "answer_formatter": "numeric",
@@ -375,12 +379,13 @@ BJT_EMITTER_FOLLOWER: list[dict] = [
         "question_type": "direct",
         "question_template": (
             "An ideal emitter follower has a voltage gain close to unity. "
-            "Determine the actual small-signal voltage gain A_v of this "
-            "emitter follower. Report your answer to four decimal places."
+            "For the stage shown (assume β = {beta}), determine the actual "
+            "small-signal voltage gain A_v of this emitter follower. Report "
+            "your answer to four decimal places."
         ),
         "program": [
             P.read_fact("A_v"),
-            P.format_numeric("$0", unit=None, precision=4),
+            P.format_numeric("$0", unit=None, precision=4, min_rel_tol=0.02),
         ],
         "answer_keys": ["A_v"],
         "answer_formatter": "numeric",
@@ -415,11 +420,13 @@ MOSFET_CS_AMPLIFIER: list[dict] = [
         "question_template": (
             "For the NMOS common-source amplifier shown, determine the "
             "quiescent drain-source voltage V_DS at the DC operating point. "
-            "Report your answer in volts to two decimal places."
+            "The NMOS has threshold voltage V_TO = 2.0 V and conduction "
+            "parameter k_n = 12.5 mA/V^2, with I_D = k_n*(V_GS - V_TO)^2 in "
+            "saturation. Report your answer in volts to two decimal places."
         ),
         "program": [
             P.read_fact("V_DSQ"),
-            P.format_numeric("$0", unit="V", precision=2),
+            P.format_numeric("$0", unit="V", precision=2, min_rel_tol=0.05),
         ],
         "answer_keys": ["V_DSQ"],
         "answer_formatter": "numeric",
@@ -429,12 +436,14 @@ MOSFET_CS_AMPLIFIER: list[dict] = [
         "question_type": "direct",
         "question_template": (
             "What is the drain current I_D at the quiescent operating point "
-            "of this MOSFET amplifier? Express your answer in milliamperes "
-            "to two decimal places."
+            "of this MOSFET amplifier? The NMOS has threshold voltage "
+            "V_TO = 2.0 V and conduction parameter k_n = 12.5 mA/V^2, with "
+            "I_D = k_n*(V_GS - V_TO)^2 in saturation. Express your answer in "
+            "milliamperes to two decimal places."
         ),
         "program": [
             P.read_fact("I_DQ_mA"),
-            P.format_numeric("$0", unit="mA", precision=2),
+            P.format_numeric("$0", unit="mA", precision=2, min_rel_tol=0.05),
         ],
         "answer_keys": ["I_DQ_mA"],
         "answer_formatter": "numeric",
@@ -443,13 +452,16 @@ MOSFET_CS_AMPLIFIER: list[dict] = [
         "id": "mosfet_cs_av",
         "question_type": "direct",
         "question_template": (
-            "Determine the small-signal voltage gain A_v of this MOSFET "
-            "common-source amplifier (with the source resistor unbypassed). "
-            "Report the gain to two decimal places."
+            "This common-source stage is an inverting amplifier. Determine the "
+            "magnitude of the small-signal voltage gain |A_v| (the source "
+            "resistor is unbypassed). The NMOS has threshold voltage "
+            "V_TO = 2.0 V and conduction parameter k_n = 12.5 mA/V^2 "
+            "(I_D = k_n*(V_GS - V_TO)^2). Report the magnitude to two decimal "
+            "places."
         ),
         "program": [
             P.read_fact("A_v"),
-            P.format_numeric("$0", unit=None, precision=2),
+            P.format_numeric("$0", unit=None, precision=2, min_rel_tol=0.10),
         ],
         "answer_keys": ["A_v"],
         "answer_formatter": "numeric",
@@ -467,8 +479,10 @@ RESISTOR_NETWORK: list[dict] = [
         "question_type": "direct",
         "question_template": (
             "For the resistor network shown, compute the equivalent "
-            "resistance R_eq as seen from the output terminals. "
-            "Express your answer in ohms to three decimal places."
+            "resistance seen looking into the output terminals a-b with the "
+            "voltage source replaced by a short circuit and the load resistor "
+            "Rload still connected. Express your answer in ohms to three "
+            "decimal places."
         ),
         "program": [
             P.read_fact("R_eq_ohm"),
@@ -483,8 +497,8 @@ RESISTOR_NETWORK: list[dict] = [
         "question_template": (
             "Apply Thevenin's theorem to this resistor network. "
             "Determine the open-circuit voltage V_th appearing "
-            "at terminals a-b. Report your answer in volts "
-            "to three decimal places."
+            "at terminals a-b when the load resistor Rload is removed. "
+            "Report your answer in volts to three decimal places."
         ),
         "program": [
             P.read_fact("V_th_V"),
@@ -498,8 +512,9 @@ RESISTOR_NETWORK: list[dict] = [
         "question_type": "direct",
         "question_template": (
             "For the same network, compute the Thevenin equivalent "
-            "resistance R_th at terminals a-b. Express your answer "
-            "in ohms to three decimal places."
+            "resistance R_th at terminals a-b, with the load resistor Rload "
+            "removed and the voltage source replaced by a short circuit. "
+            "Express your answer in ohms to three decimal places."
         ),
         "program": [
             P.read_fact("R_th_ohm"),
@@ -668,10 +683,12 @@ RLC_SERIES_RESONANCE: list[dict] = [
         "program": [
             P.read_fact("Z_at_resonance_ohm"),
             P.read_fact("R_ohm"),
+            P.sub("$0", "$1"),
+            P.read_fact("R_ohm"),
             P.push_const(0.05),
-            P.mul("$1", "0.05"),
+            P.mul("$3", "0.05"),
             P.compare("<"),
-            P.return_bool("$4", true_label="yes", false_label="no"),
+            P.return_bool("$6", true_label="yes", false_label="no"),
         ],
         "answer_keys": ["Z_at_resonance_ohm", "R_ohm"],
         "answer_formatter": "boolean",

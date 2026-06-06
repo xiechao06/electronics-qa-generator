@@ -51,6 +51,7 @@ def compute_answer(
     """
     stack: list[Any] = []
     pending_precision: int = 3
+    pending_min_rel_tol: float = 0.0
     last_raw_value: float | None = None
 
     for step in program:
@@ -126,6 +127,7 @@ def compute_answer(
             precision = step["precision"]
             value = float(stack.pop())
             pending_precision = precision
+            pending_min_rel_tol = float(step.get("min_rel_tol", 0.0) or 0.0)
             # Round the value so answer_value matches the formatted text.
             # e.g. 0.0005 at precision 3 → 0.001, not 0.0005.
             rounded = round(value, precision)
@@ -158,7 +160,7 @@ def compute_answer(
         # Use the raw numeric value with the formatted text from stack
         text = str(stack[-1]) if stack else ""
         unit = _infer_unit(program)
-        tolerance = 0.5 * (10**-pending_precision)
+        tolerance = max(0.5 * (10**-pending_precision), pending_min_rel_tol * abs(last_raw_value))
         return last_raw_value, text, unit, tolerance
 
     if isinstance(top, str):
@@ -170,7 +172,7 @@ def compute_answer(
     if unit:
         text = f"{text} {unit}"
 
-    tolerance = 0.5 * (10**-pending_precision)
+    tolerance = max(0.5 * (10**-pending_precision), pending_min_rel_tol * abs(value))
     return value, text, unit, tolerance
 
 

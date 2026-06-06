@@ -273,7 +273,8 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "id": "bp_direct_center",
             "question_type": "direct",
             "question_template": (
-                "The circuit shown is a parallel RLC band-pass filter. "
+                "The circuit shown is a series RLC band-pass filter (output "
+                "taken across R). "
                 "Determine its center (resonant) frequency f₀ in hertz "
                 "to three decimal places."
             ),
@@ -361,7 +362,7 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             ),
             "program": [
                 P.read_fact("Vout_dc"),
-                P.format_numeric("$0", unit="V", precision=3),
+                P.format_numeric("$0", unit="V", precision=3, min_rel_tol=0.10),
             ],
             "answer_keys": ["Vout_dc"],
             "answer_formatter": "numeric",
@@ -377,7 +378,7 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             ),
             "program": [
                 P.read_fact("Vout_peak"),
-                P.format_numeric("$0", unit="V", precision=3),
+                P.format_numeric("$0", unit="V", precision=3, min_rel_tol=0.10),
             ],
             "answer_keys": ["Vout_peak"],
             "answer_formatter": "numeric",
@@ -394,7 +395,7 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
                 P.read_fact("ripple_vpp"),
                 P.read_fact("Vout_dc"),
                 P.div("$0", "$1"),
-                P.format_numeric("$2", unit=None, precision=4),
+                P.format_numeric("$2", unit=None, precision=4, min_rel_tol=0.20),
             ],
             "answer_keys": ["ripple_vpp", "Vout_dc"],
             "answer_formatter": "numeric",
@@ -411,7 +412,7 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
                 P.read_fact("ripple_vpp"),
                 P.push_const(1000.0),
                 P.mul("$0", "1000"),
-                P.format_numeric("$1", unit="mV", precision=1),
+                P.format_numeric("$1", unit="mV", precision=1, min_rel_tol=0.20),
             ],
             "answer_keys": ["ripple_vpp"],
             "answer_formatter": "numeric",

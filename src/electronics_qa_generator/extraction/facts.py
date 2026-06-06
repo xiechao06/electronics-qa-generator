@@ -16,6 +16,29 @@ from typing import Any
 # ---------------------------------------------------------------------------
 
 
+def _interp_at(times: list[float], values: list[float], t: float) -> float:
+    """Linearly interpolate ``values`` at time ``t`` over monotonic ``times``.
+
+    Used to read a transient waveform at exactly t = τ instead of snapping to
+    the nearest .tran sample (which can sit a percent or two away from τ).
+    Clamps to the endpoints when ``t`` is outside the sampled range.
+    """
+    if not times:
+        return 0.0
+    if t <= times[0]:
+        return values[0]
+    if t >= times[-1]:
+        return values[-1]
+    for i in range(1, len(times)):
+        if times[i] >= t:
+            t0, t1 = times[i - 1], times[i]
+            v0, v1 = values[i - 1], values[i]
+            if t1 == t0:
+                return v1
+            return v0 + (v1 - v0) * (t - t0) / (t1 - t0)
+    return values[-1]
+
+
 def find_cutoff_frequency(
     freqs: list[float],
     gains_db: list[float],
@@ -288,11 +311,11 @@ def _extract_rc_step_response(
     # Final: last data point
     v_final = values[-1] if values else v_step
 
-    # v_C at t = 1τ — find nearest time point
-    v_at_1tau = 0.0
-    if tau > 0:
-        best_idx = min(range(len(times)), key=lambda i: abs(times[i] - tau))
-        v_at_1tau = values[best_idx]
+    # v_C at t = 1τ — linearly interpolate at exactly τ (the nearest .tran
+    # sample can sit ~1-2% before τ, which is larger than the rounding
+    # tolerance and made the simulated value disagree with the analytic
+    # 0.632*V_step a solver computes).
+    v_at_1tau = _interp_at(times, values, tau) if tau > 0 else 0.0
 
     return {
         "tau_s": tau,
@@ -330,10 +353,7 @@ def _extract_rl_step_response(
     i_initial = values[0] if values else 0.0
     i_final = values[-1] if values else (v_step / r_load if r_load > 0 else 0.0)
 
-    i_at_1tau = 0.0
-    if tau > 0:
-        best_idx = min(range(len(times)), key=lambda i: abs(times[i] - tau))
-        i_at_1tau = values[best_idx]
+    i_at_1tau = _interp_at(times, values, tau) if tau > 0 else 0.0
 
     return {
         "tau_s": tau,
@@ -429,33 +449,41 @@ def _extract_resistor_network(
     parsed: dict,
     params: dict,
 ) -> dict[str, Any]:
-    """Extract Thevenin equivalent facts from .op results."""
-    v_out = parsed.get("V(OUT)", 0.0)
-    v_in = params.get("Vs_dc", 0.0)
+    """Extract Thevenin equivalent facts for the resistor network.
+
+    Topology (fixed by the template):
+        Vs - Ra - n1 - Rb - out ; out - Rload - gnd ; out - Rc - n2 - Rd - gnd
+    so from the output node ``out`` there are three branches to ground:
+        * back through the source path  R_top   = Ra + Rb   (source shorted)
+        * down the right leg            R_right = Rc + Rd
+        * the load                      Rload
+    The previous implementation used a bridge-network formula that did not match
+    this series-parallel topology, producing ground truth inconsistent with the
+    netlist (e.g. a source power that ignored Rb in series).
+    """
+    vs = params.get("Vs_dc", 0.0)
     r_a = params.get("Ra_ohm", 1.0)
     r_b = params.get("Rb_ohm", 1.0)
     r_c = params.get("Rc_ohm", 1.0)
     r_d = params.get("Rd_ohm", 1.0)
     r_load = params.get("Rload_ohm", 1.0)
 
-    # V_th = open-circuit voltage at out (approximately V(out) with load)
-    v_th = v_out  # simulated V(out) is the Thevenin voltage with load
+    def _par(*rs: float) -> float:
+        inv = sum(1.0 / r for r in rs if r > 0)
+        return 1.0 / inv if inv > 0 else 0.0
 
-    # R_th: computed from resistor network topology
-    # R_ab = ((R_a // R_c) + (R_b // R_d)) // R_load, approximate
-    r_ac = 1.0 / (1.0 / r_a + 1.0 / r_c) if r_a * r_c > 0 else 0.0
-    r_bd = 1.0 / (1.0 / r_b + 1.0 / r_d) if r_b * r_d > 0 else 0.0
-    r_eq = 1.0 / (1.0 / (r_ac + r_bd) + 1.0 / r_load) if r_load > 0 else 0.0
+    r_top = r_a + r_b  # out -> source node -> ground (source shorted)
+    r_right = r_c + r_d  # out -> ground via the right leg
 
-    # R_th = equivalent resistance seen from output (with source shorted)
-    r_th = 1.0 / (1.0 / r_b + 1.0 / r_d) if r_b * r_d > 0 else 0.0
-    # More accurate: R_th = parallel of paths from out to ground
-    r_th_upper = r_a + (1.0 / (1.0 / r_c + 1.0 / (r_b + r_d)))
-    r_th = 1.0 / (1.0 / r_th_upper + 1.0 / r_load) if r_load > 0 else r_th_upper
-
-    # Power from source: P = V_in² / R_effective
-    r_total = (r_a + r_th) if r_th > 0 else 1000.0
-    p_source = v_in * v_in / r_total if r_total > 0 else 0.0
+    # Thevenin (load removed, source zeroed) looking into terminals a-b = out.
+    r_th = _par(r_top, r_right)
+    # Equivalent resistance at the output node with the load still connected.
+    r_eq = _par(r_top, r_right, r_load)
+    # Open-circuit (load removed) voltage at out: divider of Vs across the leg.
+    v_th = vs * r_right / (r_top + r_right) if (r_top + r_right) > 0 else 0.0
+    # Power delivered by the source drives Ra+Rb in series with (Rload || Rright).
+    r_total = r_top + _par(r_load, r_right)
+    p_source = vs * vs / r_total if r_total > 0 else 0.0
 
     return {
         "R_eq_ohm": round(r_eq, 1),
@@ -483,20 +511,30 @@ def _extract_bjt_ce_amplifier(
     r2 = params.get("R2_ohm", 10e3)
     rc = params.get("RC_ohm", 4.7e3)
     re = params.get("RE_ohm", 1e3)
-    params.get("beta", 200)
 
-    # Approximate bias: V_B = VCC * R2/(R1+R2), V_E = V_B - 0.7, I_C ≈ I_E = V_E/RE
-    v_base = vcc * r2 / (r1 + r2) if (r1 + r2) > 0 else 0.0
-    v_emitter = v_base - 0.7
-    i_c = v_emitter / re if re > 0 else 0.0
-    v_collector = vcc - i_c * rc
-    v_ceq = v_collector - v_emitter
+    # Bias point from the DC operating-point pass: simulation is the source of
+    # truth. The collector node connects only RC and the transistor, so
+    # I_C = (VCC - V_collector) / RC exactly. Fall back to the active-region
+    # approximation only when the simulated bias nodes are unavailable (e.g. a
+    # cached pre-fix run that lacked the DC pass).
+    v_collector = parsed.get("V(COLLECTOR)")
+    v_emitter = parsed.get("V(EMITTER)")
+    if v_collector is not None and v_emitter is not None:
+        i_c = (vcc - v_collector) / rc if rc > 0 else 0.0
+        v_ceq = v_collector - v_emitter
+    else:
+        v_base = vcc * r2 / (r1 + r2) if (r1 + r2) > 0 else 0.0
+        v_emitter = v_base - 0.7
+        i_c = v_emitter / re if re > 0 else 0.0
+        v_collector = vcc - i_c * rc
+        v_ceq = v_collector - v_emitter
 
-    # Operating region
-    if v_ceq < 0.3:
-        operating_region = "saturation"
-    elif v_ceq > vcc - 0.5:
+    # Operating region, using both I_C and V_CE so cut-off (I_C ≈ 0) and
+    # saturation (V_CE ≈ 0) are distinguished correctly.
+    if i_c < 1e-5:
         operating_region = "cut-off"
+    elif v_ceq < 0.3:
+        operating_region = "saturation"
     else:
         operating_region = "active"
 
@@ -534,22 +572,30 @@ def _extract_bjt_emitter_follower(
     r1 = params.get("R1_ohm", 10e3)
     r2 = params.get("R2_ohm", 10e3)
     re = params.get("RE_ohm", 1e3)
-    params.get("beta", 200)
 
-    # Approximate bias
-    v_base = vcc * r2 / (r1 + r2) if (r1 + r2) > 0 else 0.0
-    v_emitter = v_base - 0.7
+    # Bias from the DC operating-point pass (simulation is the source of
+    # truth). The collector is tied to VCC, so V_CE = VCC - V_E. Fall back to
+    # the active-region approximation only when the bias node is unavailable.
+    v_emitter = parsed.get("V(EMITTER)")
+    if v_emitter is None:
+        v_base = vcc * r2 / (r1 + r2) if (r1 + r2) > 0 else 0.0
+        v_emitter = v_base - 0.7
     i_e = v_emitter / re if re > 0 else 0.0
     v_ceq = vcc - v_emitter
 
-    # Output resistance: r_out ≈ RE // (re_small_signal) ≈ 25mV/I_E
+    # Output resistance looking into the emitter. The base is driven from an
+    # ideal source (Rsig = 0) through Cin, which AC-grounds the base when the
+    # input is zeroed, so the reflected base resistance vanishes and
+    #   r_out = RE // re'   with re' = VT / I_E.
     r_e_small = 0.025 / i_e if i_e > 0 else 25.0
     r_out = 1.0 / (1.0 / re + 1.0 / r_e_small) if re > 0 else r_e_small
 
-    # Gain from .ac sweep
+    # Gain from the .ac sweep, taken in the midband (flat) region. The lowest
+    # sweep point sits on the coupling-capacitor high-pass roll-off, so reading
+    # gains[0] understated the follower gain (and could read well below unity).
     if data and len(data) > 3:
         gains = [g for _, g in data]
-        av_db = gains[0] if gains else 0.0
+        av_db = max(gains) if gains else 0.0
         av = round(10 ** (av_db / 20.0), 4)
     else:
         av = 0.98  # emitter follower gain ≈ 0.98
@@ -577,16 +623,24 @@ def _extract_mosfet_cs_amplifier(
     vdd = params.get("VDD_dc", 15.0)
     rd = params.get("RD_ohm", 4.7e3)
     rs = params.get("RS_ohm", 1e3)
-    params.get("RG_ohm", 1e6)
 
-    # Approximate bias: V_GS ≈ VTO (2V), I_D = KP * (V_GS - VTO)²
-    vto = 2.0
-    kp = 1.0e-3
-    v_gs = vto + 0.5  # typical overdrive
-    i_d = kp * (v_gs - vto) ** 2  # should be ~0.25 mA
-    v_drain = vdd - i_d * rd
-    v_source = i_d * rs
-    v_dsq = v_drain - v_source
+    # Bias from the DC operating-point pass (simulation is the source of
+    # truth). The drain node connects only RD and the transistor, so
+    # I_D = (VDD - V_drain) / RD exactly. Fall back to a nominal-overdrive
+    # approximation only when the simulated bias nodes are unavailable.
+    v_drain = parsed.get("V(DRAIN)")
+    v_source = parsed.get("V(SOURCE)")
+    if v_drain is not None and v_source is not None:
+        i_d = (vdd - v_drain) / rd if rd > 0 else 0.0
+        v_dsq = v_drain - v_source
+    else:
+        vto = 2.0
+        kp = 1.0e-3
+        v_gs = vto + 0.5  # typical overdrive
+        i_d = kp * (v_gs - vto) ** 2
+        v_drain = vdd - i_d * rd
+        v_source = i_d * rs
+        v_dsq = v_drain - v_source
 
     # Gain from .ac
     if data and len(data) > 3:
@@ -616,13 +670,16 @@ def _extract_op_amp_inverting(
     probe_key = "V(OUT)"
     data = parsed.get(probe_key, [])
 
-    params.get("Rf_ohm", 10e3)
-    params.get("Rin_ohm", 1e3)
     av_theoretical = params.get("A_v_theoretical", -10.0)
     vin_dc = params.get("Vin_dc", 0.5)
+    vcc = params.get("VCC_dc", 15.0)
+    vee = params.get("VEE_dc", -15.0)
 
-    # DC output: V_out ≈ A_v_theoretical × Vin
-    v_out_dc = abs(av_theoretical) * vin_dc
+    # DC output of the inverting amp: V_out = A_v * Vin (signed — inverting, so a
+    # positive input gives a negative output). A real op-amp cannot drive beyond
+    # its supply rails, so clamp to [VEE, VCC].
+    v_out_ideal = av_theoretical * vin_dc
+    v_out_dc = max(vee, min(vcc, v_out_ideal))
 
     if data and len(data) > 3:
         freqs = [f for f, _ in data]
@@ -657,13 +714,16 @@ def _extract_rlc_series_resonance(
 ) -> dict[str, Any]:
     """Extract resonance facts from .ac sweep of series RLC.
 
-    Probes V(mid) and V(n1). Resonance is where impedance is minimum
-    (current is maximum, V(n1) is maximum).
+    The network is Vin - R - mid - L - n1 - C - gnd. The voltage at ``mid`` (the
+    node between R and the L-C pair) equals I * Z_LC, so it shows a sharp notch
+    at the resonant frequency where Z_LC = 0 (true for any Q), unlike V(C) whose
+    peak collapses to DC for low Q. The series current's half-power (-3 dB)
+    points occur exactly where |V(mid)| has risen to -3 dB below its 0 dB
+    asymptote, which gives the bandwidth and Q.
     """
-    # Try V(n1) first (voltage at L-C junction — maximum at resonance)
-    data = parsed.get("V(N1)", [])
+    data = parsed.get("V(MID)", [])
     if not data:
-        data = parsed.get("V(MID)", [])
+        data = parsed.get("V(N1)", [])
 
     r_val = params.get("R_ohm", 100.0)
 
@@ -679,31 +739,28 @@ def _extract_rlc_series_resonance(
     freqs = [f for f, _ in data]
     gains = [g for _, g in data]
 
-    # Peak = resonance (voltage is maximum at LC junction)
-    peak_idx = max(range(len(gains)), key=lambda i: gains[i])
-    f_r = freqs[peak_idx]
+    # Resonance = notch (minimum) of V(mid): Z_LC = 0 there.
+    notch_idx = min(range(len(gains)), key=lambda i: gains[i])
+    f_r = freqs[notch_idx]
 
-    # Bandwidth: −3 dB from peak
-    threshold = gains[peak_idx] - 3.0
+    # Half-power bandwidth: the two frequencies bracketing the notch where the
+    # V(mid) magnitude is -3 dB below the 0 dB (unity) asymptote. There the
+    # reactance magnitude equals R (|Z| = sqrt(2) R) and the current is at half
+    # power.
+    threshold = -3.0103
     f_low = 0.0
-    for i in range(peak_idx, 0, -1):
-        if (gains[i] >= threshold >= gains[i - 1]) or (gains[i - 1] >= threshold >= gains[i]):
-            t = (
-                (threshold - gains[i]) / (gains[i - 1] - gains[i])
-                if gains[i - 1] != gains[i]
-                else 0
-            )
+    for i in range(notch_idx, 0, -1):
+        if (gains[i] <= threshold <= gains[i - 1]) or (gains[i - 1] <= threshold <= gains[i]):
+            denom = gains[i - 1] - gains[i]
+            t = (threshold - gains[i]) / denom if denom != 0 else 0.0
             f_low = freqs[i] + t * (freqs[i - 1] - freqs[i])
             break
 
     f_high = 0.0
-    for i in range(peak_idx, len(gains) - 1):
-        if (gains[i] >= threshold >= gains[i + 1]) or (gains[i + 1] >= threshold >= gains[i]):
-            t = (
-                (threshold - gains[i]) / (gains[i + 1] - gains[i])
-                if gains[i + 1] != gains[i]
-                else 0
-            )
+    for i in range(notch_idx, len(gains) - 1):
+        if (gains[i] <= threshold <= gains[i + 1]) or (gains[i + 1] <= threshold <= gains[i]):
+            denom = gains[i + 1] - gains[i]
+            t = (threshold - gains[i]) / denom if denom != 0 else 0.0
             f_high = freqs[i] + t * (freqs[i + 1] - freqs[i])
             break
 

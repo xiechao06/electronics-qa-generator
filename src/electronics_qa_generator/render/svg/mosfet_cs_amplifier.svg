@@ -48,12 +48,22 @@
   <line class="wire" x1="254" y1="210" x2="340" y2="210"/>
   <text class="label" x="250" y="244" text-anchor="middle" font-size="12">Cin</text>
 
-  <!-- Gate node + RG (gate -> ground) -->
+  <!-- Gate bias divider: RG1 (VDD -> gate), RG2 (gate -> ground) -->
+  <!-- RG1 from the VDD rail down to the gate node -->
+  <line class="wire" x1="340" y1="70" x2="340" y2="120"/>
+  <polyline class="wire" points="340,120 330,126 350,138 330,150 350,162 340,168"/>
+  <line class="wire" x1="340" y1="168" x2="340" y2="210"/>
+  <text id="slot-RG1" class="label" x="358" y="148" text-anchor="start">RG1</text>
+
+  <!-- Gate node: tap across to the transistor gate -->
   <line class="wire" x1="340" y1="210" x2="398" y2="210"/>
+  <circle cx="340" cy="210" r="3" fill="black"/>
+
+  <!-- RG2 from the gate node down to ground -->
   <line class="wire" x1="340" y1="210" x2="340" y2="250"/>
   <polyline class="wire" points="340,250 330,256 350,268 330,280 350,292 340,298"/>
   <line class="wire" x1="340" y1="298" x2="340" y2="360"/>
-  <text id="slot-RG" class="label" x="358" y="278" text-anchor="start">RG</text>
+  <text id="slot-RG2" class="label" x="358" y="278" text-anchor="start">RG2</text>
 
   <!-- NMOS symbol -->
   <!-- gate bar -->

@@ -250,3 +250,82 @@ class TestAcPhasorRCExtractor:
         facts = FACT_EXTRACTORS["ac_phasor_rc"](parsed, params)
         assert facts["V_C_mag_V"] == pytest.approx(0.2, abs=1e-4)
         assert facts["V_C_phase_deg"] == pytest.approx(-80.0, abs=0.5)
+
+
+# ---------------------------------------------------------------------------
+# Active-device bias extractors — must read the simulated DC operating point
+# (node voltages), never an analytic active-region formula. Regression guard
+# for the ground-truth invariant: simulation establishes facts.
+# ---------------------------------------------------------------------------
+
+
+class TestBjtCeBiasFromSimulation:
+    def _ac(self):
+        # A trivial AC sweep so the gain branch has data to chew on.
+        return [(10.0, -6.0), (1000.0, -6.0), (1e5, -6.0), (1e6, -20.0)]
+
+    def test_saturation_uses_node_voltages(self):
+        # R1<<R2 drives the base high -> device saturates. The simulated
+        # collector/emitter sit ~equal; the analytic formula would yield a
+        # physically impossible negative V_CE.
+        parsed = {"V(OUT)": self._ac(), "V(COLLECTOR)": 9.83, "V(EMITTER)": 9.82}
+        params = {"VCC_dc": 18.29, "RC_ohm": 3900.0, "RE_ohm": 2200.0}
+        facts = FACT_EXTRACTORS["bjt_ce_amplifier"](parsed, params)
+        assert facts["V_CEQ"] == pytest.approx(0.01, abs=0.01)
+        assert facts["I_CQ_mA"] == pytest.approx(2.17, abs=0.02)
+        assert facts["operating_region"] == "saturation"
+
+    def test_active_uses_node_voltages(self):
+        parsed = {"V(OUT)": self._ac(), "V(COLLECTOR)": 7.90, "V(EMITTER)": 4.50}
+        params = {"VCC_dc": 10.48, "RC_ohm": 3900.0, "RE_ohm": 6800.0}
+        facts = FACT_EXTRACTORS["bjt_ce_amplifier"](parsed, params)
+        assert facts["V_CEQ"] == pytest.approx(3.40, abs=0.05)
+        assert facts["operating_region"] == "active"
+
+    def test_cutoff_when_collector_current_near_zero(self):
+        parsed = {"V(OUT)": self._ac(), "V(COLLECTOR)": 9.9999, "V(EMITTER)": 0.0}
+        params = {"VCC_dc": 10.0, "RC_ohm": 3900.0, "RE_ohm": 2200.0}
+        facts = FACT_EXTRACTORS["bjt_ce_amplifier"](parsed, params)
+        assert facts["operating_region"] == "cut-off"
+
+    def test_falls_back_without_bias_nodes(self):
+        # No V(COLLECTOR)/V(EMITTER): must not crash (legacy approximation).
+        parsed = {"V(OUT)": self._ac()}
+        params = {
+            "VCC_dc": 10.0,
+            "R1_ohm": 12e3,
+            "R2_ohm": 12e3,
+            "RC_ohm": 3900.0,
+            "RE_ohm": 6800.0,
+        }
+        facts = FACT_EXTRACTORS["bjt_ce_amplifier"](parsed, params)
+        assert "V_CEQ" in facts and "operating_region" in facts
+
+
+class TestMosfetCsBiasFromSimulation:
+    def test_off_device_reports_zero_drain_current(self):
+        # Gate grounded through RG -> NMOS off: I_D ~ 0, V_DS ~ VDD.
+        parsed = {"V(OUT)": [(10.0, -40.0)], "V(DRAIN)": 18.44, "V(SOURCE)": 0.0}
+        params = {"VDD_dc": 18.44, "RD_ohm": 3300.0, "RS_ohm": 22000.0}
+        facts = FACT_EXTRACTORS["mosfet_cs_amplifier"](parsed, params)
+        assert facts["I_DQ_mA"] == pytest.approx(0.0, abs=1e-3)
+        assert facts["V_DSQ"] == pytest.approx(18.44, abs=0.01)
+
+
+class TestBjtEmitterFollowerBiasFromSimulation:
+    def test_vceq_from_emitter_node(self):
+        parsed = {"V(OUT)": [(10.0, -0.2)], "V(EMITTER)": 5.0}
+        params = {"VCC_dc": 12.0, "RE_ohm": 4700.0}
+        facts = FACT_EXTRACTORS["bjt_emitter_follower"](parsed, params)
+        assert facts["V_CEQ"] == pytest.approx(7.0, abs=0.01)
+
+
+class TestAugmentDcBiasNoOp:
+    def test_noop_for_non_bias_topology(self):
+        from types import SimpleNamespace
+
+        from electronics_qa_generator.extraction.bias import augment_with_dc_bias
+
+        parsed = {"V(OUT)": 3.0}
+        rec = SimpleNamespace(topology="voltage_divider", graph=None, parameters={})
+        assert augment_with_dc_bias(parsed, rec) is parsed

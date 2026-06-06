@@ -5,16 +5,21 @@ from __future__ import annotations
 from ..graph.models import CircuitGraph
 from ..models import CircuitRecord, SimulationConfig
 from .base import CircuitTemplate
-from .e_series import E12_VALUES, E6_VALUES, INDUCTOR_VALUES, pick_e_value
+from .e_series import E12_VALUES, E6_VALUES, INDUCTOR_VALUES, pick_e_value, snap_e_value
 
 
 class RLCSeriesResonance(CircuitTemplate):
     """Series RLC circuit with AC frequency sweep for resonance analysis.
 
-    R: E12 series, 10 Ω – 1 kΩ (decades 1–3).
-    L: selected inductor values, 1 mH – 100 mH.
-    C: E6 series, 10 nF – 1 μF (decades −8 to −6).
-    Simulation: .ac sweep 10 Hz – 10 MHz.
+    R is sized from a target quality factor Q = sqrt(L/C)/R so the circuit has a
+    well-defined resonance (Q in ~2-15). Sampling R independently produced Q far
+    below 1, where there is no real resonant peak and f_r/Q/BW are not
+    recoverable from the schematic.
+
+    L: selected inductor values, 1 mH - 100 mH.
+    C: E6 series, 10 nF - 1 uF (decades -8 to -6).
+    R: from Q target, snapped to E12.
+    Simulation: .ac sweep 10 Hz - 10 MHz.
     """
 
     family = "passive"
@@ -23,9 +28,11 @@ class RLCSeriesResonance(CircuitTemplate):
     def sample(self, seed: int | None = None) -> CircuitRecord:
         rng = self._new_rng(seed)
 
-        r1 = pick_e_value(E12_VALUES, decade_min=1, decade_max=3, rng=rng)
         l1 = rng.choice(INDUCTOR_VALUES)
         c1 = pick_e_value(E6_VALUES, decade_min=-8, decade_max=-6, rng=rng)
+        z0 = (l1 / c1) ** 0.5  # characteristic impedance sqrt(L/C)
+        q_target = rng.uniform(2.0, 15.0)
+        r1 = snap_e_value(z0 / q_target, E12_VALUES)
 
         graph = CircuitGraph(
             family=self.family,
@@ -40,7 +47,7 @@ class RLCSeriesResonance(CircuitTemplate):
         sim = SimulationConfig(
             type="ac",
             tool="Xyce",
-            params={"start_hz": 10, "stop_hz": 10_000_000, "points_per_decade": 50},
+            params={"start_hz": 10, "stop_hz": 10_000_000, "points_per_decade": 500},
         )
         netlist = graph.to_spice(sim, print_signals=["V(mid)", "V(n1)"])
 

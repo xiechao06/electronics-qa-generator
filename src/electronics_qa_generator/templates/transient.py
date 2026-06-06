@@ -35,14 +35,20 @@ class RCStepResponse(CircuitTemplate):
         stop_time = 10.0 * tau
         # Fine step for accurate waveform extraction
         time_step = tau / 1000.0 if tau > 0 else 1e-6
+        # Step edge placed at a negligible fraction of tau so the waveform read
+        # at t = tau corresponds to ~1 time constant after the step regardless
+        # of tau's scale (a fixed 1 us edge was ~25% of tau for fast circuits).
+        t_edge = tau / 1000.0 if tau > 0 else 1e-9
 
         graph = CircuitGraph(
             family=self.family,
             topology=self.topology,
             header_comment="* RC step response — transient analysis",
         )
-        # PWL step: 0 V until t=1 μs, then jumps to V_step
-        graph.add_voltage_source("Vin", "in", "0", pwl=f"(0 0 1e-6 0 1.000001e-6 {v_step})")
+        # PWL step: ~0 V until t = t_edge (<< tau), then jumps to V_step
+        graph.add_voltage_source(
+            "Vin", "in", "0", pwl=f"(0 0 {t_edge:.4e} 0 {t_edge * 1.001:.4e} {v_step})"
+        )
         graph.add_resistor("R1", "in", "out", r1)
         graph.add_capacitor("C1", "out", "0", c1)
 
@@ -93,13 +99,16 @@ class RLStepResponse(CircuitTemplate):
         tau = l1 / r1 if r1 > 0 else 0.0
         stop_time = 10.0 * tau if tau > 0 else 0.01
         time_step = tau / 1000.0 if tau > 0 else 1e-6
+        t_edge = tau / 1000.0 if tau > 0 else 1e-9
 
         graph = CircuitGraph(
             family=self.family,
             topology=self.topology,
             header_comment="* RL step response — transient analysis",
         )
-        graph.add_voltage_source("Vin", "in", "0", pwl=f"(0 0 1e-6 0 1.000001e-6 {v_step})")
+        graph.add_voltage_source(
+            "Vin", "in", "0", pwl=f"(0 0 {t_edge:.4e} 0 {t_edge * 1.001:.4e} {v_step})"
+        )
         graph.add_resistor("R1", "in", "mid", r1)
         graph.add_inductor("L1", "mid", "0", l1)
 

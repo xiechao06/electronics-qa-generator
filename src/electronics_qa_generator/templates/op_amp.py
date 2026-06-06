@@ -5,7 +5,7 @@ from __future__ import annotations
 from ..graph.models import CircuitGraph
 from ..models import CircuitRecord, SimulationConfig
 from .base import CircuitTemplate
-from .e_series import E12_VALUES, pick_e_value
+from .e_series import E12_VALUES, pick_e_value, snap_e_value
 
 # Ideal op-amp: VCVS (E element) with gain=1e5, plus input/output resistances
 _OPAMP_MODEL = (
@@ -33,10 +33,17 @@ class OpAmpInverting(CircuitTemplate):
     def sample(self, seed: int | None = None) -> CircuitRecord:
         rng = self._new_rng(seed)
 
-        rf = pick_e_value(E12_VALUES, decade_min=3, decade_max=5, rng=rng)
         rin = pick_e_value(E12_VALUES, decade_min=3, decade_max=5, rng=rng)
+        # Target a moderate inverting gain, then realise Rf on the E12 grid.
+        gain_mag = rng.uniform(2.0, 20.0)
+        rf = snap_e_value(gain_mag * rin, E12_VALUES)
         vcc_val = rng.uniform(5.0, 15.0)
-        vin_dc = rng.uniform(0.1, 2.0)
+        # Keep the stage in its linear region: |A_v| * Vin must stay below the
+        # rail (with margin) so the DC output is a real operating point, not a
+        # clipped rail voltage. Otherwise the "DC output" question is degenerate.
+        gain_actual = rf / rin
+        vin_max = 0.8 * vcc_val / gain_actual
+        vin_dc = rng.uniform(0.05, max(0.06, vin_max))
 
         graph = CircuitGraph(
             family=self.family,
@@ -64,7 +71,7 @@ class OpAmpInverting(CircuitTemplate):
         sim = SimulationConfig(
             type="ac",
             tool="Xyce",
-            params={"start_hz": 1, "stop_hz": 1_000_000, "points_per_decade": 50},
+            params={"start_hz": 1, "stop_hz": 100_000_000, "points_per_decade": 50},
         )
         netlist = graph.to_spice(sim, print_signals=["V(out)"])
 

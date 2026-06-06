@@ -65,12 +65,24 @@ def format_numeric(
     value_ref: str,
     unit: str | None = None,
     precision: int = 3,
+    min_rel_tol: float = 0.0,
 ) -> dict[str, Any]:
+    """Format a numeric answer.
+
+    ``min_rel_tol`` sets a relative-tolerance floor on the grading tolerance.
+    For linear/passive circuits hand-analysis reproduces the simulator exactly,
+    so the default display-rounding tolerance (half a ULP of the last printed
+    digit) is appropriate. For active devices (BJT/MOSFET bias points and
+    gains) the exact value depends on model internals the schematic cannot show
+    (V_BE(on), Early voltage, V_T = kT/q), so the answer is only determinable to
+    a few percent; pass e.g. ``min_rel_tol=0.05`` so a correct analysis passes.
+    """
     return {
         "op": "format_numeric",
         "value": value_ref,
         "unit": unit,
         "precision": precision,
+        "min_rel_tol": min_rel_tol,
     }
 
 

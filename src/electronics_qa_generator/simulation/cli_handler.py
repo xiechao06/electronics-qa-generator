@@ -10,6 +10,7 @@ import json
 import sys
 from pathlib import Path
 
+from ..extraction.bias import augment_with_dc_bias
 from ..extraction.facts import FACT_EXTRACTORS
 from ..extraction.parsers import get_parser
 from ..extraction.scoring import compute_richness
@@ -98,6 +99,9 @@ def run_simulate(args) -> None:
         # Parse
         parser = get_parser(sim_type, name)
         parsed = parser(stdout)
+        # Augment with simulated DC bias-point node voltages (no-op unless the
+        # topology needs a separate operating-point pass).
+        parsed = augment_with_dc_bias(parsed, record)
 
         # Extract facts
         extractor = FACT_EXTRACTORS.get(name)
