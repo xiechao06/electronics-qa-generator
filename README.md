@@ -39,6 +39,12 @@ Then prompt you favorite coding agent:
 
 > *"Generate roughly 10,000 Q/A pairs without visual validation, across topologies voltage_divider, rc_lowpass and rc_highpass"*
 
+> *"Generate roughly 10,000 Q/A pairs without visual validation, across topologies voltage_divider, rc_lowpass and rc_highpass, and with random seeds from 0 to 10000."*
+
+In a separate session, using a multimodel like **gpt-5.4**, then prompt:
+
+> *"answer questions in @output/prompts, then check against the answers to each prompt file."*
+
 The agent reads `AGENTS.md`, runs the pipeline, and produces JSONL output
 with schematics. No manual setup beyond `uv sync`.
 
@@ -158,6 +164,32 @@ emit → simulate → questions → validate → assemble
 | `uv run eqa assemble -o dataset` | Assemble MMMU-compatible dataset |
 
 For batch generation across many seeds, use `scripts/batch_generate.py`.
+
+## Agent verification with prompt & answer files
+
+Batch generation automatically produces **paired Markdown files** so you can
+verify QA items with an external agent (Perplexity, ChatGPT, Claude, etc.):
+
+```bash
+uv run python scripts/batch_generate.py --total 200 -o output/batch
+```
+
+For each `(topology, seed)` pair, the pipeline writes two files under
+`output/batch/prompts/`:
+
+| File | What it contains |
+|---|---|
+| `<topology>_<seed>.md` | Schematic image link + numbered questions — **paste this into any VLM agent** |
+| `<topology>_<seed>_answers.md` | Numbered ground-truth answers + SPICE netlist — **keep local for comparison** |
+
+**Workflow:** Paste the prompt file into your agent → the agent answers from
+image + question alone → compare to the answer file. Answers are organized by
+number so you can check correctness question-by-question.
+
+The prompt file intentionally omits answers and netlist so the agent gets
+exactly what the benchmark solver would see. The answer file includes full
+ground truth plus the SPICE netlist for context. Use `--no-prompts` to skip
+file generation.
 
 ## Multimodal self-containment: the non-negotiable of template design
 

@@ -286,13 +286,19 @@ def _write_yaml_summary(
     print(f"Summary: {yaml_path}")
 
 
+PROMPT_IMAGE_ONLY_INSTRUCTION = (
+    "Do not consult the answer file, the netlist, or any other artifacts. "
+    "Answer the following questions purely from the schematic image above:"
+)
+
+
 def _generate_prompt_files(jsonl_path: Path, prompts_dir: Path) -> int:
     """Emit per-schematic prompt and answer Markdown files.
 
     Reads ``qa_items.jsonl``, groups items by ``(topology, seed)``, and writes
     two files per group::
 
-        prompts/<topology>_<seed>.md          — image ref + numbered questions
+        prompts/<topology>_<seed>.md          — image ref + image-only questions
         prompts/<topology>_<seed>_answers.md   — numbered ground-truth answers
 
     Returns the number of (prompt + answer) pairs written.
@@ -325,7 +331,7 @@ def _generate_prompt_files(jsonl_path: Path, prompts_dir: Path) -> int:
         if rel_image:
             lines.append(f"![schematic]({rel_image})")
             lines.append("")
-        lines.append("Answer the following questions based on the schematic above:")
+        lines.append(PROMPT_IMAGE_ONLY_INSTRUCTION)
         lines.append("")
         for i, qi in enumerate(q_items, start=1):
             question = qi.get("question", "<no question>")
@@ -408,9 +414,9 @@ def main():
         help="Humanization cache directory",
     )
     parser.add_argument(
-        "--prompts",
+        "--no-prompts",
         action="store_true",
-        help="Emit per-schematic prompt/answer Markdown files for agent verification",
+        help="Skip generating per-schematic prompt/answer Markdown files",
     )
     args = parser.parse_args()
 
@@ -507,7 +513,7 @@ def main():
         total = sum(1 for _ in open(all_output))
         print(f"Final: {total} QA items → {all_output}")
         _write_yaml_summary(all_output, out_dir, topologies, num_seeds, args.start_seed)
-        if args.prompts:
+        if not args.no_prompts:
             _generate_and_report(all_output, out_dir)
         return
 
@@ -518,7 +524,7 @@ def main():
     if not is_available():
         print("  ⚠ DeepSeek API key not found — skipping humanization")
         _write_yaml_summary(all_output, out_dir, topologies, num_seeds, args.start_seed)
-        if args.prompts:
+        if not args.no_prompts:
             _generate_and_report(all_output, out_dir)
         return
 
@@ -534,7 +540,7 @@ def main():
     if not to_humanize:
         print("  ✓ All items already humanized")
         _write_yaml_summary(all_output, out_dir, topologies, num_seeds, args.start_seed)
-        if args.prompts:
+        if not args.no_prompts:
             _generate_and_report(all_output, out_dir)
         return
 
@@ -570,7 +576,7 @@ def main():
     print(f"  ✓ Humanized {done} items in {elapsed:.0f}s ({elapsed/60:.1f}m)")
     print(f"  Output: {humanized_output}")
     _write_yaml_summary(humanized_output, out_dir, topologies, num_seeds, args.start_seed)
-    if args.prompts:
+    if not args.no_prompts:
         _generate_and_report(humanized_output, out_dir)
 
 
