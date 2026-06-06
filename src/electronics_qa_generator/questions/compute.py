@@ -125,12 +125,15 @@ def compute_answer(
             unit = step.get("unit")
             precision = step["precision"]
             value = float(stack.pop())
-            last_raw_value = value
             pending_precision = precision
+            # Round the value so answer_value matches the formatted text.
+            # e.g. 0.0005 at precision 3 → 0.001, not 0.0005.
+            rounded = round(value, precision)
+            last_raw_value = rounded
             if unit:
-                stack.append(f"{value:.{precision}f} {unit}")
+                stack.append(f"{rounded:.{precision}f} {unit}")
             else:
-                stack.append(f"{value:.{precision}f}")
+                stack.append(f"{rounded:.{precision}f}")
 
         elif op == "return_bool":
             val = stack.pop()

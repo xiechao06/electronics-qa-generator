@@ -49,7 +49,7 @@ class TestDerived:
             {"Vout_dc": 3.0, "Vin_dc": 9.0},
             {},
         )
-        assert value == 3.0 / 9.0
+        assert value == round(3.0 / 9.0, 4)  # rounded to precision 4
         assert unit is None
         assert tol == 5e-05
 

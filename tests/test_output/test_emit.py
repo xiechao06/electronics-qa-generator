@@ -27,7 +27,13 @@ class TestList:
         assert result.returncode == 0
         lines = result.stdout.strip().splitlines()
         assert len(lines) >= 5
-        for topo in ["voltage_divider", "rc_lowpass", "rc_highpass", "rlc_bandpass", "half_wave_rectifier"]:
+        for topo in [
+            "voltage_divider",
+            "rc_lowpass",
+            "rc_highpass",
+            "rlc_bandpass",
+            "half_wave_rectifier",
+        ]:
             assert topo in lines
 
 

@@ -87,8 +87,7 @@ RC_STEP_RESPONSE: list[dict] = [
         "id": "rc_step_tau_compare",
         "question_type": "comparison",
         "question_template": (
-            "Is the time constant τ of this RC circuit greater than 1 ms? "
-            "Answer yes or no."
+            "Is the time constant τ of this RC circuit greater than 1 ms? Answer yes or no."
         ),
         "program": [
             P.read_fact("tau_s"),
@@ -528,8 +527,7 @@ RESISTOR_NETWORK: list[dict] = [
         "id": "rnet_rth_compare",
         "question_type": "comparison",
         "question_template": (
-            "Is the Thevenin resistance R_th of this network greater "
-            "than 1 kΩ? Answer yes or no."
+            "Is the Thevenin resistance R_th of this network greater than 1 kΩ? Answer yes or no."
         ),
         "program": [
             P.read_fact("R_th_ohm"),

@@ -64,9 +64,21 @@
   <line class="wire" x1="488" y1="120" x2="560" y2="120"/>
   <text id="slot-Rf" class="label" x="464" y="103" text-anchor="middle">Rf 10kΩ</text>
 
-  <!-- Non-inverting input to ground -->
+  <!-- Cpole (feedback capacitor, parallel with Rf) -->
+  <line class="wire" x1="380" y1="120" x2="380" y2="90"/>
+  <line class="wire" x1="380" y1="90" x2="458" y2="90"/>
+  <line class="wire" x1="458" y1="78" x2="458" y2="102"/>
+  <line class="wire" x1="466" y1="78" x2="466" y2="102"/>
+  <line class="wire" x1="466" y1="90" x2="560" y2="90"/>
+  <line class="wire" x1="560" y1="90" x2="560" y2="120"/>
+  <text id="slot-Cpole" class="label" x="462" y="70" text-anchor="middle" font-size="12">Cpole</text>
+
+  <!-- Non-inverting input to ground (via Rgnd) -->
   <line class="wire" x1="420" y1="215" x2="365" y2="215"/>
-  <line class="wire" x1="365" y1="215" x2="365" y2="340"/>
+  <line class="wire" x1="365" y1="215" x2="365" y2="245"/>
+  <polyline class="wire" points="365,245 355,251 375,263 355,275 375,287 365,293"/>
+  <line class="wire" x1="365" y1="293" x2="365" y2="340"/>
+  <text id="slot-Rgnd" class="label" x="383" y="252" text-anchor="start">Rgnd</text>
 
   <!-- Op-amp triangle -->
   <polygon class="sym-filled" points="420,160 420,240 520,200"/>

@@ -353,54 +353,70 @@ def _extract_ac_phasor_rc(
     parsed: dict,
     params: dict,
 ) -> dict[str, Any]:
-    """Extract phasor facts from single-frequency .ac results."""
+    """Extract phasor facts from single-frequency .ac results.
+
+    Expects complex phasor data ``{probe: [(freq, complex), ...]}`` from
+    :func:`parse_ac_complex`. All facts are derived from the simulated
+    complex node voltage V(out) = V_C, never approximated.
+
+    Series RC: Vin —[R]— out —[C]— gnd, driven by Vin = 1∠0° V (AC mag 1).
+    """
+    import cmath
+    import math
 
     probe_key = "V(OUT)"
     data = parsed.get(probe_key, [])
 
-    if not data or len(data) < 1:
-        return {
-            "V_C_mag_V": 0.0,
-            "V_C_phase_deg": 0.0,
-            "Z_mag_ohm": 0.0,
-            "Z_phase_deg": 0.0,
-            "P_avg_mW": 0.0,
-        }
+    zero = {
+        "V_C_mag_V": 0.0,
+        "V_C_phase_deg": 0.0,
+        "Z_mag_ohm": 0.0,
+        "Z_phase_deg": 0.0,
+        "P_avg_mW": 0.0,
+    }
+    if not data:
+        return zero
 
-    # Parse complex values: data is list of (freq, (re, im)) or (freq, mag_db)
-    # AC parser gives (freq, gain_db), so we take magnitude from gain
-    freqs = [f for f, _ in data]
-    gains_db = [g for _, g in data]
-
-    # Find point closest to source frequency
+    # Single-point AC → one row. If a sweep slipped through, pick the point
+    # closest to the source frequency.
     f_src = params.get("f_src_hz", 0.0)
-    if f_src > 0 and len(freqs) > 1:
-        best_idx = min(range(len(freqs)), key=lambda i: abs(freqs[i] - f_src))
+    if len(data) > 1 and f_src > 0:
+        freq, v_c = min(data, key=lambda fc: abs(fc[0] - f_src))
     else:
-        best_idx = len(freqs) // 2
+        freq, v_c = data[0]
 
-    gain_db = gains_db[best_idx]
-    v_c_mag = 10 ** (gain_db / 20.0)  # convert dB to linear magnitude
+    # v_c may be a complex phasor (preferred) or a bare float magnitude.
+    if not isinstance(v_c, complex):
+        v_c = complex(float(v_c), 0.0)
 
-    # Phase: from gain slope (approximation). Real phase requires complex parser.
-    # For RC: phase ≈ -90° * (1 - V_C/Vin) ≈ negative
-    v_c_phase = -45.0  # typical RC phase shift at fc
+    vin = complex(1.0, 0.0)  # source AC magnitude 1 V, 0° reference
+    r_val = float(params.get("R_ohm", 1000.0))
 
-    # Impedance magnitude: |Z| = |V|/|I| ≈ R / V_C (approximation)
-    r_val = params.get("R_ohm", 1000.0)
-    z_mag = r_val / v_c_mag if v_c_mag > 0.01 else r_val * 2
-    z_phase = -v_c_phase  # capacitive impedance phase is opposite
+    # V_C magnitude and phase straight from the simulated phasor.
+    v_c_mag = abs(v_c)
+    v_c_phase = math.degrees(cmath.phase(v_c))
 
-    # Average power: P = 0.5 * V_C² / R (approximate, for AC)
-    p_avg = 0.5 * v_c_mag * v_c_mag / r_val if r_val > 0 else 0.0
-    p_avg_mw = p_avg * 1000
+    # Series current I = (Vin - V_C) / R; total impedance Z = Vin / I.
+    i_phasor = (vin - v_c) / r_val if r_val > 0 else complex(0.0, 0.0)
+    if i_phasor != 0:
+        z_total = vin / i_phasor
+        z_mag = abs(z_total)
+        z_phase = math.degrees(cmath.phase(z_total))
+    else:
+        z_mag = 0.0
+        z_phase = 0.0
+
+    # Average power delivered to the resistor: P = 0.5 · |I|² · R
+    # (factor 0.5 for amplitude—not RMS—phasor convention).
+    p_avg = 0.5 * (abs(i_phasor) ** 2) * r_val
+    p_avg_mw = p_avg * 1000.0
 
     return {
-        "V_C_mag_V": round(v_c_mag, 4),
+        "V_C_mag_V": round(v_c_mag, 6),
         "V_C_phase_deg": round(v_c_phase, 1),
-        "Z_mag_ohm": round(z_mag, 1),
+        "Z_mag_ohm": round(z_mag, 2),
         "Z_phase_deg": round(z_phase, 1),
-        "P_avg_mW": round(p_avg_mw, 3),
+        "P_avg_mW": round(p_avg_mw, 4),
     }
 
 
@@ -575,7 +591,7 @@ def _extract_mosfet_cs_amplifier(
     # Gain from .ac
     if data and len(data) > 3:
         gains = [g for _, g in data]
-        av_db = max(gains[:len(gains)//2]) if gains else 0.0
+        av_db = max(gains[: len(gains) // 2]) if gains else 0.0
         av = round(10 ** (av_db / 20.0), 2)
     else:
         av = rd / rs if rs > 0 else 0.0
@@ -640,7 +656,7 @@ def _extract_rlc_series_resonance(
     params: dict,
 ) -> dict[str, Any]:
     """Extract resonance facts from .ac sweep of series RLC.
-    
+
     Probes V(mid) and V(n1). Resonance is where impedance is minimum
     (current is maximum, V(n1) is maximum).
     """
@@ -672,14 +688,22 @@ def _extract_rlc_series_resonance(
     f_low = 0.0
     for i in range(peak_idx, 0, -1):
         if (gains[i] >= threshold >= gains[i - 1]) or (gains[i - 1] >= threshold >= gains[i]):
-            t = (threshold - gains[i]) / (gains[i - 1] - gains[i]) if gains[i - 1] != gains[i] else 0
+            t = (
+                (threshold - gains[i]) / (gains[i - 1] - gains[i])
+                if gains[i - 1] != gains[i]
+                else 0
+            )
             f_low = freqs[i] + t * (freqs[i - 1] - freqs[i])
             break
 
     f_high = 0.0
     for i in range(peak_idx, len(gains) - 1):
         if (gains[i] >= threshold >= gains[i + 1]) or (gains[i + 1] >= threshold >= gains[i]):
-            t = (threshold - gains[i]) / (gains[i + 1] - gains[i]) if gains[i + 1] != gains[i] else 0
+            t = (
+                (threshold - gains[i]) / (gains[i + 1] - gains[i])
+                if gains[i + 1] != gains[i]
+                else 0
+            )
             f_high = freqs[i] + t * (freqs[i + 1] - freqs[i])
             break
 

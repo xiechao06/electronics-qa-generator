@@ -162,7 +162,7 @@ def _rot_offset(x: float, y: float, dx: float, dy: float, angle: float) -> tuple
 
 def draw_voltage_source(ax: Axes, x: float, y: float, angle: float = 0) -> None:
     """Draw a voltage source as a circle with + and - signs.
-    
+
     Leads rotate with ``angle`` so that when ``angle=90`` the top lead
     exits upward and the bottom lead downward, matching the connecting
     wire layout in the schematic renderer.
@@ -180,14 +180,16 @@ def draw_voltage_source(ax: Axes, x: float, y: float, angle: float = 0) -> None:
     ax.plot(
         [x + lead1_start_dx, x + lead1_end_dx],
         [y + lead1_start_dy, y + lead1_end_dy],
-        "k-", lw=LINE_WIDTH,
+        "k-",
+        lw=LINE_WIDTH,
     )
     lead2_start_dx, lead2_start_dy = _rot(r, 0, angle)  # right side → rotated
     lead2_end_dx, lead2_end_dy = _rot(LEAD_LENGTH, 0, angle)
     ax.plot(
         [x + lead2_start_dx, x + lead2_end_dx],
         [y + lead2_start_dy, y + lead2_end_dy],
-        "k-", lw=LINE_WIDTH,
+        "k-",
+        lw=LINE_WIDTH,
     )
 
 

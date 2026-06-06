@@ -114,6 +114,27 @@ emit → simulate → questions → validate → assemble
 
 All commands use `uv run eqa <subcommand>`.
 
+### Pre-flight: template coverage
+
+**Before batch generation, run the template-coverage verifier.** Because QA
+items are multimodal — the solver sees only the schematic image plus the
+question text, never the netlist — the (image + question) pair MUST carry every
+netlist fact an answer depends on. The verifier checks, per topology, that the
+question template, SVG schematic, and netlist are mutually consistent:
+
+```bash
+uv run eqa verify-templates          # human-readable report; exits non-zero on any gap
+uv run eqa verify-templates --json   # machine-readable, for CI
+```
+
+It reports three failure kinds: `missing_component` (a netlist part is not
+drawn), `missing_node` (a question names a node the schematic does not label),
+and `hidden_input` (an answer needs a value shown in neither image nor question).
+The governing fact→inputs table lives in
+`src/electronics_qa_generator/validation/template_coverage.py` (`FACT_INPUTS`) —
+extend it whenever you add a question whose answer depends on a new fact. Run
+`uv run eqa verify-templates` (and `uv run pytest`) before `scripts/batch_generate.py`.
+
 ### Common workflows
 
 **Single topology, all stages:**

@@ -87,4 +87,10 @@
   <line class="wire" x1="548" y1="266" x2="640" y2="266"/>
   <text class="label" x="544" y="298" text-anchor="middle" font-size="12">Cout</text>
   <text id="slot-node-out" class="node" x="612" y="257" text-anchor="start">out</text>
+
+  <!-- Rload (out -> ground) -->
+  <line class="wire" x1="600" y1="266" x2="600" y2="290"/>
+  <polyline class="wire" points="600,290 590,296 610,308 590,320 610,332 600,338"/>
+  <line class="wire" x1="600" y1="338" x2="600" y2="360"/>
+  <text id="slot-Rload" class="label" x="618" y="318" text-anchor="start">Rload</text>
 </svg>

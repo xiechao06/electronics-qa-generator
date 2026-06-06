@@ -8,6 +8,23 @@ from .base import CircuitTemplate
 from .e_series import E12_VALUES, E6_VALUES, pick_e_value
 
 
+def _fmt_frequency(hz: float) -> str:
+    """Format frequency for display on schematic.
+
+    >>> _fmt_frequency(100)
+    '100 Hz'
+    >>> _fmt_frequency(27575)
+    '27.58 kHz'
+    >>> _fmt_frequency(100_000)
+    '100.0 kHz'
+    """
+    if hz >= 1_000_000:
+        return f"{hz / 1_000_000:.2f} MHz"
+    if hz >= 1_000:
+        return f"{hz / 1_000:.2f} kHz"
+    return f"{hz:.0f} Hz"
+
+
 class ACPhasorRC(CircuitTemplate):
     """Series RC circuit driven by sinusoidal source at a single frequency.
 
@@ -32,6 +49,7 @@ class ACPhasorRC(CircuitTemplate):
             family=self.family,
             topology=self.topology,
             header_comment="* AC phasor — series RC single-frequency",
+            params={"freq": _fmt_frequency(f_src)},
         )
         graph.add_voltage_source("Vin", "in", "0", ac=1)
         graph.add_resistor("R1", "in", "out", r1)
@@ -41,9 +59,11 @@ class ACPhasorRC(CircuitTemplate):
             type="ac",
             tool="Xyce",
             params={
-                "start_hz": max(0.1, f_src * 0.5),
-                "stop_hz": f_src * 2.0,
-                "points_per_decade": 10,
+                # Single-point AC analysis at exactly f_src — matches the
+                # single frequency shown on the schematic.
+                "start_hz": f_src,
+                "stop_hz": f_src,
+                "points_per_decade": 1,
             },
         )
         netlist = graph.to_spice(sim, print_signals=["V(out)"])

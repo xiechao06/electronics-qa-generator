@@ -11,14 +11,13 @@ import sys
 from pathlib import Path
 
 from ..extraction.facts import FACT_EXTRACTORS
-from ..extraction.parsers import parse_ac, parse_op, parse_tran
+from ..extraction.parsers import get_parser
 from ..questions.generator import generate_questions
 from ..simulation.cache import FactCache
 from ..simulation.runner import check_xyce_installed, invoke_xyce
 from ..templates import ALL_TEMPLATES
 from .assembler import assemble_dataset
 
-_PARSERS = {"op": parse_op, "ac": parse_ac, "tran": parse_tran}
 
 
 def run_assemble(args) -> None:
@@ -58,7 +57,7 @@ def run_assemble(args) -> None:
                 print(f"  [{name}] simulation did not converge — skipping", file=sys.stderr)
                 continue
 
-            parser = _PARSERS.get(sim_type, parse_op)
+            parser = get_parser(sim_type, name)
             parsed = parser(stdout)
 
             extractor = FACT_EXTRACTORS.get(name)

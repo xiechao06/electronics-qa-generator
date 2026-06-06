@@ -112,6 +112,43 @@ class TestSlotValidation:
         assert "slot-R1" in tpl.all_slot_ids
 
 
+class TestBidirectionalCoverage:
+    """Every graph component must be drawn, not just declared slots matched."""
+
+    def test_undrawn_component_is_rejected(self):
+        g = _make_graph(
+            "passive",
+            "toy_missing",
+            [
+                ("vsource", "Vin", "in", "0"),
+                ("resistor", "R1", "in", "out"),
+                ("resistor", "R2", "out", "0"),
+            ],
+        )
+        reg = TemplateRegistry()
+        # Template draws Vin and R1 but omits R2 entirely.
+        reg._entries[("passive", "toy_missing")] = SVGTemplate(
+            family="passive",
+            topology="toy_missing",
+            svg_content=(
+                '<svg><text id="slot-Vin">Vin</text>'
+                '<text id="slot-R1">R1</text>'
+                '<text id="slot-node-in">in</text>'
+                '<text id="slot-node-out">out</text></svg>'
+            ),
+        )
+        with pytest.raises(ValueError, match="R2"):
+            reg.resolve(g)
+
+    def test_all_registered_topologies_resolve(self):
+        from electronics_qa_generator.templates import ALL_TEMPLATES
+
+        for template in ALL_TEMPLATES:
+            graph = template.sample(seed=0).graph
+            if default_registry.has_template(graph):
+                default_registry.resolve(graph)  # must not raise
+
+
 # -- Task 6.3: Loading via importlib.resources --------------------------------
 
 
@@ -127,3 +164,12 @@ class TestTemplateLoading:
         """Loading a non-existent file raises FileNotFoundError."""
         with pytest.raises(FileNotFoundError):
             load_svg_template("nonexistent.svg")
+
+
+# -- Schematic completeness ---------------------------------------------------
+#
+# The "every netlist component must be drawn" guarantee is now enforced two ways:
+#   * at render time by TemplateRegistry._validate (bidirectional coverage), and
+#   * across all topologies by
+#     tests/test_validation/test_template_coverage.py.
+# See TestBidirectionalCoverage above and the triad-coverage regression there.

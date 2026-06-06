@@ -11,14 +11,12 @@ import sys
 from pathlib import Path
 
 from ..extraction.facts import FACT_EXTRACTORS
-from ..extraction.parsers import parse_ac, parse_op, parse_tran
+from ..extraction.parsers import get_parser
 from ..extraction.scoring import compute_richness
 from ..simulation.models import SimResult
 from ..templates import ALL_TEMPLATES
 from .cache import FactCache
 from .runner import check_xyce_installed, invoke_xyce
-
-_PARSERS = {"op": parse_op, "ac": parse_ac, "tran": parse_tran}
 
 
 def run_simulate(args) -> None:
@@ -98,7 +96,7 @@ def run_simulate(args) -> None:
             continue
 
         # Parse
-        parser = _PARSERS.get(sim_type, parse_op)
+        parser = get_parser(sim_type, name)
         parsed = parser(stdout)
 
         # Extract facts

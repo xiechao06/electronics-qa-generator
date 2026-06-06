@@ -65,6 +65,48 @@ class TestParseAc:
 
 
 # ---------------------------------------------------------------------------
+# .ac complex parser (single-frequency phasor)
+# ---------------------------------------------------------------------------
+
+AC_COMPLEX_OUTPUT = """\
+Index       FREQ           Re(V(OUT))        Im(V(OUT))    
+0        2.75800000e+04    7.20167638e-07   -8.48626607e-04
+"""
+
+
+class TestParseAcComplex:
+    """Tests for parse_ac_complex — preserves Re/Im as complex numbers."""
+
+    def test_returns_complex_phasor(self):
+        from electronics_qa_generator.extraction.parsers import parse_ac_complex
+
+        result = parse_ac_complex(AC_COMPLEX_OUTPUT)
+        assert "V(OUT)" in result
+        data = result["V(OUT)"]
+        assert len(data) == 1
+        freq, v_c = data[0]
+        assert freq == pytest.approx(27580.0)
+        assert isinstance(v_c, complex)
+        assert v_c.real == pytest.approx(7.20167638e-07)
+        assert v_c.imag == pytest.approx(-8.48626607e-04)
+        assert abs(v_c) > 0
+        import math
+        import cmath
+
+        assert cmath.phase(v_c) == pytest.approx(-math.pi / 2, abs=0.001)
+
+    def test_empty_input(self):
+        from electronics_qa_generator.extraction.parsers import parse_ac_complex
+
+        assert parse_ac_complex("") == {}
+
+    def test_malformed_input(self):
+        from electronics_qa_generator.extraction.parsers import parse_ac_complex
+
+        assert parse_ac_complex("no valid data here") == {}
+
+
+# ---------------------------------------------------------------------------
 # .tran parser
 # ---------------------------------------------------------------------------
 

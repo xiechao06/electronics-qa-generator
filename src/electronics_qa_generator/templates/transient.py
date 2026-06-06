@@ -42,8 +42,7 @@ class RCStepResponse(CircuitTemplate):
             header_comment="* RC step response — transient analysis",
         )
         # PWL step: 0 V until t=1 μs, then jumps to V_step
-        graph.add_voltage_source("Vin", "in", "0",
-            pwl=f"(0 0 1e-6 0 1.000001e-6 {v_step})")
+        graph.add_voltage_source("Vin", "in", "0", pwl=f"(0 0 1e-6 0 1.000001e-6 {v_step})")
         graph.add_resistor("R1", "in", "out", r1)
         graph.add_capacitor("C1", "out", "0", c1)
 
@@ -100,8 +99,7 @@ class RLStepResponse(CircuitTemplate):
             topology=self.topology,
             header_comment="* RL step response — transient analysis",
         )
-        graph.add_voltage_source("Vin", "in", "0",
-            pwl=f"(0 0 1e-6 0 1.000001e-6 {v_step})")
+        graph.add_voltage_source("Vin", "in", "0", pwl=f"(0 0 1e-6 0 1.000001e-6 {v_step})")
         graph.add_resistor("R1", "in", "mid", r1)
         graph.add_inductor("L1", "mid", "0", l1)
 

@@ -24,6 +24,15 @@ __all__ = ["TemplateRegistry", "SVGTemplate"]
 _SLOT_ID_RE = re.compile(r'\bid="(slot-[\w.\-]+)"')
 
 
+def _name_in_svg(name: str, svg: str) -> bool:
+    """Whether a designator appears as a whole token in raw SVG content.
+
+    Matches slot ids (``slot-R1``) and plain-text labels (``Cin``) while
+    word-bounding so ``R1`` never matches inside ``R12``.
+    """
+    return re.search(rf"(?<![\w]){re.escape(name)}(?![\w])", svg) is not None
+
+
 @dataclass
 class SVGTemplate:
     """A hand-authored SVG layout template with named placeholder slots.
@@ -48,11 +57,12 @@ class SVGTemplate:
         """Slots for component values keyed by reference designator.
 
         Returns ``{"R1": "slot-R1", "Vin": "slot-Vin", ...}``.
+        Excludes ``slot-param-*`` and ``slot-node-*`` prefixes.
         """
         return {
             sid.removeprefix("slot-"): sid
             for sid in self._slot_ids
-            if not sid.startswith("slot-node-")
+            if not sid.startswith("slot-node-") and not sid.startswith("slot-param-")
         }
 
     @property
@@ -233,6 +243,20 @@ class TemplateRegistry:
                 f"Template '{template.topology}' expects node slots "
                 f"{sorted(missing_nodes)} but graph has non-ground nodes "
                 f"{sorted(actual_nodes)}"
+            )
+
+        # Bidirectional component coverage: every graph component must be
+        # represented in the template (value/label slot or visible text label),
+        # so an incomplete schematic that silently omits a part is rejected
+        # before any PNG is produced.
+        undrawn = [
+            c.name for c in graph.components if not _name_in_svg(c.name, template.svg_content)
+        ]
+        if undrawn:
+            raise ValueError(
+                f"Template '{template.topology}' does not draw component(s) "
+                f"{sorted(undrawn)} that are present in the netlist; every "
+                f"component must appear in the schematic"
             )
 
     def clear(self) -> None:

@@ -8,7 +8,9 @@ from .base import CircuitTemplate
 from .e_series import E12_VALUES, E6_VALUES, pick_e_value
 
 # NMOS Level=1 model
-_MOSFET_MODEL = ".model NMOS1 NMOS (Level=1 VTO=2.0 KP=1.0e-3 L=2e-6 W=50e-6 Lambda=0.02 Gamma=1.0 Phi=0.6)"
+_MOSFET_MODEL = (
+    ".model NMOS1 NMOS (Level=1 VTO=2.0 KP=1.0e-3 L=2e-6 W=50e-6 Lambda=0.02 Gamma=1.0 Phi=0.6)"
+)
 
 
 class MOSFETCSAmplifier(CircuitTemplate):

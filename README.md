@@ -22,7 +22,7 @@ git clone https://github.com/xiechao06/electronics-qa-generator
 cd electronics-qa-generator
 ```
 
-Then prompt a coding agent:
+Then prompt you favorite coding agent:
 
 > *"Generate roughly 10,000 Q/A pairs."*
 > *"Generate roughly 10,000 Q/A pairs without visual validation."*
@@ -107,6 +107,30 @@ use hand-written humanized templates — no LLM involved in truth creation.
 - [`uv`](https://docs.astral.sh/uv/) for environment management
 - **Xyce** SPICE simulator on PATH
 
+## Pipeline architecture
+
+```mermaid
+flowchart TD
+    T["📐 Template Library<br/>14 circuit topologies<br/>+ parameter ranges"] --> S["🎲 Sampler<br/>Sample component values,<br/>stimuli, variants<br/>(reproducible by seed)"]
+    S --> N["🔧 Netlist Generator<br/>Emit Xyce SPICE netlists<br/>+ schematic SVG/PNG"]
+    N --> X["⚡ Xyce Simulator<br/>Run .op / .ac / .tran<br/>(multiprocess, cached<br/>by netlist hash)"]
+    X --> P["📊 Parser<br/>Parse raw simulation<br/>output (.op, .ac, .tran)"]
+    P --> F["🔍 Fact Extractor<br/>Extract per-topology facts:<br/>voltages, gains, cutoff,<br/>phase, rise-time, behavior"]
+    F --> FT[("📋 Ground-Truth<br/>Fact Table")]
+    FT --> QE["❓ Question Engine<br/>CLEVR-style program<br/>execution → answers"]
+    QE --> QA["📦 QA Item<br/>question + answer +<br/>value + unit + tolerance<br/>+ program + schematic"]
+    QA --> V["✅ Validator<br/>Static checks:<br/>answer recomputation,<br/>param consistency,<br/>unit, leakage, degenerate"]
+    V --> A["🧩 Assembler<br/>MMMU-compatible<br/>JSONL dataset"]
+
+    style X fill:#fff3cd,stroke:#ffc107
+    style FT fill:#d4edda,stroke:#28a745
+    style QA fill:#d1ecf1,stroke:#0c5460
+```
+
+> **Truth ownership:** Simulation + code own all answers. The LLM is never
+> the source of numerical truth — it may only paraphrase or tag after answers
+> are computed.
+
 ## CLI pipeline
 
 ```
@@ -119,9 +143,24 @@ emit → simulate → questions → validate → assemble
 | `uv run eqa simulate <topology> --seed N` | Run Xyce, extract facts |
 | `uv run eqa questions <topology> --seed N` | Generate Q/A items from facts |
 | `uv run eqa validate <topology> --seed N` | Static checks on QA items |
+| `uv run eqa verify-templates` | Check question/SVG/netlist templates are mutually consistent |
 | `uv run eqa assemble -o dataset` | Assemble MMMU-compatible dataset |
 
 For batch generation across many seeds, use `scripts/batch_generate.py`.
+
+## Template coverage (multimodal self-containment)
+
+QA items are multimodal: the solver sees only the **schematic image** and the
+**question text** — the netlist is never shown. So the (image + question) pair
+must contain every fact an answer depends on. `eqa verify-templates` enforces
+this per topology, reporting `missing_component` (a part not drawn),
+`missing_node` (a question names an unlabelled node), and `hidden_input` (an
+answer needs a value shown nowhere). Run it before batch generation:
+
+```bash
+uv run eqa verify-templates          # exits non-zero on any coverage gap
+uv run eqa verify-templates --json   # machine-readable report
+```
 
 ## Visual checks (opt-in)
 

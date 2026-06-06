@@ -46,6 +46,7 @@ class CircuitGraph:
     components: list[Component] = field(default_factory=list)
     directives: list[str] = field(default_factory=list)
     header_comment: str | None = None
+    params: dict[str, object] = field(default_factory=dict)
 
     # -- properties ------------------------------------------------------
 

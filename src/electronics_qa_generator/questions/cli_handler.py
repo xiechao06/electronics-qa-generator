@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 from ..extraction.facts import FACT_EXTRACTORS
-from ..extraction.parsers import parse_ac, parse_op, parse_tran
+from ..extraction.parsers import get_parser
 from ..llm.cache import HumanizationCache
 from ..llm.humanize import humanize_item
 from ..llm.provider import is_available
@@ -20,8 +20,6 @@ from ..simulation.runner import check_xyce_installed, invoke_xyce
 from ..templates import ALL_TEMPLATES
 from .generator import generate_questions
 from .templates import QUESTION_TEMPLATES
-
-_PARSERS = {"op": parse_op, "ac": parse_ac, "tran": parse_tran}
 
 
 def run_questions(args) -> None:
@@ -72,7 +70,7 @@ def run_questions(args) -> None:
             print(f"error: simulation did not converge (rc={rc})", file=sys.stderr)
             raise SystemExit(1)
 
-        parser = _PARSERS.get(sim_type, parse_op)
+        parser = get_parser(sim_type, name)
         parsed = parser(stdout)
 
         extractor = FACT_EXTRACTORS.get(name)

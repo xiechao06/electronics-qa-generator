@@ -1,31 +1,4 @@
-## Purpose
-
-Ensure every supported topology has a complete SVG schematic template and that
-rendering is rejected when the schematic and netlist are inconsistent.
-
-## Requirements
-
-### Requirement: Per-topology SVG layout templates
-
-The system SHALL provide a hand-authored SVG layout template for each supported
-circuit topology. Each template SHALL be topology-correct — every wire visually
-connects to the exact component terminals and nodes implied by the topology — and
-SHALL contain named placeholder slots for component symbols, component value/label
-text, and node labels. Templates SHALL be authored per topology (not per sampled
-instance) so that one template serves every parameter sampling of that topology.
-
-#### Scenario: MVP topologies each have a template
-
-- **WHEN** the registry is queried for any of the 5 MVP topologies (voltage divider,
-  RC low-pass, RC high-pass, RLC band-pass, half-wave rectifier)
-- **THEN** a corresponding SVG template file is resolved for that `(family, topology)`
-
-#### Scenario: Template slots are named and discoverable
-
-- **WHEN** an SVG template is loaded
-- **THEN** each placeholder slot is identified by a stable name (e.g., a value slot
-  keyed by reference designator like `R1`, and node-label slots keyed by node name)
-- **AND** the set of slot names can be enumerated programmatically
+## MODIFIED Requirements
 
 ### Requirement: Template registry resolves and validates against a CircuitGraph
 

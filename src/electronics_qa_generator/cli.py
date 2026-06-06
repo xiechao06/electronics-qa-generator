@@ -12,7 +12,7 @@ from . import __version__
 from .output.emit import run_emit
 from .questions.cli_handler import run_questions
 from .simulation.cli_handler import run_simulate
-from .validation.cli_handler import run_validate
+from .validation.cli_handler import run_validate, run_verify_templates
 from .output.assemble_cli import run_assemble
 
 
@@ -120,6 +120,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="run vision-model checks on schematic images (requires --render)",
     )
 
+    # -- verify-templates subcommand ---------------------------------------
+    vt = sub.add_parser(
+        "verify-templates",
+        help="verify question/SVG/netlist templates are mutually consistent",
+    )
+    vt.add_argument("--seed", type=int, default=0, help="random seed for reproducible sampling")
+    vt.add_argument("--json", action="store_true", help="output report as JSON")
+
     # -- assemble subcommand ------------------------------------------------
     asm = sub.add_parser("assemble", help="assemble full MMMU-compatible dataset")
     asm.add_argument("-o", "--out", default="dataset", help="output directory (default: dataset/)")
@@ -153,6 +161,10 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "validate":
         run_validate(args)
+        return 0
+
+    if args.command == "verify-templates":
+        run_verify_templates(args)
         return 0
 
     if args.command == "assemble":

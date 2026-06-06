@@ -10,15 +10,13 @@ import sys
 from pathlib import Path
 
 from ..extraction.facts import FACT_EXTRACTORS
-from ..extraction.parsers import parse_ac, parse_op, parse_tran
+from ..extraction.parsers import get_parser
 from ..questions.generator import generate_questions
 from ..questions.templates import QUESTION_TEMPLATES
 from ..simulation.cache import FactCache
 from ..simulation.runner import check_xyce_installed, invoke_xyce
 from ..templates import ALL_TEMPLATES
 from .report import ValidationReport
-
-_PARSERS = {"op": parse_op, "ac": parse_ac, "tran": parse_tran}
 
 
 def run_validate(args) -> None:
@@ -69,9 +67,7 @@ def run_validate(args) -> None:
             print(f"error: simulation did not converge (rc={rc})", file=sys.stderr)
             raise SystemExit(1)
 
-        from ..extraction.parsers import parse_op
-
-        parser = _PARSERS.get(sim_type, parse_op)
+        parser = get_parser(sim_type, name)
         parsed = parser(stdout)
 
         extractor = FACT_EXTRACTORS.get(name)
@@ -145,4 +141,25 @@ def run_validate(args) -> None:
 
     # Exit code: 1 on any FAIL
     if not report.ok:
+        raise SystemExit(1)
+
+
+def run_verify_templates(args) -> None:
+    """Execute `eqa verify-templates` logic.
+
+    Verifies that, for every topology, the question template, SVG schematic,
+    and netlist are mutually consistent — the (image + question) pair conveys
+    every netlist fact a question's answer depends on. Exits non-zero if any
+    topology fails so it can gate batch generation.
+    """
+    from .template_coverage import verify_all
+
+    report = verify_all(seed=args.seed)
+
+    if args.json:
+        print(report.to_json())
+    else:
+        print(report.render_text())
+
+    if not report.passed:
         raise SystemExit(1)

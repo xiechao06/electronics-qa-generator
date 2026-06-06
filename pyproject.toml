@@ -7,7 +7,9 @@ authors = [
     { name = "Chao", email = "xiechao06@gmail.com" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "pyyaml>=6.0.3",
+]
 
 [project.optional-dependencies]
 # Numerics, simulation parsing, and rendering. Kept optional so the basic

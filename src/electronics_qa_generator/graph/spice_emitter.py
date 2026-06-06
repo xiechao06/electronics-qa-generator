@@ -140,8 +140,14 @@ def _emit_simulation(sim: SimulationConfig) -> tuple[str, str]:
         return ".op", ".print dc"
 
     if sim_type == "ac":
-        start = _fmt_frequency(params["start_hz"])
-        stop = _fmt_frequency(params["stop_hz"])
+        start_hz = params["start_hz"]
+        stop_hz = params["stop_hz"]
+        start = _fmt_frequency(start_hz)
+        stop = _fmt_frequency(stop_hz)
+        # Single-point AC analysis: evaluate at exactly one frequency.
+        # Used for phasor questions where the schematic shows one f_src.
+        if start_hz == stop_hz:
+            return f".ac lin 1 {start} {stop}", ".print ac"
         ppd = params["points_per_decade"]
         return f".ac dec {ppd} {start} {stop}", ".print ac"
 

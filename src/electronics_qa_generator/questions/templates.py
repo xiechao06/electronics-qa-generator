@@ -113,7 +113,6 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "answer_formatter": "boolean",
         },
     ],
-
     # ── rc_lowpass ─────────────────────────────────────────────────────
     "rc_lowpass": [
         {
@@ -191,7 +190,6 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "answer_formatter": "boolean",
         },
     ],
-
     # ── rc_highpass ────────────────────────────────────────────────────
     "rc_highpass": [
         {
@@ -269,7 +267,6 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "answer_formatter": "boolean",
         },
     ],
-
     # ── rlc_bandpass ───────────────────────────────────────────────────
     "rlc_bandpass": [
         {
@@ -352,7 +349,6 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
             "answer_formatter": "boolean",
         },
     ],
-
     # ── half_wave_rectifier ────────────────────────────────────────────
     "half_wave_rectifier": [
         {

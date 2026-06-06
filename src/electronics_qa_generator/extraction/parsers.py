@@ -206,6 +206,60 @@ def parse_ac(raw_output: str) -> dict[str, list[tuple[float, float]]]:
 
     return result
 
+
+def parse_ac_complex(raw_output: str) -> dict[str, list[tuple[float, complex]]]:
+    """Parse Xyce .print ac output preserving complex phasors.
+
+    Like :func:`parse_ac`, but instead of collapsing Re/Im into a single
+    magnitude (dB), it keeps the full complex value so downstream code can
+    derive both magnitude *and* phase. Used for single-frequency phasor
+    questions where the phase angle is part of the ground truth.
+
+    Returns ``{probe: [(freq_hz, complex(re, im)), ...]}``.
+    """
+    lines = raw_output.splitlines()
+
+    header_line_idx: int | None = None
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if "Index" in stripped and ("FREQ" in stripped or "Freq" in stripped):
+            header_line_idx = i
+            break
+
+    if header_line_idx is None:
+        return {}
+
+    headers, data_rows = _parse_table(lines[header_line_idx:])
+    if not headers or not data_rows:
+        return {}
+
+    import re as _re
+
+    freq_idx = 0
+    re_im_pairs: dict[str, list[int]] = {}  # canonical → [re_col, im_col]
+
+    for i, h in enumerate(headers):
+        if h.upper() == "FREQ":
+            continue
+        m_re = _re.match(r"^\s*Re\(\s*(.+)\s*\)\s*$", h, _re.IGNORECASE)
+        m_im = _re.match(r"^\s*Im\(\s*(.+)\s*\)\s*$", h, _re.IGNORECASE)
+        if m_re:
+            pair = re_im_pairs.setdefault(m_re.group(1).strip().upper(), [-1, -1])
+            pair[0] = i
+        elif m_im:
+            pair = re_im_pairs.setdefault(m_im.group(1).strip().upper(), [-1, -1])
+            pair[1] = i
+
+    result: dict[str, list[tuple[float, complex]]] = {canonical: [] for canonical in re_im_pairs}
+
+    for row in data_rows:
+        if len(row) < 2:
+            continue
+        freq = row[freq_idx]
+        for canonical, (re_col, im_col) in re_im_pairs.items():
+            if re_col < len(row) and im_col < len(row):
+                result[canonical].append((freq, complex(row[re_col], row[im_col])))
+
     return result
 
 
@@ -265,3 +319,23 @@ def parse_tran(raw_output: str) -> dict[str, list[tuple[float, float]]]:
                 result[probe.upper()].append((time_val, row[val_idx]))
 
     return result
+
+
+# ---------------------------------------------------------------------------
+# Parser selection
+# ---------------------------------------------------------------------------
+
+# Topologies whose facts require the full complex phasor (magnitude + phase)
+# rather than magnitude-only AC data.
+_COMPLEX_AC_TOPOLOGIES = frozenset({"ac_phasor_rc"})
+
+
+def get_parser(sim_type: str, topology: str | None = None):
+    """Return the appropriate parser for a (sim_type, topology) pair.
+
+    Most AC topologies use :func:`parse_ac` (magnitude in dB). Phasor
+    topologies that need the phase angle use :func:`parse_ac_complex`.
+    """
+    if sim_type == "ac" and topology in _COMPLEX_AC_TOPOLOGIES:
+        return parse_ac_complex
+    return {"op": parse_op, "ac": parse_ac, "tran": parse_tran}.get(sim_type, parse_op)

@@ -29,6 +29,7 @@
   <line class="wire" x1="174" y1="208" x2="186" y2="202"/>
   <line class="wire" x1="174" y1="202" x2="186" y2="208"/>
   <text id="slot-Vin" class="label" x="195" y="192" text-anchor="start">Vin 1V AC</text>
+  <text id="slot-param-freq" class="label" x="195" y="210" text-anchor="start" font-size="13" fill="#555">f = 10 kHz</text>
 
   <!-- R1 (horizontal resistor) -->
   <line class="wire" x1="340" y1="120" x2="355" y2="120"/>

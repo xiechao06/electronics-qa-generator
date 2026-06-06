@@ -107,6 +107,13 @@ def fill_template(graph: CircuitGraph, template: SVGTemplate) -> str:
         if slot_id.startswith("slot-node-"):
             node_name = slot_id.removeprefix("slot-node-")
             new_text = node_to_label.get(node_name, slot_id)
+        elif slot_id.startswith("slot-param-"):
+            param_name = slot_id.removeprefix("slot-param-")
+            param_val = graph.params.get(param_name)
+            if param_val is not None:
+                new_text = str(param_val)
+            else:
+                new_text = slot_id
         else:
             ref = slot_id.removeprefix("slot-")
             new_text = ref_to_label.get(ref, slot_id)

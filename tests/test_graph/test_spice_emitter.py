@@ -96,6 +96,19 @@ class TestAcEmission:
         assert "0.01" in netlist
         assert "10Meg" in netlist
 
+    def test_single_point_ac(self):
+        """start_hz == stop_hz → .ac lin 1 (phasor analysis)."""
+        g = _make_rc_lowpass()
+        netlist = g.to_spice(
+            SimulationConfig(
+                type="ac",
+                params={"start_hz": 27_575, "stop_hz": 27_575, "points_per_decade": 1},
+            ),
+        )
+        assert ".ac lin 1" in netlist
+        assert "27.57k" in netlist
+        assert ".print ac" in netlist
+
 
 # ---------------------------------------------------------------------------
 # .tran simulation

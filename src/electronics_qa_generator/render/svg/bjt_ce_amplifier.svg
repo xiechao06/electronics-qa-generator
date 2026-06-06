@@ -81,7 +81,15 @@
   <line class="wire" x1="460" y1="250" x2="460" y2="282"/>
   <polyline class="wire" points="460,282 450,288 470,300 450,312 470,324 460,330"/>
   <line class="wire" x1="460" y1="330" x2="460" y2="360"/>
-  <text id="slot-RE" class="label" x="478" y="310" text-anchor="start">RE</text>
+  <text id="slot-RE" class="label" x="442" y="310" text-anchor="end">RE</text>
+
+  <!-- Cbypass (emitter bypass, parallel with RE) -->
+  <line class="wire" x1="460" y1="250" x2="520" y2="250"/>
+  <line class="wire" x1="520" y1="250" x2="520" y2="296"/>
+  <line class="wire" x1="508" y1="296" x2="532" y2="296"/>
+  <line class="wire" x1="508" y1="306" x2="532" y2="306"/>
+  <line class="wire" x1="520" y1="306" x2="520" y2="360"/>
+  <text class="label" x="536" y="290" text-anchor="start" font-size="12">Cbypass</text>
 
   <!-- Collector node + Cout to output -->
   <line class="wire" x1="460" y1="172" x2="540" y2="172"/>
@@ -90,4 +98,10 @@
   <line class="wire" x1="548" y1="172" x2="640" y2="172"/>
   <text class="label" x="544" y="152" text-anchor="middle" font-size="12">Cout</text>
   <text id="slot-node-out" class="node" x="612" y="163" text-anchor="start">out</text>
+
+  <!-- Rload (out -> ground) -->
+  <line class="wire" x1="600" y1="172" x2="600" y2="206"/>
+  <polyline class="wire" points="600,206 590,212 610,224 590,236 610,248 600,254"/>
+  <line class="wire" x1="600" y1="254" x2="600" y2="360"/>
+  <text id="slot-Rload" class="label" x="618" y="234" text-anchor="start">Rload</text>
 </svg>

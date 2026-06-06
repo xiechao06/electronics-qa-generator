@@ -51,13 +51,11 @@ def _generate_one_seed(
     os.environ.setdefault("XYCE_QUIET", "1")
 
     from electronics_qa_generator.extraction.facts import FACT_EXTRACTORS
-    from electronics_qa_generator.extraction.parsers import parse_ac, parse_op, parse_tran
+    from electronics_qa_generator.extraction.parsers import get_parser
     from electronics_qa_generator.questions.generator import generate_questions
     from electronics_qa_generator.simulation.cache import FactCache
     from electronics_qa_generator.simulation.runner import invoke_xyce
     from electronics_qa_generator.templates import ALL_TEMPLATES
-
-    _PARSERS = {"op": parse_op, "ac": parse_ac, "tran": parse_tran}
 
     by_name = {t.topology: t for t in ALL_TEMPLATES}
     cache = FactCache(cache_dir=Path(cache_dir)) if cache_dir else None
@@ -80,7 +78,7 @@ def _generate_one_seed(
                 continue
             if not converged:
                 continue
-            parser = _PARSERS.get(sim_type, parse_op)
+            parser = get_parser(sim_type, name)
             try:
                 parsed = parser(stdout)
             except Exception:
@@ -137,6 +135,7 @@ def _generate_one_seed(
                 "program": item.program,
                 "explanation": item.explanation,
                 "schematic_path": schematic_path,
+                "netlist": record.netlist,
             })
     return items
 
@@ -202,6 +201,87 @@ def _write_jsonl(items: list[dict], path: Path) -> None:
     with open(path, "w") as f:
         for item in items:
             f.write(json.dumps(item, default=str) + "\n")
+
+
+def _write_yaml_summary(
+    jsonl_path: Path,
+    out_dir: Path,
+    topologies: list[str],
+    num_seeds: int,
+    start_seed: int,
+) -> None:
+    """Generate a human-readable YAML summary of the batch run."""
+    import datetime
+    from collections import Counter
+
+    import yaml
+
+    items = _read_jsonl(jsonl_path)
+
+    # Per-topology stats
+    topo_counts: Counter[str] = Counter()
+    topo_qtypes: dict[str, Counter[str]] = {}
+    question_types: Counter[str] = Counter()
+
+    # Group all QA items by topology
+    items_by_topo: dict[str, list[dict]] = {}
+    for item in items:
+        topo = item.get("topology", "unknown")
+        topo_counts[topo] += 1
+        qtype = item.get("question_type", "unknown")
+        question_types[qtype] += 1
+        if topo not in topo_qtypes:
+            topo_qtypes[topo] = Counter()
+        topo_qtypes[topo][qtype] += 1
+        if topo not in items_by_topo:
+            items_by_topo[topo] = []
+        items_by_topo[topo].append({
+            "id": item.get("id", ""),
+            "seed": item.get("seed", 0),
+            "question_type": item.get("question_type", ""),
+            "question": item.get("question", ""),
+            "answer": item.get("answer", ""),
+            "answer_value": item.get("answer_value"),
+            "unit": item.get("unit"),
+            "tolerance": item.get("tolerance"),
+            "program": item.get("program"),
+            "schematic_path": item.get("schematic_path", ""),
+            "netlist": item.get("netlist", ""),
+        })
+
+    per_topo = {}
+    for topo in sorted(topo_counts):
+        per_topo[topo] = {
+            "count": topo_counts[topo],
+            "question_types": dict(topo_qtypes.get(topo, {})),
+            "items": items_by_topo.get(topo, []),
+        }
+
+    summary = {
+        "run": {
+            "timestamp": datetime.datetime.now().isoformat(),
+            "command": f"batch_generate.py --total {len(items)} --workers 8 -o {out_dir}",
+            "duration_s": None,
+        },
+        "overview": {
+            "total_items": len(items),
+            "total_topologies": len(topo_counts),
+            "seeds_generated": num_seeds,
+            "seed_range": f"{start_seed}–{start_seed + num_seeds - 1}",
+            "question_types": dict(question_types),
+        },
+        "by_topology": per_topo,
+        "output": {
+            "jsonl": str(jsonl_path),
+            "schematics": str(out_dir / "images"),
+            "summary_yaml": str(out_dir / "summary.yaml"),
+        },
+    }
+
+    yaml_path = out_dir / "summary.yaml"
+    with open(yaml_path, "w") as f:
+        yaml.dump(summary, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
+    print(f"Summary: {yaml_path}")
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -333,6 +413,7 @@ def main():
         print("\n── No humanization requested (use --humanize) ──")
         total = sum(1 for _ in open(all_output))
         print(f"Final: {total} QA items → {all_output}")
+        _write_yaml_summary(all_output, out_dir, topologies, num_seeds, args.start_seed)
         return
 
     print(f"\n── Phase 2: LLM Humanization ({args.humanize_workers} threads) ──")
@@ -341,6 +422,7 @@ def main():
     from electronics_qa_generator.llm.provider import is_available
     if not is_available():
         print("  ⚠ DeepSeek API key not found — skipping humanization")
+        _write_yaml_summary(all_output, out_dir, topologies, num_seeds, args.start_seed)
         return
 
     items = _read_jsonl(all_output)
@@ -354,6 +436,7 @@ def main():
 
     if not to_humanize:
         print("  ✓ All items already humanized")
+        _write_yaml_summary(all_output, out_dir, topologies, num_seeds, args.start_seed)
         return
 
     from electronics_qa_generator.llm.provider import _read_config
@@ -387,6 +470,7 @@ def main():
     elapsed = time.monotonic() - t0
     print(f"  ✓ Humanized {done} items in {elapsed:.0f}s ({elapsed/60:.1f}m)")
     print(f"  Output: {humanized_output}")
+    _write_yaml_summary(humanized_output, out_dir, topologies, num_seeds, args.start_seed)
 
 
 if __name__ == "__main__":
