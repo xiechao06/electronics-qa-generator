@@ -19,7 +19,7 @@ Options:
                    Use --list-topologies to see available names
     --workers      Parallel simulation worker processes (default: 8)
     --start-seed   First seed value (default: 0)
-    --cache-dir    Fact cache directory (default: cache)
+    --cache-dir    Fact cache directory (default: .cache)
     -o, --out      Output directory (default: output/batch)
     --humanize     Reword questions via DeepSeek LLM (opt-in)
     --list-topologies  Print available topology names and exit
@@ -400,7 +400,7 @@ def main():
     parser.add_argument("--workers", type=int, default=8, help="Simulation workers")
     parser.add_argument("-o", "--out", type=str, default="output/batch", help="Output directory")
     parser.add_argument("--start-seed", type=int, default=0, help="Starting seed")
-    parser.add_argument("--cache-dir", type=str, default="cache", help="Fact cache directory")
+    parser.add_argument("--cache-dir", type=str, default=".cache", help="Fact cache directory")
     parser.add_argument(
         "--humanize", action="store_true", help="Reword questions via DeepSeek LLM"
     )
@@ -410,7 +410,7 @@ def main():
     parser.add_argument(
         "--humanize-cache-dir",
         type=str,
-        default="cache/humanize",
+        default=".cache/humanize",
         help="Humanization cache directory",
     )
     parser.add_argument(
