@@ -77,6 +77,25 @@ templates → sampling → netlist → simulation → parsing → extraction
   schema, not something to modify.
 - Run `uv run pytest` and `uv run ruff check .` before declaring work done.
 
+## Pre-flight check: Xyce
+
+**Before running any pipeline stage that invokes simulation** (emit + simulate,
+batch generation, or anything that calls `invoke_xyce`), check whether Xyce is
+installed:
+
+```bash
+which Xyce
+```
+
+If Xyce is not found, **do not attempt to run the pipeline**. Instead, tell the
+user:
+
+> Xyce is not installed or not on your PATH. Please install Xyce first, then
+> re-run this command. See https://xyce.sandia.gov/downloads/
+
+Do not try to work around a missing Xyce — simulation is the sole source of
+truth and no QA items can be generated without it.
+
 ## Pipeline
 
 The eqa CLI executes a five-stage pipeline:
@@ -197,10 +216,14 @@ VISION_MODEL=deepseek-vl2-tiny
 When Ollama is not running, visual checks return PASS silently — they are
 advisory (WARN), never blocking.
 
-**Behavioral rule:** When asked to validate or run the pipeline with
-`--verify`, and `--visual` was not explicitly mentioned, always ask:
-"Would you also like to run visual checks on the schematics?" Do not ask
-when the user is only doing emit, simulate, or questions without validation.
+**Behavioral rule:** When asked to generate QA pairs (batch script, any
+pipeline stage that produces schematics), or to validate with `--verify`,
+and `--visual` was not explicitly mentioned, **always ask**:
+
+> Would you also like to run visual checks on the schematics (Ollama VLM)?
+
+Ask this even if Ollama is not installed or not running — the user may want
+to set it up. Do not assume silence means no.
 
 ### Troubleshooting
 
