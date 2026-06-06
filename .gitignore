@@ -21,4 +21,4 @@ __pycache__/
 output/
 # agent QA verification scratch output
 .verify/
-.DS_store
+.DS_Store
