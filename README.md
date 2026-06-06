@@ -90,7 +90,9 @@ post-hoc.
 | Artifact | Location |
 |---|---|
 | QA items (JSONL) | `output/batch/qa_items.jsonl` |
+| YAML summary | `output/batch/qa_items.yaml` |
 | Schematics (PNG) | `output/batch/images/<topology>/<seed>.png` |
+| Prompts & answers (Markdown) | `output/batch/prompts/<topology>_<seed>.md` + `_answers.md` |
 
 Each QA item includes a `schematic_path`, `question`, `answer`, `answer_value`,
 `unit`, `tolerance`, `question_type`, and a `program` (CLEVR-style instruction
