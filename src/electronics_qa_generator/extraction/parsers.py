@@ -327,7 +327,7 @@ def parse_tran(raw_output: str) -> dict[str, list[tuple[float, float]]]:
 
 # Topologies whose facts require the full complex phasor (magnitude + phase)
 # rather than magnitude-only AC data.
-_COMPLEX_AC_TOPOLOGIES = frozenset({"ac_phasor_rc"})
+_COMPLEX_AC_TOPOLOGIES = frozenset({"ac_phasor_rc", "ac_rl_series"})
 
 
 def get_parser(sim_type: str, topology: str | None = None):

@@ -872,12 +872,20 @@ def _extract_ac_rl_series(
     import cmath
     import math
 
-    re_vl = parsed.get("RE(V(NRL))", 0.0)
-    im_vl = parsed.get("IM(V(NRL))", 0.0)
-    vl_c = complex(re_vl, im_vl)
+    # parse_ac_complex format: {'V(NRL)': [(freq, complex_val), ...]}
+    # parse_op/direct format:  {'RE(V(NRL))': float, 'IM(V(NRL))': float}
+    if "V(NRL)" in parsed:
+        entries = parsed["V(NRL)"]
+        freq_sim, vl_c = entries[-1] if entries else (params.get("freq_hz", 1.0), 0 + 0j)
+    else:
+        re_vl = parsed.get("RE(V(NRL))", 0.0)
+        im_vl = parsed.get("IM(V(NRL))", 0.0)
+        vl_c = complex(re_vl, im_vl)
+        freq_sim = parsed.get("FREQ", params.get("freq_hz", 1.0))
+
     mag_vl = abs(vl_c)
     phase_vl = math.degrees(cmath.phase(vl_c)) if mag_vl > 1e-15 else 0.0
-    freq = parsed.get("FREQ", params.get("freq_hz", 1.0))
+    freq = freq_sim if freq_sim else params.get("freq_hz", 1.0)
     r1 = params.get("R1_ohm", 1.0)
     l1 = params.get("L1_H", 1e-3)
     omega = 2 * math.pi * freq

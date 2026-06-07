@@ -73,4 +73,15 @@ def format_component_label(ref: str, kind: str, params: dict) -> str:
         if model:
             return f"{ref} {model}"
         return ref
+    if kind == "isource":
+        parts = []
+        if "dc" in params:
+            dc_val = params["dc"]
+            parts.append(f"{_clean_g(f'{dc_val:.4g}')}A DC")
+        if "ac" in params:
+            ac_val = params["ac"]
+            parts.append(f"{_clean_g(f'{ac_val:.4g}')}A AC")
+        suffix = " " + " ".join(parts) if parts else ""
+        return f"{ref}{suffix}"
+    return ref
     return ref

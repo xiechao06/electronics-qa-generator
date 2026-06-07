@@ -46,8 +46,8 @@
   <!-- Op-amp: (+) at nplus -->
   <line class="wire" x1="290" y1="200" x2="460" y2="200"/>
   <polygon class="sym-filled" points="460,165 460,245 560,205"/>
-  <text x="476" y="192" text-anchor="middle" font-size="16">+</text>
-  <text x="476" y="228" text-anchor="middle" font-size="14">&#8722;</text>
+  <text x="476" y="192" text-anchor="middle" font-size="14">&#8722;</text>
+  <text x="476" y="228" text-anchor="middle" font-size="16">+</text>
 
   <!-- (-) input connected to feedback node -->
   <line class="wire" x1="460" y1="228" x2="420" y2="228"/>
