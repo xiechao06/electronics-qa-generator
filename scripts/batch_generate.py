@@ -111,6 +111,7 @@ def _generate_one_seed(
             if not png_path.exists():
                 try:
                     from electronics_qa_generator.render.schematic import render_schematic
+
                     render_schematic(record.graph, png_path)
                 except Exception:
                     pass
@@ -123,22 +124,24 @@ def _generate_one_seed(
             continue
 
         for item in qa_items:
-            items.append({
-                "topology": name,
-                "seed": seed,
-                "id": record.id,
-                "question_type": item.question_type,
-                "question": item.question,
-                "answer": item.answer,
-                "answer_value": item.answer_value,
-                "unit": item.unit,
-                "tolerance": item.tolerance,
-                "choices": item.choices,
-                "program": item.program,
-                "explanation": item.explanation,
-                "schematic_path": schematic_path,
-                "netlist": record.netlist,
-            })
+            items.append(
+                {
+                    "topology": name,
+                    "seed": seed,
+                    "id": record.id,
+                    "question_type": item.question_type,
+                    "question": item.question,
+                    "answer": item.answer,
+                    "answer_value": item.answer_value,
+                    "unit": item.unit,
+                    "tolerance": item.tolerance,
+                    "choices": item.choices,
+                    "program": item.program,
+                    "explanation": item.explanation,
+                    "schematic_path": schematic_path,
+                    "netlist": record.netlist,
+                }
+            )
     return items
 
 
@@ -186,6 +189,7 @@ def _humanize_one_item(raw_item: dict, cache_dir: str | None, model: str) -> dic
 
 def count_qa_per_seed(topologies: list[str]) -> int:
     from electronics_qa_generator.questions.templates import QUESTION_TEMPLATES
+
     return sum(len(QUESTION_TEMPLATES.get(n, [])) for n in topologies)
 
 
@@ -237,19 +241,21 @@ def _write_yaml_summary(
         topo_qtypes[topo][qtype] += 1
         if topo not in items_by_topo:
             items_by_topo[topo] = []
-        items_by_topo[topo].append({
-            "id": item.get("id", ""),
-            "seed": item.get("seed", 0),
-            "question_type": item.get("question_type", ""),
-            "question": item.get("question", ""),
-            "answer": item.get("answer", ""),
-            "answer_value": item.get("answer_value"),
-            "unit": item.get("unit"),
-            "tolerance": item.get("tolerance"),
-            "program": item.get("program"),
-            "schematic_path": item.get("schematic_path", ""),
-            "netlist": item.get("netlist", ""),
-        })
+        items_by_topo[topo].append(
+            {
+                "id": item.get("id", ""),
+                "seed": item.get("seed", 0),
+                "question_type": item.get("question_type", ""),
+                "question": item.get("question", ""),
+                "answer": item.get("answer", ""),
+                "answer_value": item.get("answer_value"),
+                "unit": item.get("unit"),
+                "tolerance": item.get("tolerance"),
+                "program": item.get("program"),
+                "schematic_path": item.get("schematic_path", ""),
+                "netlist": item.get("netlist", ""),
+            }
+        )
 
     per_topo = {}
     for topo in sorted(topo_counts):
@@ -401,12 +407,8 @@ def main():
     parser.add_argument("-o", "--out", type=str, default="output/batch", help="Output directory")
     parser.add_argument("--start-seed", type=int, default=0, help="Starting seed")
     parser.add_argument("--cache-dir", type=str, default=".cache", help="Fact cache directory")
-    parser.add_argument(
-        "--humanize", action="store_true", help="Reword questions via DeepSeek LLM"
-    )
-    parser.add_argument(
-        "--humanize-workers", type=int, default=20, help="LLM parallel threads"
-    )
+    parser.add_argument("--humanize", action="store_true", help="Reword questions via DeepSeek LLM")
+    parser.add_argument("--humanize-workers", type=int, default=20, help="LLM parallel threads")
     parser.add_argument(
         "--humanize-cache-dir",
         type=str,
@@ -455,11 +457,12 @@ def main():
     progress_file = out_dir / "progress.txt"
     completed_seeds: set[int] = set()
     if progress_file.exists():
-        completed_seeds = {int(ln.strip()) for ln in progress_file.read_text().splitlines() if ln.strip().isdigit()}
+        completed_seeds = {
+            int(ln.strip()) for ln in progress_file.read_text().splitlines() if ln.strip().isdigit()
+        }
 
     seeds_to_process = [
-        s for s in range(args.start_seed, args.start_seed + num_seeds)
-        if s not in completed_seeds
+        s for s in range(args.start_seed, args.start_seed + num_seeds) if s not in completed_seeds
     ]
 
     print(f"Topologies: {len(topologies)}  |  QA/seed: {qa_per_seed}")
@@ -474,8 +477,11 @@ def main():
             with ProcessPoolExecutor(max_workers=args.workers) as executor:
                 futures = {
                     executor.submit(
-                        _generate_one_seed, seed, args.cache_dir,
-                        str(out_dir / "images"), topologies,
+                        _generate_one_seed,
+                        seed,
+                        args.cache_dir,
+                        str(out_dir / "images"),
+                        topologies,
                     ): seed
                     for seed in seeds_to_process
                 }
@@ -497,12 +503,16 @@ def main():
                     total_items += len(items)
                     elapsed = time.monotonic() - t0
                     rate = total_items / elapsed if elapsed else 0
-                    if done % max(1, len(seeds_to_process) // 40) == 0 or done == len(seeds_to_process):
-                        print(f"  [{done/len(seeds_to_process)*100:5.1f}%] {done}/{len(seeds_to_process)} "
-                              f"seeds | {total_items} items | {rate:.0f}/s | "
-                              f"ETA {(expected_total - total_items) / rate / 60 if rate else 0:.1f}m")
+                    if done % max(1, len(seeds_to_process) // 40) == 0 or done == len(
+                        seeds_to_process
+                    ):
+                        print(
+                            f"  [{done / len(seeds_to_process) * 100:5.1f}%] {done}/{len(seeds_to_process)} "
+                            f"seeds | {total_items} items | {rate:.0f}/s | "
+                            f"ETA {(expected_total - total_items) / rate / 60 if rate else 0:.1f}m"
+                        )
         elapsed = time.monotonic() - t0
-        print(f"  ✓ Done in {elapsed:.0f}s ({elapsed/60:.1f}m)")
+        print(f"  ✓ Done in {elapsed:.0f}s ({elapsed / 60:.1f}m)")
     else:
         print("── Phase 1: All seeds already processed ──")
 
@@ -521,6 +531,7 @@ def main():
 
     # Check LLM availability
     from electronics_qa_generator.llm.provider import is_available
+
     if not is_available():
         print("  ⚠ DeepSeek API key not found — skipping humanization")
         _write_yaml_summary(all_output, out_dir, topologies, num_seeds, args.start_seed)
@@ -545,6 +556,7 @@ def main():
         return
 
     from electronics_qa_generator.llm.provider import _read_config
+
     model = _read_config().get("DEEPSEEK_MODEL", "deepseek-v4-pro")
 
     t0 = time.monotonic()
@@ -564,16 +576,18 @@ def main():
             elapsed = time.monotonic() - t0
             rate = done / elapsed if elapsed else 0
             if done % max(1, len(to_humanize) // 40) == 0 or done == len(to_humanize):
-                print(f"  [{done/len(to_humanize)*100:5.1f}%] {done}/{len(to_humanize)} "
-                      f"| {rate:.1f} items/s | ETA "
-                      f"{(len(to_humanize)-done)/rate/60 if rate else 0:.1f}m")
+                print(
+                    f"  [{done / len(to_humanize) * 100:5.1f}%] {done}/{len(to_humanize)} "
+                    f"| {rate:.1f} items/s | ETA "
+                    f"{(len(to_humanize) - done) / rate / 60 if rate else 0:.1f}m"
+                )
 
     # Merge humanized items back with already-done ones
     all_items = [i for i in items if i.get("explanation")] + to_humanize
     _write_jsonl(all_items, humanized_output)
 
     elapsed = time.monotonic() - t0
-    print(f"  ✓ Humanized {done} items in {elapsed:.0f}s ({elapsed/60:.1f}m)")
+    print(f"  ✓ Humanized {done} items in {elapsed:.0f}s ({elapsed / 60:.1f}m)")
     print(f"  Output: {humanized_output}")
     _write_yaml_summary(humanized_output, out_dir, topologies, num_seeds, args.start_seed)
     if not args.no_prompts:

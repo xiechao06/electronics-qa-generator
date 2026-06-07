@@ -22,6 +22,8 @@ class TestRegistry:
             "resistor_network",
             "op_amp_inverting",
             "rlc_series_resonance",
+            "dc_multisource_mesh",
+            "op_amp_inv_input_fb",
         }
         assert set(QUESTION_TEMPLATES.keys()) == expected
 
@@ -31,7 +33,7 @@ class TestRegistry:
 
     def test_total_template_count(self):
         total = sum(len(t) for t in QUESTION_TEMPLATES.values())
-        assert total == 63
+        assert total == 67
 
 
 class TestTemplateStructure:

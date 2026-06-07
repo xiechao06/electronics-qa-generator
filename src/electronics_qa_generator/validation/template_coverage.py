@@ -150,6 +150,17 @@ FACT_INPUTS: dict[str, dict[str, list[str]]] = {
         "Z_at_resonance_ohm": ["R1"],
         "R_ohm": ["R1"],
     },
+    "dc_multisource_mesh": {
+        "Vab_dc": ["V1", "V2", "V3", "V4", "R1", "R2", "R3", "R4"],
+        "Va_dc": ["V1", "V2", "V3", "V4", "R1", "R2", "R3", "R4"],
+        "Vb_dc": ["V1", "V2", "V3", "V4", "R1", "R2", "R3", "R4"],
+        "I_mesh_A": ["V1", "V2", "V3", "V4", "R1", "R2", "R3", "R4"],
+    },
+    "op_amp_inv_input_fb": {
+        "Vout_dc": ["Vs", "R1", "R2", "R3", "Rf1", "Rf2"],
+        "Vs_dc": ["Vs"],
+        "voltage_gain": ["Vs", "R1", "R2", "R3", "Rf1", "Rf2"],
+    },
 }
 
 

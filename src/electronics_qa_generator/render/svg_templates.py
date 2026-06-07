@@ -289,6 +289,8 @@ def _register_defaults() -> None:
     registry.register("passive", "resistor_network", "resistor_network.svg")
     registry.register("opamp", "op_amp_inverting", "op_amp_inverting.svg")
     registry.register("passive", "rlc_series_resonance", "rlc_series_resonance.svg")
+    registry.register("passive", "dc_multisource_mesh", "dc_multisource_mesh.svg")
+    registry.register("opamp", "op_amp_inv_input_fb", "op_amp_inv_input_fb.svg")
 
 
 _register_defaults()

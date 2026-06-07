@@ -440,3 +440,72 @@ QUESTION_TEMPLATES: dict[str, list[dict]] = {
 
 # Merge future templates into the active registry
 QUESTION_TEMPLATES.update(FUTURE_QUESTION_TEMPLATES)
+
+# --- Schaum's enriched templates ---
+QUESTION_TEMPLATES["dc_multisource_mesh"] = [
+    {
+        "id": "dc_mesh_vab",
+        "question_type": "direct",
+        "question_template": (
+            "The circuit shows a single-loop DC mesh with four voltage sources "
+            "(V1 = {V1} V, V2 = {V2} V, V3 = {V3} V, V4 = {V4} V) and four "
+            "resistors (R1 = {R1} \u03a9, R2 = {R2} \u03a9, R3 = {R3} \u03a9, R4 = {R4} \u03a9). "
+            "Terminal \u2018a\u2019 is marked on the schematic between R1 and R2; terminal \u2018b\u2019 "
+            "is on the return path. Find the voltage Vab = V(a) \u2013 V(b) in volts, "
+            "rounded to two decimal places."
+        ),
+        "program": [
+            P.read_fact("Vab_dc"),
+            P.format_numeric("$0", unit="V", precision=2),
+        ],
+        "answer_keys": ["Vab_dc"],
+        "answer_formatter": "numeric",
+    },
+    {
+        "id": "dc_mesh_current",
+        "question_type": "derived",
+        "question_template": (
+            "In the DC mesh circuit (V1 = {V1} V, V2 = {V2} V, V3 = {V3} V, "
+            "V4 = {V4} V, R1 = {R1} \u03a9, R2 = {R2} \u03a9, R3 = {R3} \u03a9, R4 = {R4} \u03a9), "
+            "what is the magnitude of the mesh current in amperes? "
+            "Round to three decimal places."
+        ),
+        "program": [
+            P.read_fact("I_mesh_A"),
+            P.format_numeric("$0", unit="A", precision=3),
+        ],
+        "answer_keys": ["I_mesh_A"],
+        "answer_formatter": "numeric",
+    },
+]
+
+QUESTION_TEMPLATES["op_amp_inv_input_fb"] = [
+    {
+        "id": "opamp_invfb_vout",
+        "question_type": "direct",
+        "question_template": (
+            "The circuit shows an op-amp with Vs = {Vs} V. "
+            "Find the output voltage V\u2080 in volts, rounded to two decimal places."
+        ),
+        "program": [
+            P.read_fact("Vout_dc"),
+            P.format_numeric("$0", unit="V", precision=2),
+        ],
+        "answer_keys": ["Vout_dc"],
+        "answer_formatter": "numeric",
+    },
+    {
+        "id": "opamp_invfb_gain",
+        "question_type": "derived",
+        "question_template": (
+            "For the op-amp circuit with Vs = {Vs} V, what is the voltage "
+            "gain Vo/Vs? Round to three decimal places."
+        ),
+        "program": [
+            P.read_fact("voltage_gain"),
+            P.format_numeric("$0", unit="", precision=3),
+        ],
+        "answer_keys": ["voltage_gain"],
+        "answer_formatter": "numeric",
+    },
+]

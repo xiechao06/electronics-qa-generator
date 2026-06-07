@@ -784,6 +784,40 @@ def _extract_rlc_series_resonance(
 # ---------------------------------------------------------------------------
 
 
+def _extract_dc_multisource_mesh(
+    parsed: dict,
+    params: dict,
+) -> dict[str, Any]:
+    """Extract Vab = V(a) - V(b) from .op results of the multi-source DC mesh."""
+    va = parsed.get("V(A)", 0.0)
+    vb = parsed.get("V(B)", 0.0)
+    vab = va - vb
+    i_mesh = (
+        params.get("V1", 0) - params.get("V2", 0) + params.get("V3", 0) + params.get("V4", 0)
+    ) / (params.get("R1", 1) + params.get("R2", 1) + params.get("R3", 1) + params.get("R4", 1))
+    return {
+        "Vab_dc": vab,
+        "Va_dc": va,
+        "Vb_dc": vb,
+        "I_mesh_A": i_mesh,
+    }
+
+
+def _extract_op_amp_inv_input_fb(
+    parsed: dict,
+    params: dict,
+) -> dict[str, Any]:
+    """Extract Vo from .op results of the op-amp with input-node feedback."""
+    vo = parsed.get("V(OUT)", 0.0)
+    vs = params.get("Vs", 1.0)
+    gain = vo / vs if vs else 0.0
+    return {
+        "Vout_dc": vo,
+        "Vs_dc": vs,
+        "voltage_gain": gain,
+    }
+
+
 FACT_EXTRACTORS: dict[str, Callable] = {
     "voltage_divider": _extract_voltage_divider,
     "rc_lowpass": _extract_rc_lowpass,
@@ -799,6 +833,8 @@ FACT_EXTRACTORS: dict[str, Callable] = {
     "resistor_network": _extract_resistor_network,
     "op_amp_inverting": _extract_op_amp_inverting,
     "rlc_series_resonance": _extract_rlc_series_resonance,
+    "dc_multisource_mesh": _extract_dc_multisource_mesh,
+    "op_amp_inv_input_fb": _extract_op_amp_inv_input_fb,
 }
 """Registry mapping topology name → fact extractor function.
 

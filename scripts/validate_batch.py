@@ -62,8 +62,8 @@ def main() -> None:
     cache = FactCache(cache_dir=Path(args.cache_dir))
 
     # Group items by topology for batch checks
-    items_by_topology: defaultdict[str, list[tuple[dict, dict | None, dict | None]]] = (
-        defaultdict(list)
+    items_by_topology: defaultdict[str, list[tuple[dict, dict | None, dict | None]]] = defaultdict(
+        list
     )
 
     cache_hits = 0
@@ -131,22 +131,26 @@ def main() -> None:
 
                 if result.verdict == Verdict.FAIL:
                     total_fail += 1
-                    all_fails.append({
-                        "topology": topology,
-                        "id": raw.get("id", ""),
-                        "seed": raw.get("seed"),
-                        "check": name,
-                        "message": result.message,
-                    })
+                    all_fails.append(
+                        {
+                            "topology": topology,
+                            "id": raw.get("id", ""),
+                            "seed": raw.get("seed"),
+                            "check": name,
+                            "message": result.message,
+                        }
+                    )
                 elif result.verdict == Verdict.WARN:
                     total_warn += 1
-                    all_warns.append({
-                        "topology": topology,
-                        "id": raw.get("id", ""),
-                        "seed": raw.get("seed"),
-                        "check": name,
-                        "message": result.message,
-                    })
+                    all_warns.append(
+                        {
+                            "topology": topology,
+                            "id": raw.get("id", ""),
+                            "seed": raw.get("seed"),
+                            "check": name,
+                            "message": result.message,
+                        }
+                    )
                 else:
                     total_pass += 1
 
@@ -176,20 +180,24 @@ def main() -> None:
 
             if result.verdict == Verdict.FAIL:
                 total_fail += 1
-                all_fails.append({
-                    "topology": topology,
-                    "id": "batch",
-                    "check": name,
-                    "message": result.message,
-                })
+                all_fails.append(
+                    {
+                        "topology": topology,
+                        "id": "batch",
+                        "check": name,
+                        "message": result.message,
+                    }
+                )
             elif result.verdict == Verdict.WARN:
                 total_warn += 1
-                all_warns.append({
-                    "topology": topology,
-                    "id": "batch",
-                    "check": name,
-                    "message": result.message,
-                })
+                all_warns.append(
+                    {
+                        "topology": topology,
+                        "id": "batch",
+                        "check": name,
+                        "message": result.message,
+                    }
+                )
             else:
                 total_pass += 1
 

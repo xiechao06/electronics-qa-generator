@@ -13,7 +13,6 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import sys
 from pathlib import Path
 
 
@@ -111,11 +110,11 @@ def main() -> None:
                 rel_err = abs(sim_val - sol_val) / abs(sim_val)
                 match = rel_err <= args.tol
 
-            status = "✓ MATCH" if match else f"✗ MISMATCH"
+            status = "✓ MATCH" if match else "✗ MISMATCH"
             print(f"  {tid}: sim={sim_val:.6g}  solution={sol_val:.6g} {sol_unit}  → {status}")
             if not match:
                 print(f"    (relative error: {abs(sim_val-sol_val)/max(abs(sim_val),1e-30)*100:.1f}%)")
-                print(f"    → Simulation truth stands. Check if netlist component values are correct.")
+                print("    → Simulation truth stands. Check if netlist component values are correct.")
         else:
             print(f"  {tid}: sim={sim_val:.6g}  (no solution value to compare)")
 

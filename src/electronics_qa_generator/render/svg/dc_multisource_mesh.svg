@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <style>
+    text { font-family: sans-serif; font-size: 16px; fill: black; }
+    .label { font-size: 14px; }
+    .node { font-size: 12px; fill: #333; }
+    .wire { stroke: black; stroke-width: 2; fill: none; }
+    .sym { stroke: black; stroke-width: 2; fill: none; }
+    .sym-filled { stroke: black; stroke-width: 2; fill: white; }
+  </style>
+
+  <rect width="800" height="400" fill="white"/>
+  <text x="400" y="28" text-anchor="middle" font-size="17" font-weight="bold">DC Multi-Source Series Mesh</text>
+
+  <!-- Top wire: n1 -- R1 -- a -- R2 -- nc -->
+  <line class="wire" x1="100" y1="80" x2="200" y2="80"/>
+  <!-- R1 -->
+  <polyline class="sym" points="200,80 210,80 215,65 225,95 235,65 245,95 255,65 265,95 270,80 285,80"/>
+  <text id="slot-R1" class="label" x="235" y="60" text-anchor="middle">R1</text>
+  <line class="wire" x1="285" y1="80" x2="340" y2="80"/>
+  <!-- Terminal a -->
+  <circle cx="340" cy="80" r="5" fill="black"/>
+  <text x="340" y="65" text-anchor="middle" font-weight="bold" font-size="13">+</text>
+  <text x="340" y="115" text-anchor="middle" font-size="13" fill="#555">a</text>
+  <line class="wire" x1="340" y1="80" x2="400" y2="80"/>
+  <!-- R2 -->
+  <polyline class="sym" points="400,80 410,80 415,65 425,95 435,65 445,95 455,65 465,95 470,80 485,80"/>
+  <text id="slot-R2" class="label" x="445" y="60" text-anchor="middle">R2</text>
+  <line class="wire" x1="485" y1="80" x2="580" y2="80"/>
+  <!-- nc node -->
+  <circle cx="580" cy="80" r="4" fill="black"/>
+
+  <!-- V2 (opposing, right side top) -->
+  <line class="wire" x1="580" y1="80" x2="580" y2="115"/>
+  <circle class="sym-filled" cx="580" cy="135" r="20"/>
+  <line class="wire" x1="580" y1="115" x2="580" y2="120"/>  <!-- + terminal -->
+  <line class="wire" x1="580" y1="150" x2="580" y2="155"/>  <!-- - terminal -->
+  <line class="sym" x1="574" y1="117" x2="586" y2="123"/> <line class="sym" x1="574" y1="123" x2="586" y2="117"/>
+  <line class="sym" x1="574" y1="152" x2="586" y2="146"/> <line class="sym" x1="574" y1="146" x2="586" y2="152"/>
+  <text id="slot-V2" class="label" x="620" y="137" text-anchor="start">V2</text>
+  <line class="wire" x1="580" y1="155" x2="580" y2="200"/>
+  <!-- nd node (right side, between V2- and R3) -->
+  <circle cx="580" cy="200" r="4" fill="black"/>
+
+  <!-- Right wire: R3 down -->
+  <line class="wire" x1="580" y1="200" x2="580" y2="240"/>
+  <!-- R3 (vertical right side) -->
+  <polyline class="sym" points="580,240 580,250 565,255 595,265 565,275 595,285 565,295 595,305 580,310 580,320"/>
+  <text id="slot-R3" class="label" x="615" y="283" text-anchor="start">R3</text>
+  <line class="wire" x1="580" y1="320" x2="580" y2="330"/>
+  <!-- ne node -->
+  <circle cx="580" cy="330" r="4" fill="black"/>
+
+  <!-- Bottom wire: ne -- V3 -- b -- V4 -- nf -->
+  <line class="wire" x1="580" y1="330" x2="530" y2="330"/>
+  <!-- V3 (bottom, aiding return) -->
+  <circle class="sym-filled" cx="510" cy="330" r="20"/>
+  <line class="wire" x1="530" y1="330" x2="525" y2="330"/> <!-- - side toward ne -->
+  <line class="wire" x1="495" y1="330" x2="490" y2="330"/> <!-- + side toward b -->
+  <line class="sym" x1="527" y1="324" x2="521" y2="336"/> <line class="sym" x1="521" y1="324" x2="527" y2="336"/>
+  <line class="sym" x1="499" y1="324" x2="493" y2="336"/> <line class="sym" x1="493" y1="324" x2="499" y2="336"/>
+  <text id="slot-V3" class="label" x="510" y="313" text-anchor="middle">V3</text>
+  <line class="wire" x1="490" y1="330" x2="440" y2="330"/>
+  <!-- Terminal b -->
+  <circle cx="440" cy="330" r="5" fill="black"/>
+  <text x="440" y="350" text-anchor="middle" font-size="13" fill="#555">b</text>
+  <text x="440" y="320" text-anchor="middle" font-weight="bold" font-size="13">−</text>
+  <line class="wire" x1="440" y1="330" x2="380" y2="330"/>
+  <!-- V4 (bottom, aiding) -->
+  <circle class="sym-filled" cx="360" cy="330" r="20"/>
+  <line class="wire" x1="380" y1="330" x2="375" y2="330"/>
+  <line class="wire" x1="345" y1="330" x2="340" y2="330"/>
+  <line class="sym" x1="377" y1="324" x2="371" y2="336"/> <line class="sym" x1="371" y1="324" x2="377" y2="336"/>
+  <line class="sym" x1="347" y1="324" x2="341" y2="336"/> <line class="sym" x1="341" y1="324" x2="347" y2="336"/>
+  <text id="slot-V4" class="label" x="360" y="313" text-anchor="middle">V4</text>
+  <line class="wire" x1="340" y1="330" x2="220" y2="330"/>
+  <!-- nf node -->
+  <circle cx="220" cy="330" r="4" fill="black"/>
+
+  <!-- R4 (vertical, left side bottom) -->
+  <line class="wire" x1="220" y1="290" x2="220" y2="330"/>
+  <polyline class="sym" points="220,240 220,250 205,255 235,265 205,275 235,285 205,295 235,305 220,310 220,320"/>
+  <text id="slot-R4" class="label" x="250" y="283" text-anchor="start">R4</text>
+  <line class="wire" x1="220" y1="240" x2="220" y2="200"/>
+  <!-- Ground at bottom of R4 -->
+  <line class="wire" x1="220" y1="200" x2="220" y2="165"/>
+  <line class="sym" x1="205" y1="165" x2="235" y2="165"/>
+  <line class="sym" x1="210" y1="172" x2="230" y2="172"/>
+  <line class="sym" x1="215" y1="179" x2="225" y2="179"/>
+
+  <!-- V1 (left side, aiding) -->
+  <line class="wire" x1="100" y1="80" x2="100" y2="115"/>
+  <circle class="sym-filled" cx="100" cy="135" r="20"/>
+  <line class="wire" x1="100" y1="115" x2="100" y2="120"/>
+  <line class="wire" x1="100" y1="150" x2="100" y2="165"/>
+  <line class="sym" x1="94" y1="117" x2="106" y2="123"/> <line class="sym" x1="94" y1="123" x2="106" y2="117"/>
+  <line class="sym" x1="94" y1="152" x2="106" y2="146"/> <line class="sym" x1="94" y1="146" x2="106" y2="152"/>
+  <text id="slot-V1" class="label" x="55" y="137" text-anchor="end">V1</text>
+  <!-- Connect V1- to ground (shared with R4 ground) -->
+  <line class="wire" x1="100" y1="165" x2="220" y2="165"/>
+
+  <!-- n1 node (top of V1+, left corner) -->
+  <circle cx="100" cy="80" r="4" fill="black"/>
+
+  <!-- Vab label in center -->
+  <text x="400" y="220" text-anchor="middle" font-size="14" fill="#666">V<tspan font-size="11" dy="3">ab</tspan></text>
+  <line x1="340" y1="95" x2="340" y2="315" stroke="#aaa" stroke-width="1" stroke-dasharray="5,4"/>
+  <line x1="440" y1="315" x2="440" y2="343" stroke="#aaa" stroke-width="1" stroke-dasharray="5,4"/>
+</svg>

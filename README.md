@@ -71,7 +71,7 @@ uv run python scripts/batch_generate.py --total 100000 --workers 8 -o output/bat
 | Option | Default | Description |
 |---|---|---|
 | `--total` | 100000 | Target number of QA pairs |
-| `--topologies` | all 14 | Comma-separated topology names to generate |
+| `--topologies` | all 16 | Comma-separated topology names to generate |
 | `--list-topologies` | — | Print available topologies with QA-per-seed counts and exit |
 | `--workers` | 8 | Parallel simulation worker processes |
 | `--start-seed` | 0 | First seed value (use with `--total` to avoid overlapping prior runs) |
@@ -98,13 +98,13 @@ Each QA item includes a `schematic_path`, `question`, `answer`, `answer_value`,
 `unit`, `tolerance`, `question_type`, and a `program` (CLEVR-style instruction
 sequence).
 
-## Available topologies (14)
+## Available topologies (16)
 
 ```
 voltage_divider     rc_lowpass          rc_highpass         rlc_bandpass
 half_wave_rectifier rc_step_response    rl_step_response    ac_phasor_rc
 bjt_ce_amplifier    bjt_emitter_follower mosfet_cs_amplifier resistor_network
-op_amp_inverting    rlc_series_resonance
+op_amp_inverting    rlc_series_resonance  dc_multisource_mesh  op_amp_inv_input_fb
 ```
 
 ## Question types
@@ -130,7 +130,7 @@ use hand-written humanized templates — no LLM involved in truth creation.
 
 ```mermaid
 flowchart TD
-    T["📐 Template Library<br/>14 circuit topologies<br/>+ parameter ranges"] --> S["🎲 Sampler<br/>Sample component values,<br/>stimuli, variants<br/>(reproducible by seed)"]
+    T["📐 Template Library<br/>16 circuit topologies<br/>+ parameter ranges"] --> S["🎲 Sampler<br/>Sample component values,<br/>stimuli, variants<br/>(reproducible by seed)"]
     S --> N["🔧 Netlist Generator<br/>Emit Xyce SPICE netlists<br/>+ schematic SVG/PNG"]
     N --> X["⚡ Xyce Simulator<br/>Run .op / .ac / .tran<br/>(multiprocess, cached<br/>by netlist hash)"]
     X --> P["📊 Parser<br/>Parse raw simulation<br/>output (.op, .ac, .tran)"]
