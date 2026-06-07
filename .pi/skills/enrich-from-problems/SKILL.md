@@ -284,9 +284,28 @@ If anything fails, trace back through the steps.
 
 ---
 
-## Step 8 — Commit
+## Step 8 — Update README counts
 
-Once all questions pass, commit the changes:
+After adding templates or a new topology, the README.md topology count and
+QA-per-seed count must reflect the new totals. Run:
+
+```bash
+uv run python .pi/skills/enrich-from-problems/scripts/update_readme_counts.py
+```
+
+This automatically updates:
+- `## Available topologies (N)` heading
+- The topology grid inside the code block
+- `--topologies | all N |` table row
+- `N circuit topologies` in the pipeline diagram label
+
+Review the diff (`git diff README.md`) to confirm it looks right before committing.
+
+---
+
+## Step 9 — Commit
+
+Once all questions pass and README is updated, commit the changes:
 
 ```bash
 git add -A
