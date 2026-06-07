@@ -291,6 +291,12 @@ def _register_defaults() -> None:
     registry.register("passive", "rlc_series_resonance", "rlc_series_resonance.svg")
     registry.register("passive", "dc_multisource_mesh", "dc_multisource_mesh.svg")
     registry.register("opamp", "op_amp_inv_input_fb", "op_amp_inv_input_fb.svg")
+    registry.register("opamp", "op_amp_noninverting", "op_amp_noninverting.svg")
+    registry.register("opamp", "op_amp_difference", "op_amp_difference.svg")
+    registry.register("opamp", "op_amp_summing", "op_amp_summing.svg")
+    registry.register("passive", "dc_current_divider", "dc_current_divider.svg")
+    registry.register("passive", "ac_rl_series", "ac_rl_series.svg")
+    registry.register("passive", "dc_nodal_current_source", "dc_nodal_current_source.svg")
 
 
 _register_defaults()

@@ -27,6 +27,8 @@ _PARAM_FORMATTERS = {
     "_hz": _fmt_frequency,
     "_dc": _fmt_voltage,
     "_amplitude": _fmt_voltage,
+    "_kohm": lambda v: f"{v:.2g}",
+    "_mh": lambda v: f"{v:.3g}",
 }
 
 

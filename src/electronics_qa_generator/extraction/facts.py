@@ -818,6 +818,92 @@ def _extract_op_amp_inv_input_fb(
     }
 
 
+def _extract_op_amp_noninverting(
+    parsed: dict,
+    params: dict,
+) -> dict[str, Any]:
+    vo = parsed.get("V(OUT)", 0.0)
+    vplus = parsed.get("V(NPLUS)", 0.0)
+    vs = params.get("Vs", 1.0)
+    gain = vo / vs if vs else 0.0
+    return {"Vout_dc": vo, "Vplus_dc": vplus, "Vs_dc": vs, "voltage_gain": gain}
+
+
+def _extract_op_amp_difference(
+    parsed: dict,
+    params: dict,
+) -> dict[str, Any]:
+    vo = parsed.get("V(OUT)", 0.0)
+    va = params.get("Va", 0.0)
+    vb = params.get("Vb", 0.0)
+    vdiff = vb - va
+    gain = vo / vdiff if vdiff else 0.0
+    return {"Vout_dc": vo, "Va_dc": va, "Vb_dc": vb, "Vdiff_dc": vdiff, "diff_gain": gain}
+
+
+def _extract_op_amp_summing(
+    parsed: dict,
+    params: dict,
+) -> dict[str, Any]:
+    vo = parsed.get("V(OUT)", 0.0)
+    va = params.get("Va", 0.0)
+    vb = params.get("Vb", 0.0)
+    vc = params.get("Vc", 0.0)
+    vsum = va + vb + vc
+    return {"Vout_dc": vo, "Va_dc": va, "Vb_dc": vb, "Vc_dc": vc, "Vsum": vsum}
+
+
+def _extract_dc_current_divider(
+    parsed: dict,
+    params: dict,
+) -> dict[str, Any]:
+    vv = parsed.get("V(V)", 0.0)
+    r1 = params.get("R1", 1.0)
+    r2 = params.get("R2", 1.0)
+    i_r1 = vv / r1 if r1 else 0.0
+    i_r2 = vv / r2 if r2 else 0.0
+    return {"V_node_V": vv, "I_R1_A": i_r1, "I_R2_A": i_r2}
+
+
+def _extract_ac_rl_series(
+    parsed: dict,
+    params: dict,
+) -> dict[str, Any]:
+    import cmath
+    import math
+
+    re_vl = parsed.get("RE(V(NRL))", 0.0)
+    im_vl = parsed.get("IM(V(NRL))", 0.0)
+    vl_c = complex(re_vl, im_vl)
+    mag_vl = abs(vl_c)
+    phase_vl = math.degrees(cmath.phase(vl_c)) if mag_vl > 1e-15 else 0.0
+    freq = parsed.get("FREQ", params.get("freq_hz", 1.0))
+    r1 = params.get("R1_ohm", 1.0)
+    l1 = params.get("L1_H", 1e-3)
+    omega = 2 * math.pi * freq
+    z_total = math.sqrt(r1**2 + (omega * l1) ** 2)
+    return {
+        "VL_mag_V": mag_vl,
+        "VL_phase_deg": phase_vl,
+        "Z_mag_ohm": z_total,
+        "VR_mag_V": r1 / z_total,
+        "freq_hz": freq,
+    }
+
+
+def _extract_dc_nodal_current_source(
+    parsed: dict,
+    params: dict,
+) -> dict[str, Any]:
+    vv = parsed.get("V(V)", 0.0)
+    rs = params.get("Rs", 1.0)
+    rp = params.get("Rp", 1.0)
+    vs = params.get("Vs", 0.0)
+    i_rs = (vs - vv) / rs if rs else 0.0
+    i_rp = vv / rp if rp else 0.0
+    return {"V_node_V": vv, "I_Rs_A": i_rs, "I_Rp_A": i_rp}
+
+
 FACT_EXTRACTORS: dict[str, Callable] = {
     "voltage_divider": _extract_voltage_divider,
     "rc_lowpass": _extract_rc_lowpass,
@@ -835,6 +921,12 @@ FACT_EXTRACTORS: dict[str, Callable] = {
     "rlc_series_resonance": _extract_rlc_series_resonance,
     "dc_multisource_mesh": _extract_dc_multisource_mesh,
     "op_amp_inv_input_fb": _extract_op_amp_inv_input_fb,
+    "op_amp_noninverting": _extract_op_amp_noninverting,
+    "op_amp_difference": _extract_op_amp_difference,
+    "op_amp_summing": _extract_op_amp_summing,
+    "dc_current_divider": _extract_dc_current_divider,
+    "ac_rl_series": _extract_ac_rl_series,
+    "dc_nodal_current_source": _extract_dc_nodal_current_source,
 }
 """Registry mapping topology name → fact extractor function.
 

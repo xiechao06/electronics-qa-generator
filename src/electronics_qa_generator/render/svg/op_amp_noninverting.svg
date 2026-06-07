@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <style>
+    text { font-family: sans-serif; font-size: 16px; fill: black; }
+    .label { font-size: 14px; }
+    .node { font-size: 12px; fill: #333; }
+    .wire { stroke: black; stroke-width: 2; fill: none; }
+    .sym-filled { stroke: black; stroke-width: 2; fill: white; }
+    .thin { stroke: black; stroke-width: 1; fill: none; }
+  </style>
+  <rect width="800" height="400" fill="white"/>
+  <text x="400" y="28" text-anchor="middle" font-size="18" font-weight="bold">Non-Inverting Op-Amp</text>
+
+  <!-- Ground rail -->
+  <line class="wire" x1="60" y1="340" x2="700" y2="340"/>
+  <line class="wire" x1="140" y1="340" x2="140" y2="346"/>
+  <line class="wire" x1="122" y1="346" x2="158" y2="346"/>
+  <line class="wire" x1="128" y1="353" x2="152" y2="353"/>
+  <line class="wire" x1="134" y1="360" x2="146" y2="360"/>
+
+  <!-- Vs source -->
+  <line class="wire" x1="140" y1="200" x2="140" y2="162"/>
+  <circle class="sym-filled" cx="140" cy="182" r="20"/>
+  <line class="thin" x1="134" y1="172" x2="146" y2="172"/>
+  <line class="thin" x1="140" y1="166" x2="140" y2="178"/>
+  <line class="thin" x1="134" y1="192" x2="146" y2="192"/>
+  <line class="wire" x1="140" y1="202" x2="140" y2="340"/>
+  <text id="slot-Vs" class="label" x="98" y="184" text-anchor="end">Vs</text>
+  <text class="node" x="126" y="198" text-anchor="end">in</text>
+
+  <!-- Ra: in -> nplus (horizontal) -->
+  <line class="wire" x1="140" y1="200" x2="185" y2="200"/>
+  <polyline class="wire" points="185,200 192,188 206,212 220,188 234,212 248,200"/>
+  <line class="wire" x1="248" y1="200" x2="290" y2="200"/>
+  <text id="slot-Ra" class="label" x="216" y="183" text-anchor="middle">Ra</text>
+
+  <!-- nplus node -->
+  <circle cx="290" cy="200" r="5" fill="black"/>
+  <text class="node" x="290" y="222" text-anchor="middle">nplus</text>
+
+  <!-- Rdiv: nplus -> gnd -->
+  <line class="wire" x1="290" y1="200" x2="290" y2="220"/>
+  <polyline class="wire" points="290,220 278,228 302,242 278,256 302,270 278,284 290,292"/>
+  <line class="wire" x1="290" y1="292" x2="290" y2="340"/>
+  <text id="slot-Rdiv" class="label" x="315" y="258" text-anchor="start">Rdiv</text>
+
+  <!-- Op-amp: (+) at nplus -->
+  <line class="wire" x1="290" y1="200" x2="460" y2="200"/>
+  <polygon class="sym-filled" points="460,165 460,245 560,205"/>
+  <text x="476" y="192" text-anchor="middle" font-size="16">+</text>
+  <text x="476" y="228" text-anchor="middle" font-size="14">&#8722;</text>
+
+  <!-- (-) input connected to feedback node -->
+  <line class="wire" x1="460" y1="228" x2="420" y2="228"/>
+  <line class="wire" x1="420" y1="228" x2="420" y2="150"/>
+
+  <!-- Rs: minus -> gnd -->
+  <line class="wire" x1="420" y1="228" x2="420" y2="260"/>
+  <polyline class="wire" points="420,260 408,268 432,282 408,296 432,310 420,318"/>
+  <line class="wire" x1="420" y1="318" x2="420" y2="340"/>
+  <text id="slot-Rs" class="label" x="445" y="292" text-anchor="start">Rs</text>
+
+  <!-- Rf: out -> minus (feedback) -->
+  <line class="wire" x1="560" y1="205" x2="640" y2="205"/>
+  <circle cx="600" cy="205" r="5" fill="black"/>
+  <line class="wire" x1="600" y1="205" x2="600" y2="150"/>
+  <line class="wire" x1="600" y1="150" x2="440" y2="150"/>
+  <polyline class="wire" points="500,150 507,138 521,162 535,138 549,162 563,150"/>
+  <line class="wire" x1="420" y1="150" x2="440" y2="150"/>
+  <text id="slot-Rf" class="label" x="531" y="135" text-anchor="middle">Rf</text>
+
+  <!-- Output -->
+  <line class="wire" x1="640" y1="205" x2="640" y2="340"/>
+  <text class="node" x="656" y="197" text-anchor="start">out</text>
+  <text id="slot-node-out" class="node" x="656" y="212" text-anchor="start">V&#8320;</text>
+</svg>

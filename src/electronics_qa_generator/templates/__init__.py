@@ -14,6 +14,14 @@ Usage:
 
 from .dc_mesh import DCMultisourceMesh
 from .schaums_opamp import OpAmpInvInputFb
+from .schaums_new import (
+    OpAmpNoninverting,
+    OpAmpDifference,
+    OpAmpSumming,
+    DCCurrentDivider,
+    ACRLSeries,
+    DCNodalCurrentSource,
+)
 from .base import CircuitTemplate
 from .e_series import E12_VALUES, E6_VALUES, INDUCTOR_VALUES, pick_e_value
 from .netlist_helpers import format_netlist
@@ -45,6 +53,12 @@ ALL_TEMPLATES: list[CircuitTemplate] = [
     RLCSeriesResonance(),
     DCMultisourceMesh(),
     OpAmpInvInputFb(),
+    OpAmpNoninverting(),
+    OpAmpDifference(),
+    OpAmpSumming(),
+    DCCurrentDivider(),
+    ACRLSeries(),
+    DCNodalCurrentSource(),
 ]
 """Registry of all concrete template instances.
 

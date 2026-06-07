@@ -509,3 +509,230 @@ QUESTION_TEMPLATES["op_amp_inv_input_fb"] = [
         "answer_formatter": "numeric",
     },
 ]
+
+QUESTION_TEMPLATES["op_amp_noninverting"] = [
+    {
+        "id": "opamp_ninv_vout",
+        "question_type": "direct",
+        "question_template": (
+            "The schematic shows a non-inverting op-amp with Vs = {Vs} V, "
+            "Ra = {Ra_kohm} k\u03a9, Rdiv = {Rdiv_kohm} k\u03a9, "
+            "Rf = {Rf_kohm} k\u03a9, and Rs = {Rs_kohm} k\u03a9. "
+            "Find the output voltage V\u2080 in volts, rounded to two decimal places."
+        ),
+        "program": [
+            P.read_fact("Vout_dc"),
+            P.format_numeric("$0", unit="V", precision=2),
+        ],
+        "answer_keys": ["Vout_dc"],
+        "answer_formatter": "numeric",
+    },
+    {
+        "id": "opamp_ninv_gain",
+        "question_type": "derived",
+        "question_template": (
+            "For the non-inverting op-amp (Rf = {Rf_kohm} k\u03a9, Rs = {Rs_kohm} k\u03a9), "
+            "what is the closed-loop voltage gain Vo/Vs? Round to two decimal places."
+        ),
+        "program": [
+            P.read_fact("voltage_gain"),
+            P.format_numeric("$0", unit="", precision=2),
+        ],
+        "answer_keys": ["voltage_gain"],
+        "answer_formatter": "numeric",
+    },
+]
+
+QUESTION_TEMPLATES["op_amp_difference"] = [
+    {
+        "id": "opamp_diff_vout",
+        "question_type": "direct",
+        "question_template": (
+            "The circuit shows a difference amplifier with Va = {Va} V, Vb = {Vb} V, "
+            "Ra = Rb = {Ra_kohm} k\u03a9, and Rf = Rc = {Rf_kohm} k\u03a9. "
+            "Find the output voltage V\u2080 in volts, rounded to two decimal places."
+        ),
+        "program": [
+            P.read_fact("Vout_dc"),
+            P.format_numeric("$0", unit="V", precision=2),
+        ],
+        "answer_keys": ["Vout_dc"],
+        "answer_formatter": "numeric",
+    },
+    {
+        "id": "opamp_diff_vdiff",
+        "question_type": "derived",
+        "question_template": (
+            "In the difference amplifier, what is the differential input voltage "
+            "Vb \u2212 Va in volts? (Va = {Va} V, Vb = {Vb} V.) Round to two decimal places."
+        ),
+        "program": [
+            P.read_fact("Vdiff_dc"),
+            P.format_numeric("$0", unit="V", precision=2),
+        ],
+        "answer_keys": ["Vdiff_dc"],
+        "answer_formatter": "numeric",
+    },
+]
+
+QUESTION_TEMPLATES["op_amp_summing"] = [
+    {
+        "id": "opamp_sum_vout",
+        "question_type": "direct",
+        "question_template": (
+            "A three-input inverting summing amplifier has Va = {Va} V, Vb = {Vb} V, "
+            "Vc = {Vc} V, Ra = Rb = Rc = {Ra_kohm} k\u03a9, Rf = {Rf_kohm} k\u03a9. "
+            "Find the output voltage V\u2080. Round to two decimal places."
+        ),
+        "program": [
+            P.read_fact("Vout_dc"),
+            P.format_numeric("$0", unit="V", precision=2),
+        ],
+        "answer_keys": ["Vout_dc"],
+        "answer_formatter": "numeric",
+    },
+    {
+        "id": "opamp_sum_vsum",
+        "question_type": "comparison",
+        "question_template": (
+            "For the summing amplifier (Va = {Va} V, Vb = {Vb} V, Vc = {Vc} V), "
+            "what is the sum of the three inputs Va + Vb + Vc? Round to two decimal places."
+        ),
+        "program": [
+            P.read_fact("Vsum"),
+            P.format_numeric("$0", unit="V", precision=2),
+        ],
+        "answer_keys": ["Vsum"],
+        "answer_formatter": "numeric",
+    },
+]
+
+QUESTION_TEMPLATES["dc_current_divider"] = [
+    {
+        "id": "dc_cdiv_vnode",
+        "question_type": "direct",
+        "question_template": (
+            "A current source Is = {Is} A drives two parallel resistors "
+            "R1 = {R1} \u03a9 and R2 = {R2} \u03a9. "
+            "What is the voltage V across the parallel combination? Round to two decimal places."
+        ),
+        "program": [
+            P.read_fact("V_node_V"),
+            P.format_numeric("$0", unit="V", precision=2),
+        ],
+        "answer_keys": ["V_node_V"],
+        "answer_formatter": "numeric",
+    },
+    {
+        "id": "dc_cdiv_ir1",
+        "question_type": "derived",
+        "question_template": (
+            "For the current divider (Is = {Is} A, R1 = {R1} \u03a9, R2 = {R2} \u03a9), "
+            "what is the current through R1? Round to three decimal places."
+        ),
+        "program": [
+            P.read_fact("I_R1_A"),
+            P.format_numeric("$0", unit="A", precision=3),
+        ],
+        "answer_keys": ["I_R1_A"],
+        "answer_formatter": "numeric",
+    },
+    {
+        "id": "dc_cdiv_ir2",
+        "question_type": "derived",
+        "question_template": (
+            "For the current divider (Is = {Is} A, R1 = {R1} \u03a9, R2 = {R2} \u03a9), "
+            "what is the current through R2? Round to three decimal places."
+        ),
+        "program": [
+            P.read_fact("I_R2_A"),
+            P.format_numeric("$0", unit="A", precision=3),
+        ],
+        "answer_keys": ["I_R2_A"],
+        "answer_formatter": "numeric",
+    },
+]
+
+QUESTION_TEMPLATES["ac_rl_series"] = [
+    {
+        "id": "ac_rl_vl_mag",
+        "question_type": "direct",
+        "question_template": (
+            "The schematic shows a series RL circuit driven at {freq_hz} Hz "
+            "with R1 = {R1_ohm} \u03a9 and L1 = {L1_mH} mH. "
+            "Find the magnitude of the phasor voltage V_L across the inductor. "
+            "Express in volts to three decimal places (source amplitude = 1 V)."
+        ),
+        "program": [
+            P.read_fact("VL_mag_V"),
+            P.format_numeric("$0", unit="V", precision=3),
+        ],
+        "answer_keys": ["VL_mag_V"],
+        "answer_formatter": "numeric",
+    },
+    {
+        "id": "ac_rl_vl_phase",
+        "question_type": "direct",
+        "question_template": (
+            "In the series RL circuit (R1 = {R1_ohm} \u03a9, L1 = {L1_mH} mH, "
+            "f = {freq_hz} Hz), what is the phase angle of V_L relative to the source? "
+            "State in degrees to one decimal place."
+        ),
+        "program": [
+            P.read_fact("VL_phase_deg"),
+            P.format_numeric("$0", unit="\u00b0", precision=1),
+        ],
+        "answer_keys": ["VL_phase_deg"],
+        "answer_formatter": "numeric",
+    },
+    {
+        "id": "ac_rl_impedance",
+        "question_type": "derived",
+        "question_template": (
+            "What is the magnitude of the total impedance of the series RL circuit "
+            "(R1 = {R1_ohm} \u03a9, L1 = {L1_mH} mH) at {freq_hz} Hz? "
+            "Round to two decimal places."
+        ),
+        "program": [
+            P.read_fact("Z_mag_ohm"),
+            P.format_numeric("$0", unit="\u03a9", precision=2),
+        ],
+        "answer_keys": ["Z_mag_ohm"],
+        "answer_formatter": "numeric",
+    },
+]
+
+QUESTION_TEMPLATES["dc_nodal_current_source"] = [
+    {
+        "id": "dc_nodal_vnode",
+        "question_type": "direct",
+        "question_template": (
+            "The schematic shows a DC circuit: Vs = {Vs} V source in series with "
+            "Rs = {Rs} \u03a9 feeding node v; Rp = {Rp} \u03a9 shunts node v to ground; "
+            "a current source Is = {Is} A also enters node v. "
+            "Find the node voltage V(v) in volts, rounded to two decimal places."
+        ),
+        "program": [
+            P.read_fact("V_node_V"),
+            P.format_numeric("$0", unit="V", precision=2),
+        ],
+        "answer_keys": ["V_node_V"],
+        "answer_formatter": "numeric",
+    },
+    {
+        "id": "dc_nodal_irs",
+        "question_type": "derived",
+        "question_template": (
+            "For the same nodal circuit (Vs = {Vs} V, Rs = {Rs} \u03a9, "
+            "Rp = {Rp} \u03a9, Is = {Is} A), "
+            "what is the current through the series resistor Rs in amperes? "
+            "Round to three decimal places."
+        ),
+        "program": [
+            P.read_fact("I_Rs_A"),
+            P.format_numeric("$0", unit="A", precision=3),
+        ],
+        "answer_keys": ["I_Rs_A"],
+        "answer_formatter": "numeric",
+    },
+]

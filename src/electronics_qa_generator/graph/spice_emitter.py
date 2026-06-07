@@ -100,6 +100,18 @@ def _emit_vsource(c) -> str:
     return " ".join(parts)
 
 
+def _emit_isource(c) -> str:
+    """Emit a current source: Iname pos neg DC val."""
+    parts = [c.name, c.pos, c.neg]
+    dc = c.params.get("dc")
+    ac = c.params.get("ac")
+    if dc is not None:
+        parts.append(f"DC {dc:.6g}")
+    if ac is not None:
+        parts.append(f"AC {ac:.6g}")
+    return " ".join(parts)
+
+
 def _emit_diode(c) -> str:
     return f"{c.name} {c.pos} {c.neg} {c.params['model']}"
 
@@ -122,6 +134,7 @@ _COMPONENT_EMITTERS = {
     "capacitor": _emit_capacitor,
     "inductor": _emit_inductor,
     "vsource": _emit_vsource,
+    "isource": _emit_isource,
     "diode": _emit_diode,
     "bjt": _emit_bjt,
     "mosfet": _emit_mosfet,

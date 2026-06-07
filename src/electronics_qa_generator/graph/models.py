@@ -179,6 +179,33 @@ class CircuitGraph:
             Component(name=name, kind="vsource", pos=pos, neg=neg, params=params),
         )
 
+    def add_current_source(
+        self,
+        name: str,
+        pos: str,
+        neg: str,
+        *,
+        dc: float | None = None,
+        ac: float | None = None,
+    ) -> None:
+        """Add a current source (SPICE I element).
+
+        Current flows from neg to pos (conventional: pos is where current exits
+        the source, i.e. arrow points from neg to pos inside the source).
+        SPICE convention: positive current flows from pos through external circuit
+        to neg, so ``I pos neg DC val`` injects current into node ``pos``.
+        """
+        for n in (pos, neg):
+            self._register_node(n)
+        params: dict = {}
+        if dc is not None:
+            params["dc"] = dc
+        if ac is not None:
+            params["ac"] = ac
+        self.components.append(
+            Component(name=name, kind="isource", pos=pos, neg=neg, params=params),
+        )
+
     def add_diode(
         self,
         name: str,

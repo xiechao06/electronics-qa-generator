@@ -24,6 +24,12 @@ class TestRegistry:
             "rlc_series_resonance",
             "dc_multisource_mesh",
             "op_amp_inv_input_fb",
+            "op_amp_noninverting",
+            "op_amp_difference",
+            "op_amp_summing",
+            "dc_current_divider",
+            "ac_rl_series",
+            "dc_nodal_current_source",
         }
         assert set(QUESTION_TEMPLATES.keys()) == expected
 
@@ -33,7 +39,7 @@ class TestRegistry:
 
     def test_total_template_count(self):
         total = sum(len(t) for t in QUESTION_TEMPLATES.values())
-        assert total == 67
+        assert total == 81
 
 
 class TestTemplateStructure:

@@ -161,6 +161,39 @@ FACT_INPUTS: dict[str, dict[str, list[str]]] = {
         "Vs_dc": ["Vs"],
         "voltage_gain": ["Vs", "R1", "R2", "R3", "Rf1", "Rf2"],
     },
+    "op_amp_noninverting": {
+        "Vout_dc": ["Vs", "Ra", "Rdiv", "Rf", "Rs"],
+        "Vplus_dc": ["Vs", "Ra", "Rdiv"],
+        "Vs_dc": ["Vs"],
+        "voltage_gain": ["Ra", "Rdiv", "Rf", "Rs"],
+    },
+    "op_amp_difference": {
+        "Vout_dc": ["Va", "Vb", "Ra", "Rb", "Rc", "Rf"],
+        "Va_dc": ["Va"],
+        "Vb_dc": ["Vb"],
+        "Vdiff_dc": ["Va", "Vb"],
+        "diff_gain": ["Ra", "Rf"],
+    },
+    "op_amp_summing": {
+        "Vout_dc": ["Va", "Vb", "Vc", "Ra", "Rb", "Rc", "Rf"],
+        "Vsum": ["Va", "Vb", "Vc"],
+    },
+    "dc_current_divider": {
+        "V_node_V": ["Is", "R1", "R2"],
+        "I_R1_A": ["Is", "R1", "R2"],
+        "I_R2_A": ["Is", "R1", "R2"],
+    },
+    "ac_rl_series": {
+        "VL_mag_V": ["R1", "L1", "Vin"],
+        "VL_phase_deg": ["R1", "L1", "Vin"],
+        "Z_mag_ohm": ["R1", "L1"],
+        "VR_mag_V": ["R1", "L1", "Vin"],
+    },
+    "dc_nodal_current_source": {
+        "V_node_V": ["Vs", "Rs", "Rp", "Is"],
+        "I_Rs_A": ["Vs", "Rs", "Rp", "Is"],
+        "I_Rp_A": ["Vs", "Rs", "Rp", "Is"],
+    },
 }
 
 

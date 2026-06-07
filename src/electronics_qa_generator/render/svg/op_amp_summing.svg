@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460" width="800" height="460">
+  <style>
+    text { font-family: sans-serif; font-size: 16px; fill: black; }
+    .label { font-size: 14px; }
+    .node { font-size: 12px; fill: #333; }
+    .wire { stroke: black; stroke-width: 2; fill: none; }
+    .sym-filled { stroke: black; stroke-width: 2; fill: white; }
+    .thin { stroke: black; stroke-width: 1; fill: none; }
+  </style>
+  <rect width="800" height="460" fill="white"/>
+  <text x="400" y="28" text-anchor="middle" font-size="18" font-weight="bold">Inverting Summing Amplifier (3 inputs)</text>
+
+  <!-- Ground rail -->
+  <line class="wire" x1="60" y1="400" x2="700" y2="400"/>
+  <line class="wire" x1="160" y1="400" x2="160" y2="406"/>
+  <line class="wire" x1="142" y1="406" x2="178" y2="406"/>
+  <line class="wire" x1="148" y1="413" x2="172" y2="413"/>
+  <line class="wire" x1="154" y1="420" x2="166" y2="420"/>
+
+  <!-- Va source -->
+  <line class="wire" x1="110" y1="120" x2="110" y2="100"/>
+  <circle class="sym-filled" cx="110" cy="140" r="20"/>
+  <line class="thin" x1="104" y1="130" x2="116" y2="130"/> <line class="thin" x1="110" y1="124" x2="110" y2="136"/>
+  <line class="thin" x1="104" y1="150" x2="116" y2="150"/>
+  <line class="wire" x1="110" y1="160" x2="110" y2="400"/>
+  <text id="slot-Va" class="label" x="68" y="142" text-anchor="end">Va</text>
+  <!-- Ra: ina -> summing node -->
+  <line class="wire" x1="110" y1="120" x2="150" y2="120"/>
+  <polyline class="wire" points="150,120 157,108 171,132 185,108 199,132 213,120"/>
+  <line class="wire" x1="213" y1="120" x2="390" y2="120"/>
+  <text id="slot-Ra" class="label" x="181" y="103" text-anchor="middle">Ra</text>
+
+  <!-- Vb source -->
+  <line class="wire" x1="110" y1="230" x2="110" y2="210"/>
+  <circle class="sym-filled" cx="110" cy="250" r="20"/>
+  <line class="thin" x1="104" y1="240" x2="116" y2="240"/> <line class="thin" x1="110" y1="234" x2="110" y2="246"/>
+  <line class="thin" x1="104" y1="260" x2="116" y2="260"/>
+  <line class="wire" x1="110" y1="270" x2="110" y2="400"/>
+  <text id="slot-Vb" class="label" x="68" y="252" text-anchor="end">Vb</text>
+  <!-- Rb: inb -> summing node -->
+  <line class="wire" x1="110" y1="230" x2="150" y2="230"/>
+  <polyline class="wire" points="150,230 157,218 171,242 185,218 199,242 213,230"/>
+  <line class="wire" x1="213" y1="230" x2="390" y2="230"/>
+  <text id="slot-Rb" class="label" x="181" y="213" text-anchor="middle">Rb</text>
+
+  <!-- Vc source -->
+  <line class="wire" x1="110" y1="340" x2="110" y2="320"/>
+  <circle class="sym-filled" cx="110" cy="360" r="20"/>
+  <line class="thin" x1="104" y1="350" x2="116" y2="350"/> <line class="thin" x1="110" y1="344" x2="110" y2="356"/>
+  <line class="thin" x1="104" y1="370" x2="116" y2="370"/>
+  <line class="wire" x1="110" y1="380" x2="110" y2="400"/>
+  <text id="slot-Vc" class="label" x="68" y="362" text-anchor="end">Vc</text>
+  <!-- Rc: inc -> summing node -->
+  <line class="wire" x1="110" y1="340" x2="150" y2="340"/>
+  <polyline class="wire" points="150,340 157,328 171,352 185,328 199,352 213,340"/>
+  <line class="wire" x1="213" y1="340" x2="390" y2="340"/>
+  <text id="slot-Rc" class="label" x="181" y="323" text-anchor="middle">Rc</text>
+
+  <!-- Summing node (minus input) -->
+  <circle cx="390" cy="230" r="5" fill="black"/>
+  <line class="wire" x1="390" y1="120" x2="390" y2="340"/>
+  <line class="wire" x1="390" y1="230" x2="460" y2="230"/>
+
+  <!-- Op-amp -->
+  <polygon class="sym-filled" points="460,190 460,285 560,237"/>
+  <text x="476" y="217" text-anchor="middle" font-size="14">&#8722;</text>
+  <text x="476" y="258" text-anchor="middle" font-size="16">+</text>
+  <!-- (+) grounded -->
+  <line class="wire" x1="460" y1="262" x2="420" y2="262"/>
+  <line class="wire" x1="420" y1="262" x2="420" y2="400"/>
+
+  <!-- Rf feedback: out -> summing node (top) -->
+  <line class="wire" x1="560" y1="237" x2="640" y2="237"/>
+  <circle cx="600" cy="237" r="5" fill="black"/>
+  <line class="wire" x1="600" y1="237" x2="600" y2="60"/>
+  <line class="wire" x1="600" y1="60" x2="410" y2="60"/>
+  <line class="wire" x1="410" y1="60" x2="390" y2="60"/>
+  <line class="wire" x1="390" y1="60" x2="390" y2="120"/>
+  <polyline class="wire" points="470,60 477,48 491,72 505,48 519,72 533,60"/>
+  <text id="slot-Rf" class="label" x="501" y="44" text-anchor="middle">Rf</text>
+
+  <!-- Output -->
+  <line class="wire" x1="640" y1="237" x2="640" y2="400"/>
+  <text class="node" x="655" y="228" text-anchor="start">out</text>
+  <text id="slot-node-out" class="node" x="655" y="244" text-anchor="start">V&#8320;</text>
+</svg>

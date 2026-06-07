@@ -7,12 +7,12 @@ from electronics_qa_generator.templates.base import CircuitTemplate
 
 
 def test_registry_has_fourteen_items():
-    assert len(ALL_TEMPLATES) == 16
+    assert len(ALL_TEMPLATES) == 22
 
 
 def test_registry_distinct_topologies():
     topologies = {t.topology for t in ALL_TEMPLATES}
-    assert len(topologies) == 16
+    assert len(topologies) == 22
     expected = {
         "voltage_divider",
         "rc_lowpass",
@@ -30,6 +30,12 @@ def test_registry_distinct_topologies():
         "rlc_series_resonance",
         "dc_multisource_mesh",
         "op_amp_inv_input_fb",
+        "op_amp_noninverting",
+        "op_amp_difference",
+        "op_amp_summing",
+        "dc_current_divider",
+        "ac_rl_series",
+        "dc_nodal_current_source",
     }
     assert topologies == expected
 

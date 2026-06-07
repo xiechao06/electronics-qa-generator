@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <style>
+    text { font-family: sans-serif; font-size: 16px; fill: black; }
+    .label { font-size: 14px; }
+    .node { font-size: 12px; fill: #333; }
+    .wire { stroke: black; stroke-width: 2; fill: none; }
+    .sym-filled { stroke: black; stroke-width: 2; fill: white; }
+    .thin { stroke: black; stroke-width: 1; fill: none; }
+  </style>
+  <rect width="800" height="380" fill="white"/>
+  <text x="400" y="28" text-anchor="middle" font-size="18" font-weight="bold">DC Current Divider</text>
+
+  <!-- Top rail -->
+  <line class="wire" x1="180" y1="100" x2="580" y2="100"/>
+  <!-- Bottom rail / ground -->
+  <line class="wire" x1="180" y1="280" x2="580" y2="280"/>
+  <!-- Ground symbol -->
+  <line class="wire" x1="380" y1="280" x2="380" y2="286"/>
+  <line class="wire" x1="362" y1="286" x2="398" y2="286"/>
+  <line class="wire" x1="368" y1="293" x2="392" y2="293"/>
+  <line class="wire" x1="374" y1="300" x2="386" y2="300"/>
+
+  <!-- Is current source (left, upward: gnd->v) -->
+  <line class="wire" x1="240" y1="100" x2="240" y2="170"/>
+  <circle class="sym-filled" cx="240" cy="190" r="20"/>
+  <!-- Arrow pointing up (current enters top = exits toward v) -->
+  <line class="thin" x1="240" y1="175" x2="240" y2="200"/>
+  <polygon points="240,168 234,180 246,180" fill="black"/>
+  <line class="wire" x1="240" y1="210" x2="240" y2="280"/>
+  <text id="slot-Is" class="label" x="198" y="192" text-anchor="end">Is</text>
+
+  <!-- v node (top rail midpoint) -->
+  <circle cx="380" cy="100" r="5" fill="black"/>
+  <text class="node" x="380" y="85" text-anchor="middle">v</text>
+
+  <!-- R1 (left vertical branch from v to gnd) -->
+  <line class="wire" x1="320" y1="100" x2="320" y2="118"/>
+  <polyline class="wire" points="320,118 308,126 332,140 308,154 332,168 308,182 320,190"/>
+  <line class="wire" x1="320" y1="190" x2="320" y2="280"/>
+  <text id="slot-R1" class="label" x="344" y="158" text-anchor="start">R1</text>
+
+  <!-- R2 (right vertical branch from v to gnd) -->
+  <line class="wire" x1="460" y1="100" x2="460" y2="118"/>
+  <polyline class="wire" points="460,118 448,126 472,140 448,154 472,168 448,182 460,190"/>
+  <line class="wire" x1="460" y1="190" x2="460" y2="280"/>
+  <text id="slot-R2" class="label" x="484" y="158" text-anchor="start">R2</text>
+
+  <!-- Connect Is top rail to v node area -->
+  <line class="wire" x1="180" y1="100" x2="240" y2="100"/>
+  <line class="wire" x1="180" y1="280" x2="240" y2="280"/>
+
+  <!-- V(v) annotation -->
+  <line stroke="#aaa" stroke-width="1" stroke-dasharray="4,3" x1="560" y1="105" x2="560" y2="275"/>
+  <text class="label" x="575" y="168" text-anchor="start">+</text>
+  <text class="label" x="573" y="195" text-anchor="start">V(v)</text>
+  <text class="label" x="575" y="278" text-anchor="start">&#8722;</text>
+  <text id="slot-node-v" class="node" x="380" y="85" text-anchor="middle">v</text>
+</svg>

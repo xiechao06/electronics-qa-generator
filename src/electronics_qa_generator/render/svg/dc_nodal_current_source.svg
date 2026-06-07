@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <style>
+    text { font-family: sans-serif; font-size: 16px; fill: black; }
+    .label { font-size: 14px; }
+    .node { font-size: 12px; fill: #333; }
+    .wire { stroke: black; stroke-width: 2; fill: none; }
+    .sym-filled { stroke: black; stroke-width: 2; fill: white; }
+    .thin { stroke: black; stroke-width: 1; fill: none; }
+  </style>
+  <rect width="800" height="400" fill="white"/>
+  <text x="400" y="28" text-anchor="middle" font-size="18" font-weight="bold">DC Nodal: Voltage Source + Shunt + Current Source</text>
+
+  <!-- Top/bottom rails -->
+  <line class="wire" x1="100" y1="120" x2="640" y2="120"/>
+  <line class="wire" x1="100" y1="280" x2="640" y2="280"/>
+  <!-- Ground symbol -->
+  <line class="wire" x1="370" y1="280" x2="370" y2="286"/>
+  <line class="wire" x1="352" y1="286" x2="388" y2="286"/>
+  <line class="wire" x1="358" y1="293" x2="382" y2="293"/>
+  <line class="wire" x1="364" y1="300" x2="376" y2="300"/>
+
+  <!-- Vs source (left, DC) -->
+  <line class="wire" x1="130" y1="120" x2="130" y2="170"/>
+  <circle class="sym-filled" cx="130" cy="190" r="20"/>
+  <line class="thin" x1="124" y1="180" x2="136" y2="180"/>
+  <line class="thin" x1="130" y1="174" x2="130" y2="186"/>
+  <line class="thin" x1="124" y1="200" x2="136" y2="200"/>
+  <line class="wire" x1="130" y1="210" x2="130" y2="280"/>
+  <text id="slot-Vs" class="label" x="88" y="192" text-anchor="end">Vs</text>
+  <text class="node" x="116" y="118" text-anchor="end">vsrc</text>
+
+  <!-- Rs: vsrc -> v (horizontal series resistor) -->
+  <line class="wire" x1="100" y1="120" x2="230" y2="120"/>
+  <polyline class="wire" points="230,120 237,108 251,132 265,108 279,132 293,120"/>
+  <line class="wire" x1="293" y1="120" x2="370" y2="120"/>
+  <text id="slot-Rs" class="label" x="261" y="103" text-anchor="middle">Rs</text>
+
+  <!-- v node -->
+  <circle cx="370" cy="120" r="5" fill="black"/>
+  <text class="node" x="370" y="105" text-anchor="middle">v</text>
+
+  <!-- Rp: v -> gnd (vertical shunt) -->
+  <line class="wire" x1="370" y1="120" x2="370" y2="138"/>
+  <polyline class="wire" points="370,138 358,146 382,160 358,174 382,188 358,202 370,210"/>
+  <line class="wire" x1="370" y1="210" x2="370" y2="280"/>
+  <text id="slot-Rp" class="label" x="394" y="178" text-anchor="start">Rp</text>
+
+  <!-- Is current source (right branch, upward into v) -->
+  <line class="wire" x1="530" y1="120" x2="530" y2="168"/>
+  <circle class="sym-filled" cx="530" cy="188" r="20"/>
+  <line class="thin" x1="530" y1="173" x2="530" y2="198"/>
+  <polygon points="530,166 524,178 536,178" fill="black"/>
+  <line class="wire" x1="530" y1="208" x2="530" y2="280"/>
+  <text id="slot-Is" class="label" x="562" y="190" text-anchor="start">Is</text>
+
+  <!-- V(v) annotation -->
+  <line stroke="#aaa" stroke-width="1" stroke-dasharray="4,3" x1="620" y1="125" x2="620" y2="275"/>
+  <text class="label" x="635" y="168" text-anchor="start">+</text>
+  <text class="label" x="633" y="200" text-anchor="start">V(v)</text>
+  <text class="label" x="635" y="278" text-anchor="start">&#8722;</text>
+</svg>
