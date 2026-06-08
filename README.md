@@ -6,8 +6,26 @@ A pipeline that generates **multimodal electronics circuit Q/A items** with
 subfield.
 
 Inspired by [**CLEVR**](docs/clevr_explained.md) (questions backed by
-executable programs) and [**AutoCkt**](docs/autockt_explained.md)
-(simulator-in-the-loop as source of truth).
+executable programs) and the principle from
+[**AutoCkt**](docs/autockt_explained.md) that a **SPICE simulator should be the
+sole source of numerical truth**.
+
+## Basic Ideas
+
+* **circuit templates** (topology + parameter ranges + question types)
+  for each circuit family (We've created a pi skill to enrich from problem sets). A template defines the netlist structure, simulation
+  config, fact extractor, and question templates — but not fixed component
+  values.
+
+* **Sample component values deterministically** using a seeded random generator
+  (`random.Random(seed)`). Each seed produces one circuit instance (e.g.
+  R1=1 kΩ, C1=10 nF) and the same seed always regenerates the identical
+  netlist, schematic, and ground-truth answers.
+
+* **Generate diverse Q/A pairs at scale** by iterating over many sequential
+  seeds. For each `(topology, seed)`, the pipeline emits a netlist → runs Xyce
+  → extracts facts → renders a schematic → applies human-written question
+  templates → produces a fully grounded QA item.
 
 > **Core principle:** Simulation establishes facts → code derives answers →
 > the LLM only paraphrases or reviews truth that has already been computed.
@@ -31,7 +49,7 @@ git clone https://github.com/xiechao06/electronics-qa-generator
 cd electronics-qa-generator
 ```
 
-Then prompt you favorite coding agent:
+Then prompt your favorite coding agent:
 
 > *"Generate roughly 10,000 Q/A pairs."*
 
@@ -39,11 +57,11 @@ Then prompt you favorite coding agent:
 
 > *"Generate roughly 10,000 Q/A pairs without visual validation, across topologies voltage_divider, rc_lowpass and rc_highpass"*
 
-> *"Generate roughly 10,000 Q/A pairs without visual validation, across topologies voltage_divider, rc_lowpass and rc_highpass, and with random seeds from 0 to 10000."*
+> *"Generate roughly 10,000 Q/A pairs without visual validation, across topologies voltage_divider, rc_lowpass and rc_highpass, and with seeds from 0 to 10000."*
 
-In a separate session, using a multimodel like **gpt-5.4**, then prompt:
+In a separate session, using a multimodal model like **GPT-5.4**, then prompt:
 
-> *"answer questions in @output/prompts, then check against the answers to each prompt file."*
+> *"Answer questions in @output/prompts, then check against the answers to each prompt file."*
 
 The agent reads `AGENTS.md`, runs the pipeline, and produces JSONL output
 with schematics. No manual setup beyond `uv sync`.
@@ -81,9 +99,12 @@ uv run python scripts/batch_generate.py --total 100000 --workers 8 -o output/bat
 
 The script runs seeds through the pipeline in parallel. Each seed produces
 one parameter sample per topology. Results are cached by netlist content hash
-so re-running with overlapping seed ranges is near-instant. QA items with zero
-or nonsensical simulation results are still produced and should be filtered
-post-hoc.
+so re-running with overlapping seed ranges is near-instant.
+
+Some seeds may fail Xyce convergence (more common for active circuits with
+delicate biasing). The batch script skips these silently and continues to the
+next seed. If you need an exact item count, request slightly more than needed
+and filter post-hoc.
 
 ## What it produces
 
@@ -122,9 +143,9 @@ use hand-written humanized templates — no LLM involved in truth creation.
 
 ## Requirements
 
-- **Python 3.14** (pinned via `.python-version`)
-- [`uv`](https://docs.astral.sh/uv/) for environment management
-- **Xyce** SPICE simulator on PATH
+* **Python 3.14** (pinned via `.python-version`)
+* [`uv`](https://docs.astral.sh/uv/) for environment management
+* **Xyce** SPICE simulator on PATH
 
 ## Pipeline architecture
 
@@ -300,10 +321,9 @@ VISION_MODEL=deepseek-vl2-tiny
 
 ## Reference data
 
-- `mmmu_electronics/` — original MMMU Electronics parquet splits
-- `mmmu_electronics_unpacked/` — JSONL/CSV + extracted images
-
-Treat these as read-only target schema references.
+* `mmmu_electronics/` — original MMMU Electronics parquet splits (read-only
+  target schema reference)
+* `mmmu_electronics_unpacked/` — JSONL/CSV + extracted images
 
 ## Layout
 
